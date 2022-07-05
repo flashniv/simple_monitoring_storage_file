@@ -1,12 +1,13 @@
 package ua.com.serverhelp.simplemetricstoragefile.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.Instant;
-
 @Data
+@AllArgsConstructor
 public class Event{
     private String metric;
-    private long timestamp=Instant.now().getEpochSecond();
+    private String parameters;
+    private long timestamp;
     private Double value;
 }

@@ -43,6 +43,7 @@ public class FileDriver {
             oos.writeObject(dataElement);
         }
         oos.close();
+        log.debug("FileDriver::writeMetric Metric "+metricName+" was write. Events="+dataElements.size());
     }
 
     public List<DataElement> readFile(String metricName) throws IOException, ClassNotFoundException {
@@ -63,7 +64,7 @@ public class FileDriver {
             }
         } catch (EOFException ignored) {
         }
-        log.info("Metric "+metricName+" was read. "+i+" values");
+        log.debug("FileDriver::readFile Metric "+metricName+" was read. "+i+" values");
         ois.close();
         return dataElements;
     }

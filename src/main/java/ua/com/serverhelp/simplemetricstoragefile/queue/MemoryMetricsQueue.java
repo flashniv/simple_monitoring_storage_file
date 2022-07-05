@@ -21,13 +21,13 @@ public class MemoryMetricsQueue{
         while(!linkedQueue.isEmpty()){
             Event event=linkedQueue.poll();
             List<DataElement> dataElements;
-            if (events.containsKey(event.getMetric())){
-                dataElements=events.get(event.getMetric());
+            if (events.containsKey(event.getMetric()+event.getParameters())){
+                dataElements=events.get(event.getMetric()+event.getParameters());
             }else{
                 dataElements=new ArrayList<>();
             }
             dataElements.add(new DataElement(event));
-            events.put(event.getMetric(), dataElements);
+            events.put(event.getMetric()+event.getParameters(), dataElements);
         }
         return events;
     }
