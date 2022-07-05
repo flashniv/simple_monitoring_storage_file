@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
+import ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter.NodeMetricRest;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +20,8 @@ public class Cron {
     private MemoryMetricsQueue memoryMetricsQueue;
     @Autowired
     private FileDriver fileDriver;
+    @Autowired
+    private NodeMetricRest nodeMetricRest;
 
     @Scheduled(fixedDelay = 60000)
     public void storeMetrics() {
@@ -31,5 +34,10 @@ public class Cron {
             }
         }
         log.info("Metrics was store");
+    }
+
+    @Scheduled(fixedDelay = 10000)
+    public void processNodeMetrics(){
+        nodeMetricRest.processItems();
     }
 }

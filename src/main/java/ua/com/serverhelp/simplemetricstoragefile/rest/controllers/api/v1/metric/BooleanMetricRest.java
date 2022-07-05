@@ -11,7 +11,7 @@ import java.time.Instant;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/metric/boolean")
+@RequestMapping("/apiv1/metric/boolean") //TODO fix it
 public class BooleanMetricRest {
     @Autowired
     private MemoryMetricsQueue memoryMetricsQueue;
