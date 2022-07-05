@@ -20,13 +20,13 @@ public class Cron {
     private MemoryMetricsQueue memoryMetricsQueue;
     @Autowired
     private FileDriver fileDriver;
+    private final String[] metrics={"aa", "bb", "cc", "dd"};
 
     @Scheduled(fixedDelay = 1000)
     public void generateEvents() {
-        String[] metrics={"aa", "bb", "cc", "dd"};
         Event event=new Event();
         event.setValue(Math.random());
-        event.setMetric(metrics[getRandomNumber(0, 3)]);
+        event.setMetric(metrics[getRandomNumber(0, 4)]);
         memoryMetricsQueue.putEvent(event);
     }
     public int getRandomNumber(int min, int max) {
@@ -41,7 +41,22 @@ public class Cron {
                 fileDriver.writeMetric(entry.getKey(), entry.getValue());
             }
         }catch (IOException e){
-            log.error(e.getMessage(), e);
+            log.error("Cron::storeMetrics Error "+e.getMessage(), e);
+        }
+    }
+    @Scheduled(fixedDelay = 5000)
+    public void readMetrics() {
+        for (String metric:metrics){
+            try {
+                List<DataElement> dataElements=fileDriver.readFile(metric);
+//                dataElements.forEach(dataElement -> {
+//                    System.out.println(dataElement);
+//                });
+            }catch (IOException e){
+                log.error("Cron::readMetrics "+metric+" Error "+e.getMessage(), e);
+            }catch (ClassNotFoundException e){
+                log.error("Cron::readMetrics "+metric+" Class Not Found "+e.getMessage(), e);
+            }
         }
     }
 }
