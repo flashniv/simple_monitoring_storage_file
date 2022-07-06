@@ -2,7 +2,7 @@ package ua.com.serverhelp.simplemetricstoragefile.queue;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ua.com.serverhelp.simplemetricstoragefile.entities.Event;
+import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;

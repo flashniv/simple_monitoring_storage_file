@@ -1,4 +1,4 @@
-package ua.com.serverhelp.simplemetricstoragefile.cron;
+package ua.com.serverhelp.simplemetricstoragefile.utils.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

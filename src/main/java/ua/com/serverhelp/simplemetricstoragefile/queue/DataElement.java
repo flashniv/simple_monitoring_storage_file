@@ -2,7 +2,7 @@ package ua.com.serverhelp.simplemetricstoragefile.queue;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ua.com.serverhelp.simplemetricstoragefile.entities.Event;
+import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 
 import java.io.Serializable;
 

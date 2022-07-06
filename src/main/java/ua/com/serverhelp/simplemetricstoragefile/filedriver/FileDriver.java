@@ -28,7 +28,9 @@ public class FileDriver {
 
         File file = new File(fileName);
         file.getParentFile().mkdirs();
-        file.createNewFile();
+        if (file.createNewFile()) {
+            log.info("FileDriver::writeMetric file " + fileName + " created for metric " + metricName);
+        }
         FileOutputStream fos = new FileOutputStream(file, true);
         DataOutputStream dos = new DataOutputStream(fos);
 
