@@ -30,7 +30,7 @@ class DailyBooleanMetricRestTest {
 
     @Test
     void getAddEvent() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/metric/dailyboolean/")
+        mockMvc.perform(MockMvcRequestBuilders.get("/apiv1/metric/dailyboolean/")
                         .param("path","test.stage.db.item1")
                         .param("value", "true")
                         .contentType(MediaType.APPLICATION_JSON)
