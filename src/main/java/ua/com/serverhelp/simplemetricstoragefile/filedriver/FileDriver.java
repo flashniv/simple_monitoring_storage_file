@@ -24,48 +24,44 @@ public class FileDriver {
 
     public void writeMetric(String metricName, List<DataElement> dataElements) throws IOException {
         String metricMD5 = DigestUtils.md5DigestAsHex(metricName.getBytes());
-        String fileName = dirName + "/"+metricMD5.substring(0, 2)+"/"+metricMD5.substring(2,4)+"/"+ metricMD5 + "_" + getPeriod();
+        String fileName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4) + "/" + metricMD5 + "_" + getPeriod();
 
         File file = new File(fileName);
         file.getParentFile().mkdirs();
-        boolean fileExists = !file.createNewFile();
+        file.createNewFile();
         FileOutputStream fos = new FileOutputStream(file, true);
-        ObjectOutputStream oos = new ObjectOutputStream(fos) {
-            @Override
-            protected void writeStreamHeader() throws IOException {
-                if (fileExists) return;
-                super.writeStreamHeader();
-            }
-        };
+        DataOutputStream dos = new DataOutputStream(fos);
 
         for (DataElement dataElement : dataElements) {
             // write object to file
-            oos.writeObject(dataElement);
+            dos.writeLong(dataElement.getTimestamp());
+            dos.writeDouble(dataElement.getValue());
         }
-        oos.close();
-        log.debug("FileDriver::writeMetric Metric "+metricName+" was write. Events="+dataElements.size());
+        dos.close();
+        log.debug("FileDriver::writeMetric Metric " + metricName + " was write. Events=" + dataElements.size());
     }
 
     public List<DataElement> readFile(String metricName) throws IOException, ClassNotFoundException {
         String metricMD5 = DigestUtils.md5DigestAsHex(metricName.getBytes());
-        String fileName = dirName + "/"+metricMD5.substring(0, 2)+"/"+metricMD5.substring(2,4)+"/"+ metricMD5 + "_" + getPeriod();
-        List<DataElement> dataElements=new ArrayList<>();
+        String fileName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4) + "/" + metricMD5 + "_" + getPeriod();
+        List<DataElement> dataElements = new ArrayList<>();
 
         File file = new File(fileName);
         FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
+        DataInputStream dis = new DataInputStream(fis);
 
         int i = 0;
-        try {
-            while (true) {
-                Object obj = ois.readObject();
-                i++;
-                dataElements.add((DataElement) obj);
-            }
-        } catch (EOFException ignored) {
+        while (dis.available() > 0) {
+            DataElement dataElement = new DataElement();
+            i++;
+
+            dataElement.setTimestamp(dis.readLong());
+            dataElement.setValue(dis.readDouble());
+
+            dataElements.add(dataElement);
         }
-        log.debug("FileDriver::readFile Metric "+metricName+" was read. "+i+" values");
-        ois.close();
+        log.debug("FileDriver::readFile Metric " + metricName + " was read. " + i + " values");
+        dis.close();
         return dataElements;
     }
 }

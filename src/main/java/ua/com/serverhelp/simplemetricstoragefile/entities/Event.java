@@ -9,5 +9,5 @@ public class Event{
     private String metric;
     private String parameters;
     private long timestamp;
-    private Double value;
+    private double value;
 }

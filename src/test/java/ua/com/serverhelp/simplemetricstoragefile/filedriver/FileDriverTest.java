@@ -53,4 +53,9 @@ class FileDriverTest {
         });
 
     }
+
+    @Test
+    void readMetric() throws Exception{
+        //List<DataElement> dataElements=fileDriver.readFile("exporter.myproj.debian.node.sockstat_TCP_mem{}");
+    }
 }
