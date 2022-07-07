@@ -41,7 +41,10 @@ public class CollectDMetricRest {
   "type_instance":"wait"
 }*/
     @PostMapping("/")
-    public ResponseEntity<String> receiveData(@RequestHeader("X-Project") String proj,@RequestBody String data){
+    public ResponseEntity<String> receiveData(
+            @RequestHeader("X-Project") String proj,
+            @RequestBody String data
+    ){
         JSONArray jsonArray=new JSONArray(data);
         String host="";
         for (int i = 0; i < jsonArray.length(); i++) {
