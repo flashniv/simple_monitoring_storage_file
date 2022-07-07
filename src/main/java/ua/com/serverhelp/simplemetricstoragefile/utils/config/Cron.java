@@ -23,7 +23,7 @@ public class Cron {
     @Autowired
     private NodeMetricRest nodeMetricRest;
 
-    @Scheduled(fixedDelay = 60000)
+    @Scheduled(initialDelay = 60000,fixedDelay = 60000)
     public void storeMetrics() {
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         for (Map.Entry<String, List<DataElement>> entry : map.entrySet()) {
