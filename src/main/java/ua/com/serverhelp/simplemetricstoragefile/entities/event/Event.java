@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Event{
+public class Event {
     private String metric;
     private String parameters;
     private long timestamp;

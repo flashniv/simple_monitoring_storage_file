@@ -17,8 +17,6 @@ import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"Metrics"})
@@ -39,8 +37,8 @@ class CollectDMetricRestTest {
     };
 
     @Test
-    void receiveData() throws Exception{
-        for (String req:reqs) {
+    void receiveData() throws Exception {
+        for (String req : reqs) {
 
             mockMvc.perform(MockMvcRequestBuilders.post("/apiv1/metric/collectd/")
                                     .header("X-Project", "testproj")
@@ -52,14 +50,14 @@ class CollectDMetricRestTest {
                     .andExpect(MockMvcResultMatchers.content().string("Success"));
         }
 
-        Map<String, List<DataElement>> map=memoryMetricsQueue.getFormattedEvents();
+        Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         Assertions.assertEquals(100, map.size());
 
-        List<DataElement> dataElements=map.get("collectd.testproj.debian.memory{\"ds_name\":\"value\",\"type_instance\":\"slab_unrecl\",\"ds_type\":\"gauge\",\"type\":\"memory\"}");
+        List<DataElement> dataElements = map.get("collectd.testproj.debian.memory{\"ds_name\":\"value\",\"type_instance\":\"slab_unrecl\",\"ds_type\":\"gauge\",\"type\":\"memory\"}");
         Assertions.assertNotNull(dataElements);
         Assertions.assertEquals(3, dataElements.size());
 
-        DataElement dataElement=dataElements.get(0);
+        DataElement dataElement = dataElements.get(0);
         Assertions.assertEquals(2.2351872E7, dataElement.getValue());
 
     }

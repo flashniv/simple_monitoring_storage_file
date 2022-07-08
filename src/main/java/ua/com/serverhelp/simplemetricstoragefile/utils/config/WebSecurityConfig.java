@@ -32,9 +32,9 @@ public class WebSecurityConfig {
         http.logout().permitAll();
 
         http.authorizeRequests().antMatchers(HttpMethod.OPTIONS).permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/apiv1/metric/**").hasAuthority("Metrics");
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/apiv1/metric/collectd/").hasAuthority("Metrics");
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/apiv1/metric/exporter/**").hasAuthority("Metrics");
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/apiv1/metric/**").hasAuthority("Metrics");
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/apiv1/metric/collectd/").hasAuthority("Metrics");
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/apiv1/metric/exporter/**").hasAuthority("Metrics");
         http.authorizeRequests().antMatchers(HttpMethod.GET,
                 "/",
                 "/index/**",

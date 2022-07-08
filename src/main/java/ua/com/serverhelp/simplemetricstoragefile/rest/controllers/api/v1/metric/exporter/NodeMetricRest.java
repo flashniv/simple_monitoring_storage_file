@@ -23,7 +23,7 @@ public class NodeMetricRest extends AbstractMetricRest {
         String[] inputs = inputData.split("\n");
 
         for (String input : inputs) {
-            if(stringChecker(input)) continue;
+            if (stringChecker(input)) continue;
             try {
                 getInputQueue().add(timestamp + ";exporter." + proj + "." + hostname + ".node." + input.replace("node_", ""));
             } catch (NumberFormatException e) {
@@ -39,7 +39,7 @@ public class NodeMetricRest extends AbstractMetricRest {
     }
 
     private boolean stringChecker(String input) {
-        return input.charAt(0)=='#';
+        return input.charAt(0) == '#';
     }
 
 }

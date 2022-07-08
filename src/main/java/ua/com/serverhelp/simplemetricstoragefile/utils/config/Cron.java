@@ -23,21 +23,21 @@ public class Cron {
     @Autowired
     private NodeMetricRest nodeMetricRest;
 
-    @Scheduled(initialDelay = 60000,fixedDelay = 60000)
+    @Scheduled(initialDelay = 60000, fixedDelay = 60000)
     public void storeMetrics() {
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         for (Map.Entry<String, List<DataElement>> entry : map.entrySet()) {
             try {
                 fileDriver.writeMetric(entry.getKey(), entry.getValue());
             } catch (IOException e) {
-                log.error("Cron::storeMetrics "+entry.getKey()+" Error " + e.getMessage(), e);
+                log.error("Cron::storeMetrics " + entry.getKey() + " Error " + e.getMessage(), e);
             }
         }
         log.info("Metrics was store");
     }
 
     @Scheduled(fixedDelay = 10000)
-    public void processNodeMetrics(){
+    public void processNodeMetrics() {
         nodeMetricRest.processItems();
     }
 }

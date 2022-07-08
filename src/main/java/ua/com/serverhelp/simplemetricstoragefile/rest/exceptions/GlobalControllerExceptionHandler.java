@@ -32,6 +32,7 @@ public class GlobalControllerExceptionHandler {
     public ResponseEntity<String> handleNotFound(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(BadRequestError.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ApiResponse(
@@ -42,6 +43,7 @@ public class GlobalControllerExceptionHandler {
     public ResponseEntity<String> handleBadRequest(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(InternalServerError.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ApiResponse(

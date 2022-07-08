@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class SimpleUserDetails implements UserDetails{
+public class SimpleUserDetails implements UserDetails {
     private final User user;
 
     public SimpleUserDetails(User user) {
@@ -15,10 +15,10 @@ public class SimpleUserDetails implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<GrantedAuthority> grantedAuthorities=new ArrayList<>();
+        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        for(Role role:user.getRoles()){
-            GrantedAuthority grantedAuthority= role::getName;
+        for (Role role : user.getRoles()) {
+            GrantedAuthority grantedAuthority = role::getName;
             grantedAuthorities.add(grantedAuthority);
         }
 

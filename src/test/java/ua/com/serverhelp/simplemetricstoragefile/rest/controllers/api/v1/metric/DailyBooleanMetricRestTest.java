@@ -18,11 +18,9 @@ import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(username = "specuser",authorities = {"Metrics"})
+@WithMockUser(username = "specuser", authorities = {"Metrics"})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DailyBooleanMetricRestTest {
     @Autowired
@@ -33,21 +31,21 @@ class DailyBooleanMetricRestTest {
     @Test
     void getAddEvent() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/apiv1/metric/dailyboolean/")
-                        .param("path","test.stage.db.item1")
+                        .param("path", "test.stage.db.item1")
                         .param("value", "true")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.content().string("Success"));
-        Map<String, List<DataElement>> map=memoryMetricsQueue.getFormattedEvents();
+        Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         Assertions.assertEquals(1, map.size());
 
-        List<DataElement> dataElements=map.get("test.stage.db.item1{}");
+        List<DataElement> dataElements = map.get("test.stage.db.item1{}");
         Assertions.assertNotNull(dataElements);
         Assertions.assertEquals(1, dataElements.size());
 
-        DataElement dataElement=dataElements.get(0);
+        DataElement dataElement = dataElements.get(0);
         Assertions.assertEquals(1.0, dataElement.getValue());
     }
 }

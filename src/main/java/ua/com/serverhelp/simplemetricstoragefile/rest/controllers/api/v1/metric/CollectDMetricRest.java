@@ -15,6 +15,7 @@ import java.time.Instant;
 public class CollectDMetricRest {
     @Autowired
     private MemoryMetricsQueue memoryMetricsQueue;
+
     /*
 {
   "values":[0,0],
@@ -44,12 +45,12 @@ public class CollectDMetricRest {
     public ResponseEntity<String> receiveData(
             @RequestHeader("X-Project") String proj,
             @RequestBody String data
-    ){
-        JSONArray jsonArray=new JSONArray(data);
-        String host="";
+    ) {
+        JSONArray jsonArray = new JSONArray(data);
+        String host = "";
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject value = jsonArray.getJSONObject(i);
-            Instant timestamp=Instant.now(); //Instant.ofEpochSecond ((long) (value.getDouble("time"))); //TODO release diff
+            Instant timestamp = Instant.now(); //Instant.ofEpochSecond ((long) (value.getDouble("time"))); //TODO release diff
             host = value.getString("host");
             String plugin = value.getString("plugin");
 
@@ -62,20 +63,20 @@ public class CollectDMetricRest {
             String path = "collectd." + proj + "." + host + "." + plugin;
 
             for (int j = 0; j < dsnames.length(); j++) {
-                JSONObject parameters=new JSONObject();
-                if(!pluginInstance.isEmpty()){
+                JSONObject parameters = new JSONObject();
+                if (!pluginInstance.isEmpty()) {
                     parameters.put("instance", pluginInstance);
                 }
-                if(!type.isEmpty()){
+                if (!type.isEmpty()) {
                     parameters.put("type", type);
                 }
-                if(!typeInstance.isEmpty()){
+                if (!typeInstance.isEmpty()) {
                     parameters.put("type_instance", typeInstance);
                 }
                 parameters.put("ds_name", dsnames.getString(j));
                 parameters.put("ds_type", dstypes.getString(j));
-                Double dobValue= values.getDouble(j);
-                Event event=new Event(path,parameters.toString(), timestamp.getEpochSecond(), dobValue);
+                Double dobValue = values.getDouble(j);
+                Event event = new Event(path, parameters.toString(), timestamp.getEpochSecond(), dobValue);
                 memoryMetricsQueue.putEvent(event);
             }
         }

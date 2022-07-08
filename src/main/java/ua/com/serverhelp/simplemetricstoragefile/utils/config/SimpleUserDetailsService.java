@@ -20,9 +20,9 @@ public class SimpleUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<User> user=userRepository.findByUsername(s);
-        if(user.isEmpty()){
-            throw new UsernameNotFoundException("SimpleUserDetailsService::loadUserByUsername User "+s+" not found");
+        Optional<User> user = userRepository.findByUsername(s);
+        if (user.isEmpty()) {
+            throw new UsernameNotFoundException("SimpleUserDetailsService::loadUserByUsername User " + s + " not found");
         }
         return new SimpleUserDetails(user.get());
     }

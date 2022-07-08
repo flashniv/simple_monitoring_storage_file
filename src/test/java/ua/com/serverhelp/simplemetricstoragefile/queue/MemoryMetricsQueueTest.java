@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
+import ua.com.serverhelp.simplemetricstoragefile.entities.metric.Metric;
+import ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup.ParameterGroup;
+import ua.com.serverhelp.simplemetricstoragefile.storage.MetricRepository;
+import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepository;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,20 +18,31 @@ import java.util.Map;
 class MemoryMetricsQueueTest {
     @Autowired
     private MemoryMetricsQueue memoryMetricsQueue;
+    @Autowired
+    private MetricRepository metricRepository;
+    @Autowired
+    private ParameterGroupRepository parameterGroupRepository;
 
     @Test
     void getFormattedEvents() {
-        memoryMetricsQueue.putEvent(new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond(), 0.001));
-        Map<String, List<DataElement>> map=memoryMetricsQueue.getFormattedEvents();
+        for (int i = 0; i < 100; i++) {
+            memoryMetricsQueue.putEvent(new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond() + i, 0.001 * i));
+        }
+        Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         Assertions.assertEquals(1, map.size());
 
-        List<DataElement> dataElements=map.get("test.stage.db.booleanitem1{}");
+        List<DataElement> dataElements = map.get("test.stage.db.booleanitem1{}");
         Assertions.assertNotNull(dataElements);
-        Assertions.assertEquals(1, dataElements.size());
+        Assertions.assertEquals(100, dataElements.size());
 
-        DataElement dataElement=dataElements.get(0);
+        DataElement dataElement = dataElements.get(1);
         Assertions.assertEquals(0.001, dataElement.getValue());
 
+        List<Metric> metrics = metricRepository.findAll();
+        Assertions.assertEquals(1, metrics.size());
+
+        List<ParameterGroup> parameterGroups = parameterGroupRepository.findAll();
+        Assertions.assertEquals(1, parameterGroups.size());
     }
 
 }

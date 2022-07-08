@@ -25,11 +25,11 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        Role role=new Role();
+        Role role = new Role();
         role.setName("Administrator");
         roleRepository.save(role);
 
-        User user=new User();
+        User user = new User();
         user.setUsername("test_user");
         user.setRoles(List.of(role));
         userRepository.save(user);
@@ -38,9 +38,9 @@ class UserRepositoryTest {
     @Test
     void findByUsername() {
         for (int i = 0; i < 100; i++) {
-            Optional<User> optionalUser=userRepository.findByUsername("test_user");
+            Optional<User> optionalUser = userRepository.findByUsername("test_user");
             Assertions.assertTrue(optionalUser.isPresent());
-            List<Role> roles=optionalUser.get().getRoles();
+            List<Role> roles = optionalUser.get().getRoles();
             Assertions.assertEquals(1, roles.size());
         }
     }

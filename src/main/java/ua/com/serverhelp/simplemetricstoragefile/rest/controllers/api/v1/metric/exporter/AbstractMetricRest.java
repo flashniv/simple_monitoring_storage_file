@@ -17,24 +17,24 @@ public abstract class AbstractMetricRest {
     @Autowired
     private MemoryMetricsQueue memoryMetricsQueue;
     @Getter
-    private final ConcurrentLinkedQueue<String> inputQueue=new ConcurrentLinkedQueue<>();
-    private final Pattern replaceE=Pattern.compile("(.*[0-9]e) ([0-9]+)$");
-    private final Pattern parametersSplitToGroup=Pattern.compile("(.*)=\"(.*)\"");
+    private final ConcurrentLinkedQueue<String> inputQueue = new ConcurrentLinkedQueue<>();
+    private final Pattern replaceE = Pattern.compile("(.*[0-9]e) ([0-9]+)$");
+    private final Pattern parametersSplitToGroup = Pattern.compile("(.*)=\"(.*)\"");
 
-    private String parseParameterGroup(String part) throws IllegalStateException,IndexOutOfBoundsException{
-        JSONObject json=new JSONObject();
-        String[] parameters=part.split(",");
-        for(String parameter:parameters){
-            Matcher matcher=parametersSplitToGroup.matcher(parameter);
-            if(matcher.matches()){
+    private String parseParameterGroup(String part) throws IllegalStateException, IndexOutOfBoundsException {
+        JSONObject json = new JSONObject();
+        String[] parameters = part.split(",");
+        for (String parameter : parameters) {
+            Matcher matcher = parametersSplitToGroup.matcher(parameter);
+            if (matcher.matches()) {
                 json.put(matcher.group(1), matcher.group(2));
             }
         }
         return json.toString();
     }
 
-    public void processItems(){
-        while (!inputQueue.isEmpty()){
+    public void processItems() {
+        while (!inputQueue.isEmpty()) {
             processItem(inputQueue.poll());
         }
     }
@@ -42,14 +42,14 @@ public abstract class AbstractMetricRest {
     private void processItem(String input) throws IllegalStateException, IndexOutOfBoundsException, NumberFormatException {
         input = input.replace("\r", "");
         input = replaceE.matcher(input).replaceFirst("$1+$2");
-        if(input.contains("{")) {
+        if (input.contains("{")) {
             input = input.replace('{', ';').replace("} ", ";");
-        }else{
+        } else {
             input = input.replace(" ", ";;");
         }
-        String[] parts=input.split(";");
+        String[] parts = input.split(";");
         //create response container
-        Event event=new Event(parts[1], parseParameterGroup(parts[2]), Instant.parse(parts[0]).getEpochSecond(), Double.parseDouble(parts[3]));
+        Event event = new Event(parts[1], parseParameterGroup(parts[2]), Instant.parse(parts[0]).getEpochSecond(), Double.parseDouble(parts[3]));
         memoryMetricsQueue.putEvent(event);
     }
 }

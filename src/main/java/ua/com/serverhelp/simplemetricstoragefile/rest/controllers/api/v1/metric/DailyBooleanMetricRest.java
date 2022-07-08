@@ -18,14 +18,14 @@ public class DailyBooleanMetricRest {
 
     @GetMapping("/")
     @ResponseBody
-    public ResponseEntity<String> getAddEvent(@RequestParam String path, @RequestParam(defaultValue = "true") Boolean value){
-        double val=0;
-        if(value){
-            val=1;
+    public ResponseEntity<String> getAddEvent(@RequestParam String path, @RequestParam(defaultValue = "true") Boolean value) {
+        double val = 0;
+        if (value) {
+            val = 1;
         }
 
         memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), val));
-        log.debug("DailyBooleanMetricRest::getAddEvent /api/v1/metric/dailyboolean Event add:"+value);
+        log.debug("DailyBooleanMetricRest::getAddEvent /api/v1/metric/dailyboolean Event add:" + value);
 
         return ResponseEntity.ok().body("Success");
     }

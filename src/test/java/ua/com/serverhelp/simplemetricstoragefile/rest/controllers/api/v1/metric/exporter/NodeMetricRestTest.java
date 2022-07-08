@@ -33,14 +33,14 @@ class NodeMetricRestTest {
     @Test
     void receiveData() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream fileInput= classLoader.getResourceAsStream("metrics.bin");
+        InputStream fileInput = classLoader.getResourceAsStream("metrics.bin");
         Assertions.assertNotNull(fileInput);
-        byte[] metrics=fileInput.readAllBytes();
+        byte[] metrics = fileInput.readAllBytes();
 
         mockMvc.perform(MockMvcRequestBuilders.post("/apiv1/metric/exporter/node/")
-                        .header("X-Project", "testproj")
-                        .header("X-Hostname", "debian")
-                        .content(metrics)
+                                .header("X-Project", "testproj")
+                                .header("X-Hostname", "debian")
+                                .content(metrics)
                         //.contentType(MediaType.ALL_VALUE)
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -49,14 +49,14 @@ class NodeMetricRestTest {
 
         nodeMetricRest.processItems();
 
-        Map<String, List<DataElement>> map=memoryMetricsQueue.getFormattedEvents();
+        Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         Assertions.assertEquals(1087, map.size());
 
-        List<DataElement> dataElements=map.get("exporter.testproj.debian.node.schedstat_waiting_seconds_total{\"cpu\":\"1\"}");
+        List<DataElement> dataElements = map.get("exporter.testproj.debian.node.schedstat_waiting_seconds_total{\"cpu\":\"1\"}");
         Assertions.assertNotNull(dataElements);
         Assertions.assertEquals(1, dataElements.size());
 
-        DataElement dataElement=dataElements.get(0);
+        DataElement dataElement = dataElements.get(0);
         Assertions.assertEquals(0.402071695, dataElement.getValue());
     }
 }
