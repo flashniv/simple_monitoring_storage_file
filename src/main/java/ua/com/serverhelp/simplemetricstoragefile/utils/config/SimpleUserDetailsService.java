@@ -10,6 +10,8 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.account.SimpleUserDeta
 import ua.com.serverhelp.simplemetricstoragefile.entities.account.User;
 import ua.com.serverhelp.simplemetricstoragefile.storage.UserRepository;
 
+import java.util.Optional;
+
 @Service
 public class SimpleUserDetailsService implements UserDetailsService {
     @Autowired
@@ -18,10 +20,10 @@ public class SimpleUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user=userRepository.findByUsername(s);
-        if(user==null){
+        Optional<User> user=userRepository.findByUsername(s);
+        if(user.isEmpty()){
             throw new UsernameNotFoundException("SimpleUserDetailsService::loadUserByUsername User "+s+" not found");
         }
-        return new SimpleUserDetails(user);
+        return new SimpleUserDetails(user.get());
     }
 }
