@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -14,6 +15,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
+import ua.com.serverhelp.simplemetricstoragefile.storage.MetricRepository;
+import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +30,16 @@ class BooleanMetricRestTest {
     private MockMvc mockMvc;
     @Autowired
     private MemoryMetricsQueue memoryMetricsQueue;
+    @Autowired
+    private ParameterGroupRepository parameterGroupRepository;
+    @Autowired
+    private MetricRepository metricRepository;
+
+    @AfterEach
+    void tearDown() {
+        parameterGroupRepository.deleteAll();
+        metricRepository.deleteAll();
+    }
 
     @Test
     void getAddEvent() throws Exception {

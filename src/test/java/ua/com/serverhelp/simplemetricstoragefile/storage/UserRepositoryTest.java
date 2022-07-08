@@ -3,8 +3,8 @@ package ua.com.serverhelp.simplemetricstoragefile.storage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.account.Role;
 import ua.com.serverhelp.simplemetricstoragefile.entities.account.User;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
