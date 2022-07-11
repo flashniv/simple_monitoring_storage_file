@@ -17,9 +17,9 @@ public class Trigger {
     private String name;
 
     @Type(type = "text")
-    private String description="";
+    private String description = "";
 
-    private Boolean enabled=true;
+    private Boolean enabled = true;
 
     @Column(nullable = false)
     @Type(type = "text")

@@ -9,13 +9,13 @@ import org.json.JSONObject;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConstantDoubleResult implements Expression<Double> {
+public class ConstantDoubleExpression implements Expression<Double> {
     private Double value;
 
     @Override
     public JSONObject getJSON() {
-        JSONObject res=new JSONObject();
-        JSONObject params=new JSONObject();
+        JSONObject res = new JSONObject();
+        JSONObject params = new JSONObject();
 
         params.put("value", value);
 
@@ -32,7 +32,7 @@ public class ConstantDoubleResult implements Expression<Double> {
 
     @Override
     public void initialize(String parametersJson) throws JSONException {
-        JSONObject parameters=new JSONObject(parametersJson);
-        value= parameters.getDouble("value");
+        JSONObject parameters = new JSONObject(parametersJson);
+        value = parameters.getDouble("value");
     }
 }
