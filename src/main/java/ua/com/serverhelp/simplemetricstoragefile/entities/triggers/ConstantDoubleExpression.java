@@ -31,8 +31,12 @@ public class ConstantDoubleExpression implements Expression<Double> {
     }
 
     @Override
-    public void initialize(String parametersJson) throws JSONException {
-        JSONObject parameters = new JSONObject(parametersJson);
-        value = parameters.getDouble("value");
+    public void initialize(String parametersJson) throws ExpressionException {
+        try {
+            JSONObject parameters = new JSONObject(parametersJson);
+            value = parameters.getDouble("value");
+        } catch (JSONException e) {
+            throw new ExpressionException("JSON decode error", e);
+        }
     }
 }

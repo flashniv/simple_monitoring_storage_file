@@ -51,7 +51,7 @@ class FileDriverTest {
 
 
         Assertions.assertDoesNotThrow(() -> {
-            List<DataElement> dataElements1 = fileDriver.readFile(metric);
+            List<DataElement> dataElements1 = fileDriver.readMetric(metric);
             Assertions.assertEquals(dataElements, dataElements1);
         });
 

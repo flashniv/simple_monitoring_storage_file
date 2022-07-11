@@ -11,7 +11,7 @@ class ConstantDoubleExpressionTest {
     }
 
     @Test
-    void getNewInstanceByJSON() {
+    void getNewInstanceByJSON() throws ExpressionException {
         ConstantDoubleExpression constantDoubleExpression = new ConstantDoubleExpression();
         constantDoubleExpression.initialize("{\"value\":10.323123}");
         Assertions.assertEquals(10.323123, constantDoubleExpression.getValue());

@@ -5,7 +5,7 @@ import org.json.JSONObject;
 public interface Expression<T> {
     JSONObject getJSON();
 
-    T getValue();
+    T getValue() throws ExpressionException;
 
     void initialize(String parametersJson) throws ExpressionException;
 }

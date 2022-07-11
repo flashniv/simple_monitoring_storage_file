@@ -31,7 +31,7 @@ public class LessThanDoubleExpression implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean getValue() {
+    public Boolean getValue() throws ExpressionException {
         return arg1.getValue() < arg2.getValue();
     }
 

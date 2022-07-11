@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.filedriver;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class FileDriver {
+    @Setter
     @Value("${metric-storage.metrics-directory}")
     private String dirName;
 
@@ -43,7 +45,7 @@ public class FileDriver {
         log.debug("FileDriver::writeMetric Metric " + metricName + " was write. Events=" + dataElements.size());
     }
 
-    public List<DataElement> readFile(String metricName) throws IOException, ClassNotFoundException {
+    public List<DataElement> readMetric(String metricName) throws IOException, ClassNotFoundException {
         String metricMD5 = DigestUtils.md5DigestAsHex(metricName.getBytes());
         String fileName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4) + "/" + metricMD5 + "_" + getPeriod();
         List<DataElement> dataElements = new ArrayList<>();
@@ -62,7 +64,7 @@ public class FileDriver {
 
             dataElements.add(dataElement);
         }
-        log.debug("FileDriver::readFile Metric " + metricName + " was read. " + i + " values");
+        log.debug("FileDriver::readMetric Metric " + metricName + " was read. " + i + " values");
         dis.close();
         return dataElements;
     }
