@@ -6,7 +6,6 @@ public interface Expression<T> {
     JSONObject getJSON();
 
     /**
-     *
      * @return For type Boolean: "true" if trigger status is ok or "false" if failed
      * @throws ExpressionException throw if any of Expressions in recurse can not get value
      */

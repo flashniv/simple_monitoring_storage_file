@@ -32,7 +32,7 @@ public class BooleanMetricRest {
 
         memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), val));
 
-        createTriggerIfNotExist(path,"{}");
+        createTriggerIfNotExist(path, "{}");
 
         log.debug("BooleanMetricRest::getAddEvent /api/v1/metric/boolean Event add:" + value);
 
@@ -40,15 +40,15 @@ public class BooleanMetricRest {
     }
 
     private void createTriggerIfNotExist(String path, String params) {
-        String id=DigestUtils.md5DigestAsHex((path+params).getBytes());
-        Optional<Trigger> optionalTrigger=triggerRepository.findById(id);
-        if (optionalTrigger.isEmpty()){
-            Trigger trigger=new Trigger();
+        String id = DigestUtils.md5DigestAsHex((path + params).getBytes());
+        Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
+        if (optionalTrigger.isEmpty()) {
+            Trigger trigger = new Trigger();
 
             trigger.setId(id);
-            trigger.setName("Boolean trigger "+path);
+            trigger.setName("Boolean trigger " + path);
             trigger.setDescription("Check last value to true or false");
-            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.LessThanDoubleExpression\",\"parameters\":{\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", path,params));
+            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.LessThanDoubleExpression\",\"parameters\":{\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", path, params));
 
             triggerRepository.save(trigger);
         }

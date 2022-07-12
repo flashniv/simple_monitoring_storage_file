@@ -18,6 +18,7 @@ import java.util.Properties;
 public class ReadLastValueOfMetricExpression implements Expression<Double> {
     private String metricName;
     private String parameterGroup;
+
     @Override
     public JSONObject getJSON() {
         JSONObject res = new JSONObject();
@@ -35,24 +36,24 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
     @Override
     public Double getValue() throws ExpressionException {
         try {
-            InputStream inputStream=this.getClass().getClassLoader().getResourceAsStream("application.properties");
-            Properties properties=new Properties();
+            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("application.properties");
+            Properties properties = new Properties();
 
             properties.load(inputStream);
 
-            String metricsDirectory=properties.getProperty("metric-storage.metrics-directory");
+            String metricsDirectory = properties.getProperty("metric-storage.metrics-directory");
 
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            List<DataElement> dataElements=fileDriver.readMetric(metricName+parameterGroup);
-            if (!dataElements.isEmpty()){
-                DataElement dataElement=dataElements.get(dataElements.size()-1);
+            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup);
+            if (!dataElements.isEmpty()) {
+                DataElement dataElement = dataElements.get(dataElements.size() - 1);
                 return dataElement.getValue();
             }
             throw new ExpressionException("Metric not have any values", new Exception());
-        }catch (Exception e){
-            throw new ExpressionException("Load metric "+metricName+" error",e);
+        } catch (Exception e) {
+            throw new ExpressionException("Load metric " + metricName + " error", e);
         }
     }
 
@@ -62,7 +63,7 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
             JSONObject parameters = new JSONObject(parametersJson);
             metricName = parameters.getString("metricName");
             parameterGroup = parameters.getString("parameterGroup");
-        }catch (JSONException e){
+        } catch (JSONException e) {
             throw new ExpressionException("JSON decode error", e);
         }
     }

@@ -4,12 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter.NodeMetricRest;
+import ua.com.serverhelp.simplemetricstoragefile.storage.TriggerRepository;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +26,8 @@ public class Cron {
     private FileDriver fileDriver;
     @Autowired
     private NodeMetricRest nodeMetricRest;
+    @Autowired
+    private TriggerRepository triggerRepository;
 
     @Scheduled(initialDelay = 60000, fixedDelay = 60000)
     public void storeMetrics() {
@@ -39,5 +45,46 @@ public class Cron {
     @Scheduled(fixedDelay = 10000)
     public void processNodeMetrics() {
         nodeMetricRest.processItems();
+    }
+
+    @Scheduled(initialDelay = 120000, fixedDelay = 60000)
+    public void checkTriggers() {
+        List<Trigger> triggers = triggerRepository.findAll();
+        for (Trigger trigger : triggers) {
+            if (!trigger.getEnabled()) continue;
+            boolean modified = false;
+
+            try {
+                Boolean status = trigger.checkTrigger();
+                switch (trigger.getLastStatus()) {
+                    case UNCHECKED:
+                    case ERROR:
+                        trigger.setLastStatus(status ? TriggerStatus.OK : TriggerStatus.FAILED);
+                        modified = true;
+                        break;
+                    case OK:
+                        if (!status) {
+                            trigger.setLastStatus(TriggerStatus.FAILED);
+                            modified = true;
+                        }
+                        break;
+                    case FAILED:
+                        if (status) {
+                            trigger.setLastStatus(TriggerStatus.OK);
+                            modified = true;
+                        }
+                        break;
+                }
+            } catch (Exception e) {
+                log.error("Trigger check error", e);
+                trigger.setLastStatus(TriggerStatus.ERROR);
+                modified = true;
+            }
+            if (modified) {
+                trigger.setLastStatusUpdate(Instant.now());
+                triggerRepository.save(trigger); //TODO change to save all
+            }
+        }
+        log.info("Triggers checked");
     }
 }

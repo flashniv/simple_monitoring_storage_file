@@ -70,6 +70,6 @@ class BooleanMetricRestTest {
         Optional<Trigger> optionalTrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("test.stage.db.booleanitem1{}".getBytes()));
         Assertions.assertTrue(optionalTrigger.isPresent());
         Trigger trigger=optionalTrigger.get();
-
+        System.out.println(trigger.getConf());
     }
 }
