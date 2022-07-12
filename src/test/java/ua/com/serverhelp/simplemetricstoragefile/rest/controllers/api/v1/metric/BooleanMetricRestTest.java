@@ -13,13 +13,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.DigestUtils;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.storage.MetricRepository;
 import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepository;
+import ua.com.serverhelp.simplemetricstoragefile.storage.TriggerRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,6 +36,8 @@ class BooleanMetricRestTest {
     private MemoryMetricsQueue memoryMetricsQueue;
     @Autowired
     private ParameterGroupRepository parameterGroupRepository;
+    @Autowired
+    private TriggerRepository triggerRepository;
     @Autowired
     private MetricRepository metricRepository;
 
@@ -60,5 +66,10 @@ class BooleanMetricRestTest {
 
         DataElement dataElement = dataElements.get(0);
         Assertions.assertEquals(1.0, dataElement.getValue());
+
+        Optional<Trigger> optionalTrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("test.stage.db.booleanitem1{}".getBytes()));
+        Assertions.assertTrue(optionalTrigger.isPresent());
+        Trigger trigger=optionalTrigger.get();
+
     }
 }

@@ -2,7 +2,6 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
 
 import lombok.Data;
 import org.hibernate.annotations.Type;
-import org.springframework.util.DigestUtils;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -28,8 +27,4 @@ public class Trigger {
     @Column(nullable = false)
     @Type(type = "text")
     private String conf;
-
-    public void setIdFromString(String triggerId){
-        setId(DigestUtils.md5DigestAsHex(triggerId.getBytes()));
-    }
 }
