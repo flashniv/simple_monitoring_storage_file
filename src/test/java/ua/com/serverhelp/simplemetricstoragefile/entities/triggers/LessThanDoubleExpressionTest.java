@@ -49,4 +49,16 @@ class LessThanDoubleExpressionTest {
 
         Assertions.assertTrue(lessThanDoubleExpression.getValue());
     }
+
+    @Test
+    void getJSONForBoolean() throws Exception{
+        LessThanDoubleExpression lessThanDoubleExpression = new LessThanDoubleExpression();
+        Expression<Double> arg1 = new ConstantDoubleExpression(0.5);
+        Expression<Double> arg2 = new ReadLastValueOfMetricExpression("test.stage.db.booleanitem1","{}");
+
+        lessThanDoubleExpression.setArg1(arg1);
+        lessThanDoubleExpression.setArg2(arg2);
+
+        System.out.println(lessThanDoubleExpression.getJSON());
+    }
 }
