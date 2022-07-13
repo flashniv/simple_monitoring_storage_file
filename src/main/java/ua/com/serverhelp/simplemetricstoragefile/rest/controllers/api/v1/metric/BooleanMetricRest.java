@@ -25,15 +25,8 @@ public class BooleanMetricRest {
     @GetMapping("/")
     @ResponseBody
     public ResponseEntity<String> getAddEvent(@RequestParam String path, @RequestParam(defaultValue = "true") Boolean value) {
-        double val = 0;
-        if (value) {
-            val = 1;
-        }
-
-        memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), val));
-
+        memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), (value ? 1.0 : 0.0)));
         createTriggerIfNotExist(path, "{}");
-
         log.debug("BooleanMetricRest::getAddEvent /api/v1/metric/boolean Event add:" + value);
 
         return ResponseEntity.ok().body("Success");
@@ -46,7 +39,7 @@ public class BooleanMetricRest {
             Trigger trigger = new Trigger();
 
             trigger.setId(id);
-            trigger.setName("Boolean trigger " + path);
+            trigger.setName("Boolean trigger " + path + " receive false");
             trigger.setDescription("Check last value to true or false");
             trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.LessThanDoubleExpression\",\"parameters\":{\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", path, params));
 
