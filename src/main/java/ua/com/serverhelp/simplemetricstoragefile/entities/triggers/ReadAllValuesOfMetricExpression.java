@@ -15,7 +15,7 @@ import java.util.Properties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadLastValueOfMetricExpression implements Expression<Double> {
+public class ReadAllValuesOfMetricExpression implements Expression<List<DataElement>>{
     private String metricName;
     private String parameterGroup;
 
@@ -34,7 +34,7 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
     }
 
     @Override
-    public Double getValue() throws ExpressionException {
+    public List<DataElement> getValue() throws ExpressionException {
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("application.properties");
             Properties properties = new Properties();
@@ -46,12 +46,7 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup);
-            if (!dataElements.isEmpty()) {
-                DataElement dataElement = dataElements.get(dataElements.size() - 1);
-                return dataElement.getValue();
-            }
-            throw new ExpressionException("Metric not have any values", new Exception());
+            return fileDriver.readMetric(metricName + parameterGroup);
         } catch (Exception e) {
             throw new ExpressionException("Load metric " + metricName + parameterGroup + " error", e);
         }

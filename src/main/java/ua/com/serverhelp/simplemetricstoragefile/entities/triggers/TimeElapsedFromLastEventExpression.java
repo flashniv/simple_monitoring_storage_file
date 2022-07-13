@@ -5,15 +5,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
+import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LessThanDoubleExpression implements Expression<Boolean> {
-    private Expression<Double> arg1;
-    private Expression<Double> arg2;
+public class TimeElapsedFromLastEventExpression implements Expression<Long>{
+    private Expression<List<DataElement>> arg1;
 
     @Override
     public JSONObject getJSON() {
@@ -21,7 +24,6 @@ public class LessThanDoubleExpression implements Expression<Boolean> {
         JSONObject params = new JSONObject();
 
         params.put("arg1", arg1.getJSON());
-        params.put("arg2", arg2.getJSON());
 
         res.put("class", this.getClass().getName());
         res.put("parameters", params);
@@ -30,8 +32,16 @@ public class LessThanDoubleExpression implements Expression<Boolean> {
     }
 
     @Override
-    public Boolean getValue() throws ExpressionException {
-        return arg1.getValue() < arg2.getValue();
+    public Long getValue() throws ExpressionException {
+        List<DataElement> dataElements=arg1.getValue();
+
+        if(dataElements.isEmpty()) throw new ExpressionException("Metric data is empty",new Exception());
+
+        DataElement dataElement=dataElements.get(dataElements.size()-1);
+        Instant dataTime=Instant.ofEpochSecond(dataElement.getTimestamp());
+        Duration duration=Duration.between(dataTime,Instant.now());
+
+        return duration.getSeconds();
     }
 
     @Override
@@ -39,22 +49,17 @@ public class LessThanDoubleExpression implements Expression<Boolean> {
         try {
             JSONObject parameters = new JSONObject(parametersJson);
             JSONObject arg1Json = parameters.getJSONObject("arg1");
-            JSONObject arg2Json = parameters.getJSONObject("arg2");
 
             Class<?> arg1Class = Class.forName(arg1Json.getString("class"));
-            Expression<Double> arg1 = (Expression<Double>) arg1Class.getConstructor().newInstance();
+            Expression<List<DataElement>> arg1 = (Expression<List<DataElement>>) arg1Class.getConstructor().newInstance();
             arg1.initialize(arg1Json.getJSONObject("parameters").toString());
             setArg1(arg1);
-
-            Class<?> arg2Class = Class.forName(arg2Json.getString("class"));
-            Expression<Double> arg2 = (Expression<Double>) arg2Class.getConstructor().newInstance();
-            arg2.initialize(arg2Json.getJSONObject("parameters").toString());
-            setArg2(arg2);
         } catch (JSONException e) {
             throw new ExpressionException("JSON decode error", e);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException |
                  IllegalAccessException e) {
             throw new ExpressionException("Class load error", e);
         }
+
     }
 }
