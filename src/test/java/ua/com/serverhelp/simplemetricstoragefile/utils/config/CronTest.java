@@ -58,7 +58,7 @@ class CronTest {
 
         trigger.setId(id);
         trigger.setName("Test trigger");
-        trigger.setConf("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.LessThanDoubleExpression\",\"parameters\":{\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"test.stage.db.booleanitem1\",\"parameterGroup\":\"{}\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}");
+        trigger.setConf("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"test.stage.db.booleanitem1\",\"parameterGroup\":\"{}\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}");
 
         triggerRepository.save(trigger);
         //check new trigger state

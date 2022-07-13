@@ -7,13 +7,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LessThanDoubleExpression implements Expression<Boolean> {
+public class CompareDoubleExpression implements Expression<Boolean> {
     private Expression<Double> arg1;
     private Expression<Double> arg2;
+    private String operation;
 
     @Override
     public JSONObject getJSON() {
@@ -22,6 +24,7 @@ public class LessThanDoubleExpression implements Expression<Boolean> {
 
         params.put("arg1", arg1.getJSON());
         params.put("arg2", arg2.getJSON());
+        params.put("operation", operation);
 
         res.put("class", this.getClass().getName());
         res.put("parameters", params);
@@ -31,7 +34,23 @@ public class LessThanDoubleExpression implements Expression<Boolean> {
 
     @Override
     public Boolean getValue() throws ExpressionException {
-        return arg1.getValue() < arg2.getValue();
+        if (operation==null) throw new ExpressionException("Operation is null", new Exception());
+        switch (operation){
+            case "<":
+                return arg1.getValue() < arg2.getValue();
+            case ">":
+                return arg1.getValue() > arg2.getValue();
+            case "<=":
+                return arg1.getValue() <= arg2.getValue();
+            case ">=":
+                return arg1.getValue() >= arg2.getValue();
+            case "==":
+                return Objects.equals(arg1.getValue(), arg2.getValue());
+            case "!=":
+                return !Objects.equals(arg1.getValue(), arg2.getValue());
+            default:
+                throw new ExpressionException("Operation is invalid", new Exception());
+        }
     }
 
     @Override
@@ -40,6 +59,7 @@ public class LessThanDoubleExpression implements Expression<Boolean> {
             JSONObject parameters = new JSONObject(parametersJson);
             JSONObject arg1Json = parameters.getJSONObject("arg1");
             JSONObject arg2Json = parameters.getJSONObject("arg2");
+            operation=parameters.getString("operation");
 
             Class<?> arg1Class = Class.forName(arg1Json.getString("class"));
             Expression<Double> arg1 = (Expression<Double>) arg1Class.getConstructor().newInstance();

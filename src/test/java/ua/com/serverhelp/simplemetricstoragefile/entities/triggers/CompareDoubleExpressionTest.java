@@ -3,42 +3,44 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class LessThanDoubleExpressionTest {
+class CompareDoubleExpressionTest {
 
     @Test
     void getJSON() throws ExpressionException {
-        LessThanDoubleExpression lessThanDoubleExpression = new LessThanDoubleExpression();
+        CompareDoubleExpression compareDoubleExpression = new CompareDoubleExpression();
         Expression<Double> arg1 = new ConstantDoubleExpression();
         Expression<Double> arg2 = new ConstantDoubleExpression();
 
         arg1.initialize("{\"value\":10.323123}");
         arg2.initialize("{\"value\":10.324123}");
 
-        lessThanDoubleExpression.setArg1(arg1);
-        lessThanDoubleExpression.setArg2(arg2);
+        compareDoubleExpression.setArg1(arg1);
+        compareDoubleExpression.setArg2(arg2);
 
-        System.out.println(lessThanDoubleExpression.getJSON());
+        System.out.println(compareDoubleExpression.getJSON());
     }
 
     @Test
     void getValue() throws ExpressionException {
-        LessThanDoubleExpression lessThanDoubleExpression = new LessThanDoubleExpression();
+        CompareDoubleExpression compareDoubleExpression = new CompareDoubleExpression();
+        compareDoubleExpression.setOperation("<");
         Expression<Double> arg1 = new ConstantDoubleExpression();
         Expression<Double> arg2 = new ConstantDoubleExpression();
 
         arg1.initialize("{\"value\":10.323123}");
         arg2.initialize("{\"value\":10.324123}");
 
-        lessThanDoubleExpression.setArg1(arg1);
-        lessThanDoubleExpression.setArg2(arg2);
-        Assertions.assertTrue(lessThanDoubleExpression.getValue());
+        compareDoubleExpression.setArg1(arg1);
+        compareDoubleExpression.setArg2(arg2);
+        Assertions.assertTrue(compareDoubleExpression.getValue());
     }
 
     @Test
     void getNewInstanceByJSON() throws ExpressionException {
-        LessThanDoubleExpression lessThanDoubleExpression = new LessThanDoubleExpression();
+        CompareDoubleExpression compareDoubleExpression = new CompareDoubleExpression();
 
-        lessThanDoubleExpression.initialize("{" +
+        compareDoubleExpression.initialize("{" +
+                "\"operation\":\"<\"," +
                 "\"arg2\":{" +
                 "\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\"," +
                 "\"parameters\":{\"value\":10.324123}}," +
@@ -47,18 +49,19 @@ class LessThanDoubleExpressionTest {
                 "\"parameters\":{\"value\":10.323123}}" +
                 "}");
 
-        Assertions.assertTrue(lessThanDoubleExpression.getValue());
+        Assertions.assertTrue(compareDoubleExpression.getValue());
     }
 
     @Test
     void getJSONForBoolean() throws Exception{
-        LessThanDoubleExpression lessThanDoubleExpression = new LessThanDoubleExpression();
+        CompareDoubleExpression compareDoubleExpression = new CompareDoubleExpression();
+        compareDoubleExpression.setOperation("<");
         Expression<Double> arg1 = new ConstantDoubleExpression(0.5);
         Expression<Double> arg2 = new ReadLastValueOfMetricExpression("test.stage.db.booleanitem1","{}");
 
-        lessThanDoubleExpression.setArg1(arg1);
-        lessThanDoubleExpression.setArg2(arg2);
+        compareDoubleExpression.setArg1(arg1);
+        compareDoubleExpression.setArg2(arg2);
 
-        System.out.println(lessThanDoubleExpression.getJSON());
+        System.out.println(compareDoubleExpression.getJSON());
     }
 }
