@@ -8,6 +8,7 @@ class CompareDoubleExpressionTest {
     @Test
     void getJSON() throws ExpressionException {
         CompareDoubleExpression compareDoubleExpression = new CompareDoubleExpression();
+        compareDoubleExpression.setOperation("<");
         Expression<Double> arg1 = new ConstantDoubleExpression();
         Expression<Double> arg2 = new ConstantDoubleExpression();
 

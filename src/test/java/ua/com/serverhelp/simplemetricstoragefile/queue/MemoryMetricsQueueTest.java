@@ -35,12 +35,12 @@ class MemoryMetricsQueueTest {
     @Test
     void getFormattedEvents() {
         for (int i = 0; i < 100; i++) {
-            memoryMetricsQueue.putEvent(new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond() + i, 0.001 * i));
+            memoryMetricsQueue.putEvent(new Event("test.stage.db.booleanitem11", "{}", Instant.now().getEpochSecond() + i, 0.001 * i));
         }
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         Assertions.assertEquals(1, map.size());
 
-        List<DataElement> dataElements = map.get("test.stage.db.booleanitem1{}");
+        List<DataElement> dataElements = map.get("test.stage.db.booleanitem11{}");
         Assertions.assertNotNull(dataElements);
         Assertions.assertEquals(100, dataElements.size());
 

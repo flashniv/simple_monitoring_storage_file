@@ -78,7 +78,7 @@ class TimeElapsedFromLastEventExpressionTest {
         ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression=new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}");
         TimeElapsedFromLastEventExpression timeElapsedFromLastEventExpression=new TimeElapsedFromLastEventExpression(readAllValuesOfMetricExpression);
 
-        Long dur=timeElapsedFromLastEventExpression.getValue();
+        Double dur=timeElapsedFromLastEventExpression.getValue();
         Assertions.assertTrue(dur>0);
     }
 
