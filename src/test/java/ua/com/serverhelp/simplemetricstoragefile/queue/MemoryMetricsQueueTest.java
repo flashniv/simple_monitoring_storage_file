@@ -1,36 +1,17 @@
 package ua.com.serverhelp.simplemetricstoragefile.queue;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 import ua.com.serverhelp.simplemetricstoragefile.entities.metric.Metric;
 import ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup.ParameterGroup;
-import ua.com.serverhelp.simplemetricstoragefile.storage.MetricRepository;
-import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepository;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-@SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class MemoryMetricsQueueTest {
-    @Autowired
-    private MemoryMetricsQueue memoryMetricsQueue;
-    @Autowired
-    private MetricRepository metricRepository;
-    @Autowired
-    private ParameterGroupRepository parameterGroupRepository;
-
-    @AfterEach
-    void tearDown() {
-        parameterGroupRepository.deleteAll();
-        metricRepository.deleteAll();
-    }
+class MemoryMetricsQueueTest extends AbstractTest {
 
     @Test
     void getFormattedEvents() {

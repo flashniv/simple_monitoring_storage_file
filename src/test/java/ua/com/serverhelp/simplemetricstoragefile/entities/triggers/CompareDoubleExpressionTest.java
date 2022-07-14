@@ -2,8 +2,9 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 
-class CompareDoubleExpressionTest {
+class CompareDoubleExpressionTest extends AbstractTest {
 
     @Test
     void getJSON() throws ExpressionException {
@@ -54,11 +55,11 @@ class CompareDoubleExpressionTest {
     }
 
     @Test
-    void getJSONForBoolean() throws Exception{
+    void getJSONForBoolean() throws Exception {
         CompareDoubleExpression compareDoubleExpression = new CompareDoubleExpression();
         compareDoubleExpression.setOperation("<");
         Expression<Double> arg1 = new ConstantDoubleExpression(0.5);
-        Expression<Double> arg2 = new ReadLastValueOfMetricExpression("test.stage.db.booleanitem1","{}");
+        Expression<Double> arg2 = new ReadLastValueOfMetricExpression("test.stage.db.booleanitem1", "{}");
 
         compareDoubleExpression.setArg1(arg1);
         compareDoubleExpression.setArg2(arg2);

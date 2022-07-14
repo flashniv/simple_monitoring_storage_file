@@ -3,28 +3,16 @@ package ua.com.serverhelp.simplemetricstoragefile.storage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.account.Role;
 import ua.com.serverhelp.simplemetricstoragefile.entities.account.User;
-import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 
 import java.util.List;
 import java.util.Optional;
 
-@SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserRepositoryTest {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private FileDriver fileDriver;
-
+class UserRepositoryTest extends AbstractTest {
     @BeforeEach
-    void setUp() {
+    void setUp2() {
         Role role = new Role();
         role.setName("Administrator");
         roleRepository.save(role);
@@ -37,6 +25,7 @@ class UserRepositoryTest {
 
     @Test
     void findByUsername() {
+        //setUp2();
         for (int i = 0; i < 100; i++) {
             Optional<User> optionalUser = userRepository.findByUsername("test_user");
             Assertions.assertTrue(optionalUser.isPresent());

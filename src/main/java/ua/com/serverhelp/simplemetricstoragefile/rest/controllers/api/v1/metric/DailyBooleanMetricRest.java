@@ -53,11 +53,33 @@ public class DailyBooleanMetricRest {
             trigger.setId(idDaily);
             trigger.setName("Data not receive 24h on " + path + params);
             trigger.setDescription("Check last value timestamp for 24h age");
-            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.CompareDoubleExpression\",\"parameters\":{\n" +
-                    "\"operation\":\"<\",\n" +
-                    "\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":86400.0}}," +
-                    "\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TimeElapsedFromLastEventExpression\",\"parameters\":{\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadAllValuesOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}}}}\n" +
-                    "}}", path, params));
+            trigger.setConf(String.format("{\n" +
+                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.CompareDoubleExpression\",\n" +
+                    "  \"parameters\":{\n" +
+                    "    \"operation\":\"<\",\n" +
+                    "    \"arg1\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.MathDoubleExpression\",\n" +
+                    "      \"parameters\":{\n" +
+                    "        \"arg1\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TimestampDoubleExpression\",\n" +
+                    "          \"parameters\":{}\n" +
+                    "        },\n" +
+                    "        \"arg2\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadAllValuesOfMetricExpression\",\n" +
+                    "          \"parameters\":{\n" +
+                    "            \"metricName\":\"%s\",\n" +
+                    "            \"parameterGroup\":\"%s\"\n" +
+                    "          }\n" +
+                    "        },\n" +
+                    "        \"operation\":\"+\"\n" +
+                    "      }\n" +
+                    "    },\n" +
+                    "    \"arg2\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\n" +
+                    "      \"parameters\":{\"value\":86400.0}\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}\n", path, params));
 
             triggerRepository.save(trigger);
         }
