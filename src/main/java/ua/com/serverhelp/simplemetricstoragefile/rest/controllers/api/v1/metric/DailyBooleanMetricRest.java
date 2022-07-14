@@ -32,7 +32,7 @@ public class DailyBooleanMetricRest {
         return ResponseEntity.ok().body("Success");
     }
 
-    private void createTriggerIfNotExist(String path, String params) { //TODO Add Daily trigger
+    private void createTriggerIfNotExist(String path, String params) {
         String id = DigestUtils.md5DigestAsHex((path + params).getBytes());
         Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
         if (optionalTrigger.isEmpty()) {
@@ -65,13 +65,13 @@ public class DailyBooleanMetricRest {
                     "          \"parameters\":{}\n" +
                     "        },\n" +
                     "        \"arg2\":{\n" +
-                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadAllValuesOfMetricExpression\",\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastTimestampOfMetricExpression\",\n" +
                     "          \"parameters\":{\n" +
                     "            \"metricName\":\"%s\",\n" +
                     "            \"parameterGroup\":\"%s\"\n" +
                     "          }\n" +
                     "        },\n" +
-                    "        \"operation\":\"+\"\n" +
+                    "        \"operation\":\"-\"\n" +
                     "      }\n" +
                     "    },\n" +
                     "    \"arg2\":{\n" +
