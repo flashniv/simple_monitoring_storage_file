@@ -52,4 +52,22 @@ public abstract class AbstractMetricRest {
         Event event = new Event(parts[1], parseParameterGroup(parts[2]), Instant.parse(parts[0]).getEpochSecond(), Double.parseDouble(parts[3]));
         memoryMetricsQueue.putEvent(event);
     }
+
+    protected boolean isInvalidValidMetric(String input){
+        if (input.charAt(0)=='#') {
+            return true;
+        }
+        String[] allowedMetrics=getAllowedMetrics();
+        for (String metricRegexp:allowedMetrics){
+            if(input.matches(metricRegexp)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected String[] getAllowedMetrics(){
+        return new String[]{".*"};
+    }
 }

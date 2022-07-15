@@ -23,7 +23,7 @@ public class NodeMetricRest extends AbstractMetricRest {
         String[] inputs = inputData.split("\n");
 
         for (String input : inputs) {
-            if (stringChecker(input)) continue;
+            if (isInvalidValidMetric(input)) continue;
             try {
                 getInputQueue().add(timestamp + ";exporter." + proj + "." + hostname + ".node." + input.replace("node_", ""));
             } catch (NumberFormatException e) {
@@ -37,9 +37,23 @@ public class NodeMetricRest extends AbstractMetricRest {
 
         return ResponseEntity.ok().body("Success");
     }
-
-    private boolean stringChecker(String input) {
-        return input.charAt(0) == '#';
+    @Override
+    protected String[] getAllowedMetrics() {
+        return new String[]{
+                ".*node_load1.*",
+                ".*node_load5.*",
+                ".*node_load15.*",
+                ".*node_memory_MemAvailable_bytes.*",
+                ".*node_memory_MemTotal_bytes.*",
+                ".*node_cpu_seconds_total.*",
+                ".*node_filesystem_avail_bytes.*",
+                ".*node_filesystem_size_bytes.*",
+                ".*node_filesystem_files.*",
+                ".*node_vmstat_pswp.*",
+                ".*node_memory_Swap.*",
+                ".*node_network_transmit_bytes_total.*",
+                ".*node_network_receive_bytes_total.*"
+        };
     }
 
 }

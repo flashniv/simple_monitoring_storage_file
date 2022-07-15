@@ -44,13 +44,13 @@ class NodeMetricRestTest extends AbstractTest {
         nodeMetricRest.processItems();
 
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
-        Assertions.assertEquals(1087, map.size());
+        Assertions.assertEquals(54, map.size());
 
-        List<DataElement> dataElements = map.get("exporter.testproj.debian.node.schedstat_waiting_seconds_total{\"cpu\":\"1\"}");
+        List<DataElement> dataElements = map.get("exporter.testproj.debian.node.cpu_seconds_total{\"mode\":\"user\",\"cpu\":\"3\"}");
         Assertions.assertNotNull(dataElements);
         Assertions.assertEquals(1, dataElements.size());
 
         DataElement dataElement = dataElements.get(0);
-        Assertions.assertEquals(0.402071695, dataElement.getValue());
+        Assertions.assertEquals(0.45, dataElement.getValue());
     }
 }
