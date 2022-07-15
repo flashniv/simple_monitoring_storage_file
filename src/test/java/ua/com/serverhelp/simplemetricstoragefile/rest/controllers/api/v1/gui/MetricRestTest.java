@@ -46,6 +46,6 @@ class MetricRestTest extends AbstractTest {
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").value("1"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").isNumber());
     }
 }
