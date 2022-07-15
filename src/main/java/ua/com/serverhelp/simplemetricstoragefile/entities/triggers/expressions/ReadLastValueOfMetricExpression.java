@@ -1,4 +1,4 @@
-package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
+package ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.Properties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadAllValuesOfMetricExpression implements Expression<List<DataElement>>{
+public class ReadLastValueOfMetricExpression implements Expression<Double> {
     private String metricName;
     private String parameterGroup;
 
@@ -34,7 +34,7 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
     }
 
     @Override
-    public List<DataElement> getValue() throws ExpressionException {
+    public Double getValue() throws ExpressionException {
         try {
             InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("application.properties");
             Properties properties = new Properties();
@@ -46,7 +46,12 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            return fileDriver.readMetric(metricName + parameterGroup);
+            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup);
+            if (!dataElements.isEmpty()) {
+                DataElement dataElement = dataElements.get(dataElements.size() - 1);
+                return dataElement.getValue();
+            }
+            throw new ExpressionException("Metric not have any values", new Exception());
         } catch (Exception e) {
             throw new ExpressionException("Load metric " + metricName + parameterGroup + " error", e);
         }

@@ -3,6 +3,8 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.MathDoubleExpression;
 
 class MathDoubleExpressionTest extends AbstractTest {
 
@@ -22,7 +24,7 @@ class MathDoubleExpressionTest extends AbstractTest {
     void initialize() throws Exception {
         MathDoubleExpression mathDoubleExpression = new MathDoubleExpression();
 
-        mathDoubleExpression.initialize("{\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":2}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":1}},\"operation\":\"+\"}\n");
+        mathDoubleExpression.initialize("{\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":2}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":1}},\"operation\":\"+\"}\n");
         Assertions.assertEquals(3.0, mathDoubleExpression.getValue());
     }
 }

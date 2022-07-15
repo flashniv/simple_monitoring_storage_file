@@ -1,4 +1,4 @@
-package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
+package ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,11 +7,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MathDoubleExpression implements Expression<Double>{
+public class CompareDoubleExpression implements Expression<Boolean> {
     private Expression<Double> arg1;
     private Expression<Double> arg2;
     private String operation;
@@ -32,23 +33,21 @@ public class MathDoubleExpression implements Expression<Double>{
     }
 
     @Override
-    public Double getValue() throws ExpressionException {
+    public Boolean getValue() throws ExpressionException {
         if (operation==null) throw new ExpressionException("Operation is null", new Exception());
         switch (operation){
-            case "+":
-                return arg1.getValue() + arg2.getValue();
-            case "-":
-                return arg1.getValue() - arg2.getValue();
-            case "*":
-                return arg1.getValue() * arg2.getValue();
-            case "/":
-                return arg1.getValue() / arg2.getValue();
-            case "^":
-                return Math.pow(arg1.getValue(), arg2.getValue());
-            case "max":
-                return Math.max(arg1.getValue(), arg2.getValue());
-            case "min":
-                return Math.min(arg1.getValue(), arg2.getValue());
+            case "<":
+                return arg1.getValue() < arg2.getValue();
+            case ">":
+                return arg1.getValue() > arg2.getValue();
+            case "<=":
+                return arg1.getValue() <= arg2.getValue();
+            case ">=":
+                return arg1.getValue() >= arg2.getValue();
+            case "==":
+                return Objects.equals(arg1.getValue(), arg2.getValue());
+            case "!=":
+                return !Objects.equals(arg1.getValue(), arg2.getValue());
             default:
                 throw new ExpressionException("Operation is invalid", new Exception());
         }

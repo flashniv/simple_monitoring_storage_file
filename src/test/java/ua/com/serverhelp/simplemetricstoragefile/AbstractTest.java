@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public abstract class AbstractTest {
 
     @BeforeEach
     public void setUp() {
+        File file = new File(dirName);
+        deleteDirectory(file);
+        parameterGroupRepository.deleteAll();
+        metricRepository.deleteAll();
+        triggerRepository.deleteAll();
+    }
+    @AfterEach
+    public void tearDown() {
         File file = new File(dirName);
         deleteDirectory(file);
         parameterGroupRepository.deleteAll();

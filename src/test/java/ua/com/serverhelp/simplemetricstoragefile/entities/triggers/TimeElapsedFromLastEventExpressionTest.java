@@ -5,6 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.Expression;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ExpressionException;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadAllValuesOfMetricExpression;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.TimeElapsedFromLastEventExpression;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.IOException;
@@ -48,7 +52,7 @@ class TimeElapsedFromLastEventExpressionTest extends AbstractTest {
     @Test
     void initialize() throws ExpressionException {
         TimeElapsedFromLastEventExpression timeElapsedFromLastEventExpression = new TimeElapsedFromLastEventExpression();
-        timeElapsedFromLastEventExpression.initialize("{\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadAllValuesOfMetricExpression\",\"parameters\":{\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}}}");
+        timeElapsedFromLastEventExpression.initialize("{\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadAllValuesOfMetricExpression\",\"parameters\":{\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}}}");
 
         Expression<List<DataElement>> arg1 = timeElapsedFromLastEventExpression.getArg1();
         Assertions.assertNotNull(arg1);

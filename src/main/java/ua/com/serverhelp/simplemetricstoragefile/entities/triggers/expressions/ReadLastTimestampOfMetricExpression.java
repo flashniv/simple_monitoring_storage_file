@@ -1,4 +1,4 @@
-package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
+package ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.Properties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadLastValueOfMetricExpression implements Expression<Double> {
+public class ReadLastTimestampOfMetricExpression implements Expression<Double> {
     private String metricName;
     private String parameterGroup;
 
@@ -49,7 +49,7 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
             List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup);
             if (!dataElements.isEmpty()) {
                 DataElement dataElement = dataElements.get(dataElements.size() - 1);
-                return dataElement.getValue();
+                return (double)dataElement.getTimestamp();
             }
             throw new ExpressionException("Metric not have any values", new Exception());
         } catch (Exception e) {

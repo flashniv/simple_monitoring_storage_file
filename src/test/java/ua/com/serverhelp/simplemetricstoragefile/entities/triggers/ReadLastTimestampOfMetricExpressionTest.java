@@ -5,14 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ExpressionException;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastTimestampOfMetricExpression;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ReadLastTimestampOfMetricExpressionTest extends AbstractTest {
     @BeforeEach

@@ -41,7 +41,7 @@ public class DailyBooleanMetricRest {
             trigger.setId(id);
             trigger.setName("Boolean trigger " + path + params + " receive false");
             trigger.setDescription("Check last value to true or false");
-            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", path, params));
+            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", path, params));
 
             triggerRepository.save(trigger);
         }
@@ -54,18 +54,18 @@ public class DailyBooleanMetricRest {
             trigger.setName("Data not receive 24h on " + path + params);
             trigger.setDescription("Check last value timestamp for 24h age");
             trigger.setConf(String.format("{\n" +
-                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.CompareDoubleExpression\",\n" +
+                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
                     "  \"parameters\":{\n" +
                     "    \"operation\":\"<\",\n" +
                     "    \"arg1\":{\n" +
-                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.MathDoubleExpression\",\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.MathDoubleExpression\",\n" +
                     "      \"parameters\":{\n" +
                     "        \"arg1\":{\n" +
-                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TimestampDoubleExpression\",\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.TimestampDoubleExpression\",\n" +
                     "          \"parameters\":{}\n" +
                     "        },\n" +
                     "        \"arg2\":{\n" +
-                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastTimestampOfMetricExpression\",\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastTimestampOfMetricExpression\",\n" +
                     "          \"parameters\":{\n" +
                     "            \"metricName\":\"%s\",\n" +
                     "            \"parameterGroup\":\"%s\"\n" +
@@ -75,7 +75,7 @@ public class DailyBooleanMetricRest {
                     "      }\n" +
                     "    },\n" +
                     "    \"arg2\":{\n" +
-                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\",\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
                     "      \"parameters\":{\"value\":86400.0}\n" +
                     "    }\n" +
                     "  }\n" +

@@ -3,6 +3,7 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.*;
 
 class CompareDoubleExpressionTest extends AbstractTest {
 
@@ -44,10 +45,10 @@ class CompareDoubleExpressionTest extends AbstractTest {
         compareDoubleExpression.initialize("{" +
                 "\"operation\":\"<\"," +
                 "\"arg2\":{" +
-                "\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\"," +
+                "\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\"," +
                 "\"parameters\":{\"value\":10.324123}}," +
                 "\"arg1\":{" +
-                "\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression\"," +
+                "\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\"," +
                 "\"parameters\":{\"value\":10.323123}}" +
                 "}");
 

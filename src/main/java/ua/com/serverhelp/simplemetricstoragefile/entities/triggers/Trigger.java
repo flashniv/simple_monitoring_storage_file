@@ -3,6 +3,8 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.json.JSONObject;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.Expression;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ExpressionException;
 
 import javax.persistence.*;
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +32,7 @@ public class Trigger {
     @Type(type = "text")
     private String conf;
 
-    //{"class":"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.LessThanDoubleExpression","parameters":{"arg2":{"class":"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ReadLastValueOfMetricExpression","parameters":{"metricName":"test.stage.db.booleanitem1","parameterGroup":"{}"}},"arg1":{"class":"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.ConstantDoubleExpression","parameters":{"value":0.5}}}}
+    //{"class":"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.LessThanDoubleExpression","parameters":{"arg2":{"class":"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression","parameters":{"metricName":"test.stage.db.booleanitem1","parameterGroup":"{}"}},"arg1":{"class":"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression","parameters":{"value":0.5}}}}
     public Boolean checkTrigger() throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, ClassCastException, ExpressionException {
         JSONObject confJson = new JSONObject(conf);
 

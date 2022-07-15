@@ -1,4 +1,4 @@
-package ua.com.serverhelp.simplemetricstoragefile.entities.triggers;
+package ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
