@@ -34,4 +34,18 @@ class MetricRestTest extends AbstractTest {
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.content().string("[{\"path\":\"exporter.testproj.debian.node.filesystem_avail_bytes\"}]"));
     }
+
+    @Test
+    void getParameterGroupsByMetric() throws Exception{
+        memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.getFormattedEvents();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/metric/exporter.testproj.debian.node.filesystem_avail_bytes/parameterGroups")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").value("1"));
+    }
 }

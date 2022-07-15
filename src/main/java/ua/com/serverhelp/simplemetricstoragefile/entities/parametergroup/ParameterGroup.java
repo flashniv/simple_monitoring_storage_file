@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,20 +13,15 @@ import java.util.HashMap;
 
 @Entity
 @ToString
+@Data
 public class ParameterGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    @Getter
-    @Setter
     private Long id;
     @ManyToOne(optional = false)
     @JoinColumn(name = "metric_id")
-    @Getter
-    @Setter
     private Metric metric;
-    @Getter
-    @Setter
     @Type(type = "text")
     private String json = "{}";
 
