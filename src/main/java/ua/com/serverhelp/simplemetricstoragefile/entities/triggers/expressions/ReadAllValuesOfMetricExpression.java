@@ -8,9 +8,7 @@ import org.json.JSONObject;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +16,7 @@ import java.util.Properties;
 public class ReadAllValuesOfMetricExpression implements Expression<List<DataElement>> {
     private String metricName;
     private String parameterGroup;
+    private String metricsDirectory;
 
     @Override
     public JSONObject getJSON() {
@@ -26,6 +25,7 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
 
         params.put("metricName", metricName);
         params.put("parameterGroup", parameterGroup);
+        params.put("metricsDirectory", metricsDirectory);
 
         res.put("class", this.getClass().getName());
         res.put("parameters", params);
@@ -36,13 +36,6 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
     @Override
     public List<DataElement> getValue() throws ExpressionException {
         try {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("application.properties");
-            Properties properties = new Properties();
-
-            properties.load(inputStream);
-
-            String metricsDirectory = properties.getProperty("metric-storage.metrics-directory");
-
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
@@ -58,6 +51,7 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
             JSONObject parameters = new JSONObject(parametersJson);
             metricName = parameters.getString("metricName");
             parameterGroup = parameters.getString("parameterGroup");
+            metricsDirectory = parameters.getString("metricsDirectory");
         } catch (JSONException e) {
             throw new ExpressionException("JSON decode error", e);
         }

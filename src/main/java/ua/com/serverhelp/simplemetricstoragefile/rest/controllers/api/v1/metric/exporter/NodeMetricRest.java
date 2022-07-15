@@ -1,6 +1,7 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriority;
@@ -13,6 +14,9 @@ import java.time.Instant;
 @RestController
 @RequestMapping("/apiv1/metric/exporter/node")
 public class NodeMetricRest extends AbstractMetricRest {
+    @Value("${metric-storage.metrics-directory}")
+    private String dirName;
+
     @PostMapping("/")
     public ResponseEntity<String> receiveData(
             @RequestHeader("X-Project") String proj,
@@ -49,6 +53,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "    \"arg1\":{\n" +
                     "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
                     "          \"parameters\":{\n" +
+                    "            \"metricsDirectory\":\"%s\"," +
                     "            \"metricName\":\"%s\",\n" +
                     "            \"parameterGroup\":\"%s\"\n" +
                     "          }\n" +
@@ -58,7 +63,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":5.0}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n", path, params);
+                    "}\n",dirName, path, params);
             processTrigger(path, params, "Load average too high on " + path, "Load avg 15 greater than 5", TriggerPriority.HIGH, triggerJson);
             String triggerJson2 = String.format("{\n" +
                     "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
@@ -74,6 +79,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "        \"arg2\":{\n" +
                     "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastTimestampOfMetricExpression\",\n" +
                     "          \"parameters\":{\n" +
+                    "            \"metricsDirectory\":\"%s\"," +
                     "            \"metricName\":\"%s\",\n" +
                     "            \"parameterGroup\":\"%s\"\n" +
                     "          }\n" +
@@ -86,7 +92,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":900.0}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n", path, params);
+                    "}\n",dirName, path, params);
             processTrigger(path + "15min", params, "Not receive data 15 min on " + path, "Load avg 15 not received 15 min", TriggerPriority.HIGH, triggerJson2);
         }
         if (path.matches("exporter.*.node.filesystem_size_bytes")) {
@@ -100,6 +106,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "        \"arg1\":{\n" +
                     "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
                     "          \"parameters\":{\n" +
+                    "            \"metricsDirectory\":\"%s\"," +
                     "            \"metricName\":\"%s\",\n" +
                     "            \"parameterGroup\":\"%s\"\n" +
                     "          }\n" +
@@ -107,6 +114,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "        \"arg2\":{\n" +
                     "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
                     "          \"parameters\":{\n" +
+                    "            \"metricsDirectory\":\"%s\"," +
                     "            \"metricName\":\"%s\",\n" +
                     "            \"parameterGroup\":\"%s\"\n" +
                     "          }\n" +
@@ -119,7 +127,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":0.15}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n", path.replace("filesystem_size_bytes", "filesystem_avail_bytes"), params.replace("\"", "\\\""), path, params.replace("\"", "\\\""));
+                    "}\n", dirName, path.replace("filesystem_size_bytes", "filesystem_avail_bytes"), params.replace("\"", "\\\""),dirName, path, params.replace("\"", "\\\""));
             processTrigger(path, params, "Free disk space less than 15% on " + path.replace(".filesystem_size_bytes", "") + params, "Free disk space too low", TriggerPriority.HIGH, triggerJson);
         }
     }

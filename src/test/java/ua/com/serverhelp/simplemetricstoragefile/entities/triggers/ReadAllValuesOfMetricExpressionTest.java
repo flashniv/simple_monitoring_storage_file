@@ -32,14 +32,14 @@ class ReadAllValuesOfMetricExpressionTest extends AbstractTest {
 
     @Test
     void getJSON() {
-        ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression = new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}");
+        ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression = new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}",dirName);
         System.out.println(readAllValuesOfMetricExpression.getJSON());
     }
 
     @Test
     void getValue() throws Exception {
         ReadAllValuesOfMetricExpression readAllValueOfMetricExpression = new ReadAllValuesOfMetricExpression();
-        readAllValueOfMetricExpression.initialize("{\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
+        readAllValueOfMetricExpression.initialize("{\"metricsDirectory\":\""+dirName+"\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
         List<DataElement> dataElements = readAllValueOfMetricExpression.getValue();
 
         Assertions.assertNotNull(dataElements);
@@ -49,7 +49,7 @@ class ReadAllValuesOfMetricExpressionTest extends AbstractTest {
     @Test
     void initialize() throws Exception {
         ReadAllValuesOfMetricExpression readAllValueOfMetricExpression = new ReadAllValuesOfMetricExpression();
-        readAllValueOfMetricExpression.initialize("{\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
+        readAllValueOfMetricExpression.initialize("{\"metricsDirectory\":\""+dirName+"\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
         Assertions.assertNotNull(readAllValueOfMetricExpression.getMetricName());
         Assertions.assertNotNull(readAllValueOfMetricExpression.getParameterGroup());
     }

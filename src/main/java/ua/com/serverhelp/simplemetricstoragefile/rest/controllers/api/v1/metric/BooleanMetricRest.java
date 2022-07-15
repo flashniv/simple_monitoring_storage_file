@@ -2,6 +2,7 @@ package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,8 @@ public class BooleanMetricRest {
     private MemoryMetricsQueue memoryMetricsQueue;
     @Autowired
     private TriggerRepository triggerRepository;
+    @Value("${metric-storage.metrics-directory}")
+    private String dirName;
 
     @GetMapping("/")
     @ResponseBody
@@ -43,7 +46,7 @@ public class BooleanMetricRest {
             trigger.setName("Boolean trigger " + path + " receive false");
             trigger.setDescription("Check last value to true or false");
             trigger.setPriority(TriggerPriority.HIGH);
-            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", path, params));
+            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"%s\",\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}",dirName, path, params));
 
             triggerRepository.save(trigger);
         }

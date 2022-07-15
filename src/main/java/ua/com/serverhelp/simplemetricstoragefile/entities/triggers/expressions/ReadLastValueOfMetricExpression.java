@@ -18,6 +18,7 @@ import java.util.Properties;
 public class ReadLastValueOfMetricExpression implements Expression<Double> {
     private String metricName;
     private String parameterGroup;
+    private String metricsDirectory;
 
     @Override
     public JSONObject getJSON() {
@@ -26,6 +27,7 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
 
         params.put("metricName", metricName);
         params.put("parameterGroup", parameterGroup);
+        params.put("metricsDirectory", metricsDirectory);
 
         res.put("class", this.getClass().getName());
         res.put("parameters", params);
@@ -36,13 +38,6 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
     @Override
     public Double getValue() throws ExpressionException {
         try {
-            InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("application.properties");
-            Properties properties = new Properties();
-
-            properties.load(inputStream);
-
-            String metricsDirectory = properties.getProperty("metric-storage.metrics-directory");
-
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
@@ -63,6 +58,7 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
             JSONObject parameters = new JSONObject(parametersJson);
             metricName = parameters.getString("metricName");
             parameterGroup = parameters.getString("parameterGroup");
+            metricsDirectory = parameters.getString("metricsDirectory");
         } catch (JSONException e) {
             throw new ExpressionException("JSON decode error", e);
         }
