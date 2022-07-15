@@ -53,6 +53,7 @@ public abstract class AbstractTest {
         metricRepository.deleteAll();
         triggerRepository.deleteAll();
     }
+
     @AfterEach
     public void tearDown() {
         File file = new File(dirName);

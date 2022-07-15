@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.DigestUtils;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
-import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
@@ -31,7 +30,7 @@ class NodeMetricRestTest extends AbstractTest {
     private NodeMetricRest nodeMetricRest;
 
     @BeforeEach
-    void setUp2() throws Exception{
+    void setUp2() throws Exception {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream fileInput = classLoader.getResourceAsStream("metrics.bin");
         Assertions.assertNotNull(fileInput);
@@ -64,42 +63,43 @@ class NodeMetricRestTest extends AbstractTest {
     }
 
     @Test
-    void checkLATrigger() throws Exception{
+    void checkLATrigger() throws Exception {
         cron.storeMetrics();
 
-        Optional<Trigger> optionalLATrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.load15{}".getBytes()));
+        Optional<Trigger> optionalLATrigger = triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.load15{}".getBytes()));
         Assertions.assertTrue(optionalLATrigger.isPresent());
-        Trigger laTrigger=optionalLATrigger.get();
+        Trigger laTrigger = optionalLATrigger.get();
         Assertions.assertTrue(laTrigger.checkTrigger());
         //else
-        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}",List.of(new DataElement(Instant.now().getEpochSecond(),10.0)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}", List.of(new DataElement(Instant.now().getEpochSecond(), 10.0)));
         Assertions.assertFalse(laTrigger.checkTrigger());
     }
+
     @Test
-    void checkUnreachableTrigger() throws Exception{
-        Optional<Trigger> optionalLATrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.load1515min{}".getBytes()));
+    void checkUnreachableTrigger() throws Exception {
+        Optional<Trigger> optionalLATrigger = triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.load1515min{}".getBytes()));
         Assertions.assertTrue(optionalLATrigger.isPresent());
-        Trigger unreachableTrigger=optionalLATrigger.get();
-        Assertions.assertThrows(Exception.class,() -> unreachableTrigger.checkTrigger());
+        Trigger unreachableTrigger = optionalLATrigger.get();
+        Assertions.assertThrows(Exception.class, () -> unreachableTrigger.checkTrigger());
         //else
-        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}",List.of(new DataElement(Instant.now().getEpochSecond()-1000,1.0)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}", List.of(new DataElement(Instant.now().getEpochSecond() - 1000, 1.0)));
         Assertions.assertFalse(unreachableTrigger.checkTrigger());
-        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}",List.of(new DataElement(Instant.now().getEpochSecond()-100,2.0)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}", List.of(new DataElement(Instant.now().getEpochSecond() - 100, 2.0)));
         Assertions.assertTrue(unreachableTrigger.checkTrigger());
     }
 
     @Test
-    void checkDFTrigger() throws Exception{
-        Optional<Trigger> optionalDFTrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}".getBytes()));
+    void checkDFTrigger() throws Exception {
+        Optional<Trigger> optionalDFTrigger = triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}".getBytes()));
         Assertions.assertTrue(optionalDFTrigger.isPresent());
-        Trigger dfTrigger=optionalDFTrigger.get();
-        Assertions.assertThrows(Exception.class,() -> dfTrigger.checkTrigger());
+        Trigger dfTrigger = optionalDFTrigger.get();
+        Assertions.assertThrows(Exception.class, () -> dfTrigger.checkTrigger());
         //else
-        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.36576E8)));
-        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.32963328E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.32963328E8)));
         Assertions.assertTrue(dfTrigger.checkTrigger());
-        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.36576E8)));
-        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.36576E7)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E7)));
         Assertions.assertFalse(dfTrigger.checkTrigger());
     }
 }
