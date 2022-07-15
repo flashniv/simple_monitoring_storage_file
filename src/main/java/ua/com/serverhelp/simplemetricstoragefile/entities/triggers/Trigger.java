@@ -24,6 +24,8 @@ public class Trigger {
 
     @Enumerated(EnumType.STRING)
     private TriggerStatus lastStatus = TriggerStatus.UNCHECKED;
+    @Enumerated(EnumType.STRING)
+    private TriggerPriority priority = TriggerPriority.NOT_CLASSIFIED;
     private Instant lastStatusUpdate = Instant.now();
 
     private Boolean enabled = true;

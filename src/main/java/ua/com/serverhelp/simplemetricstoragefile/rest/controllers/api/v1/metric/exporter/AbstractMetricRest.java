@@ -4,10 +4,15 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriority;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
+import ua.com.serverhelp.simplemetricstoragefile.storage.TriggerRepository;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +21,8 @@ import java.util.regex.Pattern;
 public abstract class AbstractMetricRest {
     @Autowired
     private MemoryMetricsQueue memoryMetricsQueue;
+    @Autowired
+    protected TriggerRepository triggerRepository;
     @Getter
     private final ConcurrentLinkedQueue<String> inputQueue = new ConcurrentLinkedQueue<>();
     private final Pattern replaceE = Pattern.compile("(.*[0-9]e) ([0-9]+)$");
@@ -51,6 +58,26 @@ public abstract class AbstractMetricRest {
         //create response container
         Event event = new Event(parts[1], parseParameterGroup(parts[2]), Instant.parse(parts[0]).getEpochSecond(), Double.parseDouble(parts[3]));
         memoryMetricsQueue.putEvent(event);
+        createTriggerIfNotExist(parts[1],parseParameterGroup(parts[2]));
+    }
+
+    protected abstract void createTriggerIfNotExist(String path, String params);
+
+    protected void processTrigger(String path, String params, String triggerName, String triggerDescription, TriggerPriority triggerPriority, String triggerJson){
+        String id = DigestUtils.md5DigestAsHex((path + params).getBytes());
+        Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
+        if (optionalTrigger.isEmpty()) {
+            Trigger trigger = new Trigger();
+
+            trigger.setId(id);
+            trigger.setName(triggerName);
+            trigger.setDescription(triggerDescription);
+            trigger.setPriority(triggerPriority);
+            trigger.setConf(triggerJson);
+
+            triggerRepository.save(trigger);
+        }
+
     }
 
     protected boolean isInvalidValidMetric(String input){

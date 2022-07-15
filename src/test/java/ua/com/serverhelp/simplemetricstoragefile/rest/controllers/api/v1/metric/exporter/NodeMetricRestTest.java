@@ -1,6 +1,7 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,12 +10,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.DigestUtils;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"Metrics"})
@@ -24,8 +28,8 @@ class NodeMetricRestTest extends AbstractTest {
     @Autowired
     private NodeMetricRest nodeMetricRest;
 
-    @Test
-    void receiveData() throws Exception {
+    @BeforeEach
+    void setUp2() throws Exception{
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream fileInput = classLoader.getResourceAsStream("metrics.bin");
         Assertions.assertNotNull(fileInput);
@@ -42,7 +46,10 @@ class NodeMetricRestTest extends AbstractTest {
                 .andExpect(MockMvcResultMatchers.content().string("Success"));
 
         nodeMetricRest.processItems();
+    }
 
+    @Test
+    void receiveData() throws Exception {
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         Assertions.assertEquals(54, map.size());
 
@@ -52,5 +59,15 @@ class NodeMetricRestTest extends AbstractTest {
 
         DataElement dataElement = dataElements.get(0);
         Assertions.assertEquals(0.45, dataElement.getValue());
+    }
+
+    @Test
+    void checkLATrigger() throws Exception{
+        cron.storeMetrics();
+
+        Optional<Trigger> optionalLATrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.load15{}".getBytes()));
+        Assertions.assertTrue(optionalLATrigger.isPresent());
+        Trigger laTrigger=optionalLATrigger.get();
+        Assertions.assertTrue(laTrigger.checkTrigger());
     }
 }

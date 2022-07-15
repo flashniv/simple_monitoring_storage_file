@@ -7,6 +7,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriority;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.storage.TriggerRepository;
 
@@ -41,6 +42,7 @@ public class BooleanMetricRest {
             trigger.setId(id);
             trigger.setName("Boolean trigger " + path + " receive false");
             trigger.setDescription("Check last value to true or false");
+            trigger.setPriority(TriggerPriority.HIGH);
             trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", path, params));
 
             triggerRepository.save(trigger);

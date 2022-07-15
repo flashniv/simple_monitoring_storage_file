@@ -3,6 +3,7 @@ package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriority;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -37,6 +38,32 @@ public class NodeMetricRest extends AbstractMetricRest {
 
         return ResponseEntity.ok().body("Success");
     }
+
+    @Override
+    protected void createTriggerIfNotExist(String path, String params) {
+        if(path.matches("exporter.*node.load15")) {
+            String triggerJson=String.format("{\n" +
+                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
+                    "  \"parameters\":{\n" +
+                    "    \"operation\":\"<\",\n" +
+                    "    \"arg1\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
+                    "          \"parameters\":{\n" +
+                    "            \"metricName\":\"%s\",\n" +
+                    "            \"parameterGroup\":\"%s\"\n" +
+                    "          }\n" +
+                    "      },\n" +
+                    "      \"arg2\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
+                    "      \"parameters\":{\"value\":5.0}\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}\n", path,params);
+            processTrigger(path, params, "Load average too high on "+path, "Load avg 15 greater than 5", TriggerPriority.HIGH, triggerJson);
+        }
+
+    }
+
     @Override
     protected String[] getAllowedMetrics() {
         return new String[]{
