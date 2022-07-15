@@ -58,12 +58,12 @@ public abstract class AbstractMetricRest {
         //create response container
         Event event = new Event(parts[1], parseParameterGroup(parts[2]), Instant.parse(parts[0]).getEpochSecond(), Double.parseDouble(parts[3]));
         memoryMetricsQueue.putEvent(event);
-        createTriggerIfNotExist(parts[1],parseParameterGroup(parts[2]));
+        createTriggerIfNotExist(parts[1], parseParameterGroup(parts[2]));
     }
 
     protected abstract void createTriggerIfNotExist(String path, String params);
 
-    protected void processTrigger(String path, String params, String triggerName, String triggerDescription, TriggerPriority triggerPriority, String triggerJson){
+    protected void processTrigger(String path, String params, String triggerName, String triggerDescription, TriggerPriority triggerPriority, String triggerJson) {
         String id = DigestUtils.md5DigestAsHex((path + params).getBytes());
         Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
         if (optionalTrigger.isEmpty()) {
@@ -80,13 +80,13 @@ public abstract class AbstractMetricRest {
 
     }
 
-    protected boolean isInvalidValidMetric(String input){
-        if (input.charAt(0)=='#') {
+    protected boolean isInvalidValidMetric(String input) {
+        if (input.charAt(0) == '#') {
             return true;
         }
-        String[] allowedMetrics=getAllowedMetrics();
-        for (String metricRegexp:allowedMetrics){
-            if(input.matches(metricRegexp)){
+        String[] allowedMetrics = getAllowedMetrics();
+        for (String metricRegexp : allowedMetrics) {
+            if (input.matches(metricRegexp)) {
                 return false;
             }
         }
@@ -94,7 +94,7 @@ public abstract class AbstractMetricRest {
         return true;
     }
 
-    protected String[] getAllowedMetrics(){
+    protected String[] getAllowedMetrics() {
         return new String[]{".*"};
     }
 }

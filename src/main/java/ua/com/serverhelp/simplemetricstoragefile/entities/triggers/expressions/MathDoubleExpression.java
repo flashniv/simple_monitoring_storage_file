@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MathDoubleExpression implements Expression<Double>{
+public class MathDoubleExpression implements Expression<Double> {
     private Expression<Double> arg1;
     private Expression<Double> arg2;
     private String operation;
@@ -33,8 +33,8 @@ public class MathDoubleExpression implements Expression<Double>{
 
     @Override
     public Double getValue() throws ExpressionException {
-        if (operation==null) throw new ExpressionException("Operation is null", new Exception());
-        switch (operation){
+        if (operation == null) throw new ExpressionException("Operation is null", new Exception());
+        switch (operation) {
             case "+":
                 return arg1.getValue() + arg2.getValue();
             case "-":
@@ -60,7 +60,7 @@ public class MathDoubleExpression implements Expression<Double>{
             JSONObject parameters = new JSONObject(parametersJson);
             JSONObject arg1Json = parameters.getJSONObject("arg1");
             JSONObject arg2Json = parameters.getJSONObject("arg2");
-            operation=parameters.getString("operation");
+            operation = parameters.getString("operation");
 
             Class<?> arg1Class = Class.forName(arg1Json.getString("class"));
             Expression<Double> arg1 = (Expression<Double>) arg1Class.getConstructor().newInstance();

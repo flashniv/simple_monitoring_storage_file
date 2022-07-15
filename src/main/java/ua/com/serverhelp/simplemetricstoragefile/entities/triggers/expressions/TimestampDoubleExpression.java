@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import java.time.Instant;
 
-public class TimestampDoubleExpression  implements Expression<Double>{
+public class TimestampDoubleExpression implements Expression<Double> {
     @Override
     public JSONObject getJSON() {
         JSONObject res = new JSONObject();
@@ -18,7 +18,7 @@ public class TimestampDoubleExpression  implements Expression<Double>{
 
     @Override
     public Double getValue() throws ExpressionException {
-        return (double)Instant.now().getEpochSecond();
+        return (double) Instant.now().getEpochSecond();
     }
 
     @Override

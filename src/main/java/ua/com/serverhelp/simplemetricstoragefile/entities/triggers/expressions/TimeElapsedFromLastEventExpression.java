@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Deprecated(forRemoval = true)
-public class TimeElapsedFromLastEventExpression implements Expression<Double>{
+public class TimeElapsedFromLastEventExpression implements Expression<Double> {
     private Expression<List<DataElement>> arg1;
 
     @Override
@@ -34,15 +34,15 @@ public class TimeElapsedFromLastEventExpression implements Expression<Double>{
 
     @Override
     public Double getValue() throws ExpressionException {
-        List<DataElement> dataElements=arg1.getValue();
+        List<DataElement> dataElements = arg1.getValue();
 
-        if(dataElements.isEmpty()) throw new ExpressionException("Metric data is empty",new Exception());
+        if (dataElements.isEmpty()) throw new ExpressionException("Metric data is empty", new Exception());
 
-        DataElement dataElement=dataElements.get(dataElements.size()-1);
-        Instant dataTime=Instant.ofEpochSecond(dataElement.getTimestamp());
-        Duration duration=Duration.between(dataTime,Instant.now());
+        DataElement dataElement = dataElements.get(dataElements.size() - 1);
+        Instant dataTime = Instant.ofEpochSecond(dataElement.getTimestamp());
+        Duration duration = Duration.between(dataTime, Instant.now());
 
-        return (double)duration.getSeconds();
+        return (double) duration.getSeconds();
     }
 
     @Override

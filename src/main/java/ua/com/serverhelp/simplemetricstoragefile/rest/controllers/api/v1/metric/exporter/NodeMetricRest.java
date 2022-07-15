@@ -41,8 +41,8 @@ public class NodeMetricRest extends AbstractMetricRest {
 
     @Override
     protected void createTriggerIfNotExist(String path, String params) {
-        if(path.matches("exporter.*node.load15")) {
-            String triggerJson=String.format("{\n" +
+        if (path.matches("exporter.*node.load15")) {
+            String triggerJson = String.format("{\n" +
                     "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
                     "  \"parameters\":{\n" +
                     "    \"operation\":\"<\",\n" +
@@ -58,9 +58,9 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":5.0}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n", path,params);
-            processTrigger(path, params, "Load average too high on "+path, "Load avg 15 greater than 5", TriggerPriority.HIGH, triggerJson);
-            String triggerJson2=String.format("{\n" +
+                    "}\n", path, params);
+            processTrigger(path, params, "Load average too high on " + path, "Load avg 15 greater than 5", TriggerPriority.HIGH, triggerJson);
+            String triggerJson2 = String.format("{\n" +
                     "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
                     "  \"parameters\":{\n" +
                     "    \"operation\":\"<\",\n" +
@@ -86,10 +86,42 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":900.0}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n", path,params);
-            processTrigger(path+"15min", params, "Not receive data 15 min on "+path, "Load avg 15 not received 15 min", TriggerPriority.HIGH, triggerJson2);
+                    "}\n", path, params);
+            processTrigger(path + "15min", params, "Not receive data 15 min on " + path, "Load avg 15 not received 15 min", TriggerPriority.HIGH, triggerJson2);
         }
-
+        if (path.matches("exporter.*.node.filesystem_size_bytes")) {
+            String triggerJson = String.format("{\n" +
+                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
+                    "  \"parameters\":{\n" +
+                    "    \"operation\":\">\",\n" +
+                    "    \"arg1\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.MathDoubleExpression\",\n" +
+                    "      \"parameters\":{\n" +
+                    "        \"arg1\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
+                    "          \"parameters\":{\n" +
+                    "            \"metricName\":\"%s\",\n" +
+                    "            \"parameterGroup\":\"%s\"\n" +
+                    "          }\n" +
+                    "        },\n" +
+                    "        \"arg2\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
+                    "          \"parameters\":{\n" +
+                    "            \"metricName\":\"%s\",\n" +
+                    "            \"parameterGroup\":\"%s\"\n" +
+                    "          }\n" +
+                    "        },\n" +
+                    "        \"operation\":\"/\"\n" +
+                    "      }\n" +
+                    "    },\n" +
+                    "    \"arg2\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
+                    "      \"parameters\":{\"value\":0.15}\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}\n", path.replace("filesystem_size_bytes", "filesystem_avail_bytes"), params.replace("\"", "\\\""), path, params.replace("\"", "\\\""));
+            processTrigger(path, params, "Free disk space less than 15% on " + path.replace(".filesystem_size_bytes", "") + params, "Free disk space too low", TriggerPriority.HIGH, triggerJson);
+        }
     }
 
     @Override

@@ -49,7 +49,7 @@ public class ReadLastTimestampOfMetricExpression implements Expression<Double> {
             List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup);
             if (!dataElements.isEmpty()) {
                 DataElement dataElement = dataElements.get(dataElements.size() - 1);
-                return (double)dataElement.getTimestamp();
+                return (double) dataElement.getTimestamp();
             }
             throw new ExpressionException("Metric not have any values", new Exception());
         } catch (Exception e) {

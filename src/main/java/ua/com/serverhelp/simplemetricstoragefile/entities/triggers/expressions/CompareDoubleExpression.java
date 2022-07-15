@@ -34,8 +34,8 @@ public class CompareDoubleExpression implements Expression<Boolean> {
 
     @Override
     public Boolean getValue() throws ExpressionException {
-        if (operation==null) throw new ExpressionException("Operation is null", new Exception());
-        switch (operation){
+        if (operation == null) throw new ExpressionException("Operation is null", new Exception());
+        switch (operation) {
             case "<":
                 return arg1.getValue() < arg2.getValue();
             case ">":
@@ -59,7 +59,7 @@ public class CompareDoubleExpression implements Expression<Boolean> {
             JSONObject parameters = new JSONObject(parametersJson);
             JSONObject arg1Json = parameters.getJSONObject("arg1");
             JSONObject arg2Json = parameters.getJSONObject("arg2");
-            operation=parameters.getString("operation");
+            operation = parameters.getString("operation");
 
             Class<?> arg1Class = Class.forName(arg1Json.getString("class"));
             Expression<Double> arg1 = (Expression<Double>) arg1Class.getConstructor().newInstance();

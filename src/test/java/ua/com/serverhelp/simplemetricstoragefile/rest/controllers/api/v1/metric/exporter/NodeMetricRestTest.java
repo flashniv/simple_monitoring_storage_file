@@ -88,4 +88,18 @@ class NodeMetricRestTest extends AbstractTest {
         Assertions.assertTrue(unreachableTrigger.checkTrigger());
     }
 
+    @Test
+    void checkDFTrigger() throws Exception{
+        Optional<Trigger> optionalDFTrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}".getBytes()));
+        Assertions.assertTrue(optionalDFTrigger.isPresent());
+        Trigger dfTrigger=optionalDFTrigger.get();
+        Assertions.assertThrows(Exception.class,() -> dfTrigger.checkTrigger());
+        //else
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.36576E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.32963328E8)));
+        Assertions.assertTrue(dfTrigger.checkTrigger());
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.36576E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}",List.of(new DataElement(Instant.now().getEpochSecond(),5.36576E7)));
+        Assertions.assertFalse(dfTrigger.checkTrigger());
+    }
 }

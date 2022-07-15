@@ -15,7 +15,7 @@ import java.util.Properties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadAllValuesOfMetricExpression implements Expression<List<DataElement>>{
+public class ReadAllValuesOfMetricExpression implements Expression<List<DataElement>> {
     private String metricName;
     private String parameterGroup;
 
