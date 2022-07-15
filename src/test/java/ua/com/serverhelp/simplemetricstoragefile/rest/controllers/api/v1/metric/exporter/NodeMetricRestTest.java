@@ -12,10 +12,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.DigestUtils;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
+import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,7 +51,7 @@ class NodeMetricRestTest extends AbstractTest {
     }
 
     @Test
-    void receiveData() throws Exception {
+    void receiveData() {
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         Assertions.assertEquals(54, map.size());
 
@@ -69,5 +71,21 @@ class NodeMetricRestTest extends AbstractTest {
         Assertions.assertTrue(optionalLATrigger.isPresent());
         Trigger laTrigger=optionalLATrigger.get();
         Assertions.assertTrue(laTrigger.checkTrigger());
+        //else
+        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}",List.of(new DataElement(Instant.now().getEpochSecond(),10.0)));
+        Assertions.assertFalse(laTrigger.checkTrigger());
     }
+    @Test
+    void checkUnreachableTrigger() throws Exception{
+        Optional<Trigger> optionalLATrigger=triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.load1515min{}".getBytes()));
+        Assertions.assertTrue(optionalLATrigger.isPresent());
+        Trigger unreachableTrigger=optionalLATrigger.get();
+        Assertions.assertThrows(Exception.class,() -> unreachableTrigger.checkTrigger());
+        //else
+        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}",List.of(new DataElement(Instant.now().getEpochSecond()-1000,1.0)));
+        Assertions.assertFalse(unreachableTrigger.checkTrigger());
+        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}",List.of(new DataElement(Instant.now().getEpochSecond()-100,2.0)));
+        Assertions.assertTrue(unreachableTrigger.checkTrigger());
+    }
+
 }

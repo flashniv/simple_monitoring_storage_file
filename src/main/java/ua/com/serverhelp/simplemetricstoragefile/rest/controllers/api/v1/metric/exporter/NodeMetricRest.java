@@ -60,6 +60,34 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "  }\n" +
                     "}\n", path,params);
             processTrigger(path, params, "Load average too high on "+path, "Load avg 15 greater than 5", TriggerPriority.HIGH, triggerJson);
+            String triggerJson2=String.format("{\n" +
+                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
+                    "  \"parameters\":{\n" +
+                    "    \"operation\":\"<\",\n" +
+                    "    \"arg1\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.MathDoubleExpression\",\n" +
+                    "      \"parameters\":{\n" +
+                    "        \"arg1\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.TimestampDoubleExpression\",\n" +
+                    "          \"parameters\":{}\n" +
+                    "        },\n" +
+                    "        \"arg2\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastTimestampOfMetricExpression\",\n" +
+                    "          \"parameters\":{\n" +
+                    "            \"metricName\":\"%s\",\n" +
+                    "            \"parameterGroup\":\"%s\"\n" +
+                    "          }\n" +
+                    "        },\n" +
+                    "        \"operation\":\"-\"\n" +
+                    "      }\n" +
+                    "    },\n" +
+                    "    \"arg2\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
+                    "      \"parameters\":{\"value\":900.0}\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}\n", path,params);
+            processTrigger(path+"15min", params, "Not receive data 15 min on "+path, "Load avg 15 not received 15 min", TriggerPriority.HIGH, triggerJson2);
         }
 
     }
