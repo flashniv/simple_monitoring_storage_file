@@ -26,11 +26,11 @@ class ParameterGroupRestTest extends AbstractTest {
     @Test
     void getEventsByParameterGroup() throws Exception {
         for (int i = 0; i < 20; i++) {
-            memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond()-i*10, Math.random()));
+            memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond() - i * 10, Math.random()));
         }
         memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
-        for(Map.Entry<String, List<DataElement>> entry: map.entrySet()){
+        for (Map.Entry<String, List<DataElement>> entry : map.entrySet()) {
             fileDriver.writeMetric(entry.getKey(), entry.getValue());
         }
 

@@ -14,8 +14,6 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"GUI"})
 class MetricRestTest extends AbstractTest {
@@ -36,7 +34,7 @@ class MetricRestTest extends AbstractTest {
     }
 
     @Test
-    void getParameterGroupsByMetric() throws Exception{
+    void getParameterGroupsByMetric() throws Exception {
         memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
         memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
         memoryMetricsQueue.getFormattedEvents();

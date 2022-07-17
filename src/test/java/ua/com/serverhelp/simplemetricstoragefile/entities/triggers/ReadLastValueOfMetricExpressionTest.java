@@ -32,13 +32,13 @@ class ReadLastValueOfMetricExpressionTest extends AbstractTest {
 
     @Test
     void getJSON() {
-        ReadLastValueOfMetricExpression readLastValueOfMetricExpression = new ReadLastValueOfMetricExpression("test.stage.db.item1", "{}",dirName);
+        ReadLastValueOfMetricExpression readLastValueOfMetricExpression = new ReadLastValueOfMetricExpression("test.stage.db.item1", "{}", dirName);
         System.out.println(readLastValueOfMetricExpression.getJSON());
     }
 
     @Test
     void getValue() throws ExpressionException {
-        ReadLastValueOfMetricExpression readLastValueOfMetricExpression = new ReadLastValueOfMetricExpression("test.stage.db.item1", "{}",dirName);
+        ReadLastValueOfMetricExpression readLastValueOfMetricExpression = new ReadLastValueOfMetricExpression("test.stage.db.item1", "{}", dirName);
 
         Double res = readLastValueOfMetricExpression.getValue();
         Assertions.assertNotNull(res);
@@ -47,7 +47,7 @@ class ReadLastValueOfMetricExpressionTest extends AbstractTest {
     @Test
     void initialize() throws ExpressionException {
         ReadLastValueOfMetricExpression readLastValueOfMetricExpression = new ReadLastValueOfMetricExpression();
-        readLastValueOfMetricExpression.initialize("{\"metricsDirectory\":\""+dirName+"\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
+        readLastValueOfMetricExpression.initialize("{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
         Double data = readLastValueOfMetricExpression.getValue();
         Assertions.assertNotNull(data);
     }

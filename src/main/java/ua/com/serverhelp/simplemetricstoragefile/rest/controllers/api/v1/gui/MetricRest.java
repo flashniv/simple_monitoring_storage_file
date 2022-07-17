@@ -21,9 +21,9 @@ public class MetricRest {
     @Autowired
     private ParameterGroupRepository parameterGroupRepository;
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public ResponseEntity<List<Metric>> getAllMetrics(){
-        List<Metric> metrics=metricRepository.findAll();
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<List<Metric>> getAllMetrics() {
+        List<Metric> metrics = metricRepository.findAll();
         return ResponseEntity.ok(metrics);
     }
 
@@ -31,7 +31,7 @@ public class MetricRest {
     public ResponseEntity<List<ParameterGroup>> getParameterGroupsByMetric(
             @PathVariable String id
     ) throws NotFoundError {
-        Optional<Metric> optionalMetric=metricRepository.findById(id);
+        Optional<Metric> optionalMetric = metricRepository.findById(id);
         if (optionalMetric.isPresent()) {
             List<ParameterGroup> parameterGroupList = parameterGroupRepository.findByMetric(optionalMetric.get());
             return ResponseEntity.ok(parameterGroupList);

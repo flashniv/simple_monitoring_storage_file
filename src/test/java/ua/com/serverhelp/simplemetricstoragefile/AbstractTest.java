@@ -31,6 +31,8 @@ public abstract class AbstractTest {
     @Autowired
     protected RoleRepository roleRepository;
     @Autowired
+    protected AlertRepository alertRepository;
+    @Autowired
     protected FileDriver fileDriver;
     @Value("${metric-storage.metrics-directory}")
     protected String dirName;
@@ -51,6 +53,7 @@ public abstract class AbstractTest {
         deleteDirectory(file);
         parameterGroupRepository.deleteAll();
         metricRepository.deleteAll();
+        alertRepository.deleteAll();
         triggerRepository.deleteAll();
     }
 
@@ -60,6 +63,7 @@ public abstract class AbstractTest {
         deleteDirectory(file);
         parameterGroupRepository.deleteAll();
         metricRepository.deleteAll();
+        alertRepository.deleteAll();
         triggerRepository.deleteAll();
     }
 

@@ -35,14 +35,14 @@ class TimeElapsedFromLastEventExpressionTest extends AbstractTest {
 
     @Test
     void getJSON() {
-        ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression = new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}",dirName);
+        ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression = new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}", dirName);
         TimeElapsedFromLastEventExpression timeElapsedFromLastEventExpression = new TimeElapsedFromLastEventExpression(readAllValuesOfMetricExpression);
         System.out.println(timeElapsedFromLastEventExpression.getJSON());
     }
 
     @Test
     void getValue() throws Exception {
-        ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression = new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}",dirName);
+        ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression = new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}", dirName);
         TimeElapsedFromLastEventExpression timeElapsedFromLastEventExpression = new TimeElapsedFromLastEventExpression(readAllValuesOfMetricExpression);
 
         Double dur = timeElapsedFromLastEventExpression.getValue();
@@ -52,7 +52,7 @@ class TimeElapsedFromLastEventExpressionTest extends AbstractTest {
     @Test
     void initialize() throws ExpressionException {
         TimeElapsedFromLastEventExpression timeElapsedFromLastEventExpression = new TimeElapsedFromLastEventExpression();
-        timeElapsedFromLastEventExpression.initialize("{\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadAllValuesOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\""+dirName+"\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}}}");
+        timeElapsedFromLastEventExpression.initialize("{\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadAllValuesOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}}}");
 
         Expression<List<DataElement>> arg1 = timeElapsedFromLastEventExpression.getArg1();
         Assertions.assertNotNull(arg1);

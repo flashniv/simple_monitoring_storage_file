@@ -4,12 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertSender;
+import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter.NodeMetricRest;
+import ua.com.serverhelp.simplemetricstoragefile.storage.AlertRepository;
 import ua.com.serverhelp.simplemetricstoragefile.storage.TriggerRepository;
 
 import java.io.IOException;
@@ -28,6 +31,10 @@ public class Cron {
     private NodeMetricRest nodeMetricRest;
     @Autowired
     private TriggerRepository triggerRepository;
+    @Autowired
+    private AlertRepository alertRepository;
+    @Autowired
+    private AlertSender alertSender;
 
     @Scheduled(initialDelay = 60000, fixedDelay = 60000)
     public void storeMetrics() {
@@ -58,17 +65,17 @@ public class Cron {
                 Boolean status = trigger.checkTrigger();
                 switch (trigger.getLastStatus()) {
                     case UNCHECKED:
-                    case ERROR:
-                        trigger.setLastStatus(status ? TriggerStatus.OK : TriggerStatus.FAILED);
+                    case FAILED:
+                        trigger.setLastStatus(status ? TriggerStatus.OK : TriggerStatus.ERROR);
                         modified = true;
                         break;
                     case OK:
                         if (!status) {
-                            trigger.setLastStatus(TriggerStatus.FAILED);
+                            trigger.setLastStatus(TriggerStatus.ERROR);
                             modified = true;
                         }
                         break;
-                    case FAILED:
+                    case ERROR:
                         if (status) {
                             trigger.setLastStatus(TriggerStatus.OK);
                             modified = true;
@@ -77,12 +84,25 @@ public class Cron {
                 }
             } catch (Exception e) {
                 log.error("Trigger check error", e);
-                trigger.setLastStatus(TriggerStatus.ERROR);
-                modified = true;
+                if (trigger.getLastStatus() != TriggerStatus.FAILED) {
+                    trigger.setLastStatus(TriggerStatus.FAILED);
+                    modified = true;
+                }
             }
             if (modified) {
                 trigger.setLastStatusUpdate(Instant.now());
                 triggerRepository.save(trigger); //TODO change to save all
+
+                Alert alert = new Alert();
+                alert.setTrigger(trigger);
+
+                try{
+                    alertSender.sendMessage(alert);
+                }catch (IOException e){
+                    log.error("Alert send error",e);
+                }
+
+                alertRepository.save(alert);
             }
         }
         log.info("Triggers checked");

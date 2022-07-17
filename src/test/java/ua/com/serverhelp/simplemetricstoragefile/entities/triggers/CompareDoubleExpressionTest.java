@@ -60,7 +60,7 @@ class CompareDoubleExpressionTest extends AbstractTest {
         CompareDoubleExpression compareDoubleExpression = new CompareDoubleExpression();
         compareDoubleExpression.setOperation("<");
         Expression<Double> arg1 = new ConstantDoubleExpression(0.5);
-        Expression<Double> arg2 = new ReadLastValueOfMetricExpression("test.stage.db.booleanitem1", "{}",dirName);
+        Expression<Double> arg2 = new ReadLastValueOfMetricExpression("test.stage.db.booleanitem1", "{}", dirName);
 
         compareDoubleExpression.setArg1(arg1);
         compareDoubleExpression.setArg2(arg2);

@@ -1,8 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.json.JSONObject;

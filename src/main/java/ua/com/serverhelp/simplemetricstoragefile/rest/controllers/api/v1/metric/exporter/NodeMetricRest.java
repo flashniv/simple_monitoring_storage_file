@@ -63,7 +63,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":5.0}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n",dirName, path, params);
+                    "}\n", dirName, path, params);
             processTrigger(path, params, "Load average too high on " + path, "Load avg 15 greater than 5", TriggerPriority.HIGH, triggerJson);
             String triggerJson2 = String.format("{\n" +
                     "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
@@ -92,7 +92,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":900.0}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n",dirName, path, params);
+                    "}\n", dirName, path, params);
             processTrigger(path + "15min", params, "Not receive data 15 min on " + path, "Load avg 15 not received 15 min", TriggerPriority.HIGH, triggerJson2);
         }
         if (path.matches("exporter.*.node.filesystem_size_bytes")) {
@@ -127,7 +127,7 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "      \"parameters\":{\"value\":0.15}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n", dirName, path.replace("filesystem_size_bytes", "filesystem_avail_bytes"), params.replace("\"", "\\\""),dirName, path, params.replace("\"", "\\\""));
+                    "}\n", dirName, path.replace("filesystem_size_bytes", "filesystem_avail_bytes"), params.replace("\"", "\\\""), dirName, path, params.replace("\"", "\\\""));
             processTrigger(path, params, "Free disk space less than 15% on " + path.replace(".filesystem_size_bytes", "") + params, "Free disk space too low", TriggerPriority.HIGH, triggerJson);
         }
     }

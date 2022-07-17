@@ -11,8 +11,9 @@ public interface MetricRepository extends JpaRepository<Metric, String> {
     @Cacheable(value = "Metric", unless = "#result==null")
     Optional<Metric> findById(String id);
 
-    @CacheEvict(value = "Metric",allEntries = true)
+    @CacheEvict(value = "Metric", allEntries = true)
     void deleteAll();
+
     @CacheEvict(value = "Metric")
     Metric save(Metric metric);
 }

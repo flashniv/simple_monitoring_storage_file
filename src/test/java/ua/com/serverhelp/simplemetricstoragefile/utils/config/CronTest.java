@@ -20,7 +20,7 @@ class CronTest extends AbstractTest {
 
         trigger.setId(id);
         trigger.setName("Test trigger");
-        trigger.setConf("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\""+dirName+"\",\"metricName\":\"test.stage.db.booleanitem1\",\"parameterGroup\":\"{}\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}");
+        trigger.setConf("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.booleanitem1\",\"parameterGroup\":\"{}\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}");
 
         triggerRepository.save(trigger);
         //check new trigger state
@@ -31,7 +31,7 @@ class CronTest extends AbstractTest {
 
         Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
         Assertions.assertTrue(optionalTrigger.isPresent());
-        Assertions.assertEquals(TriggerStatus.ERROR, optionalTrigger.get().getLastStatus());
+        Assertions.assertEquals(TriggerStatus.FAILED, optionalTrigger.get().getLastStatus());
 
         //check trigger to error
         Event event = new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond(), 0.0);
@@ -41,7 +41,7 @@ class CronTest extends AbstractTest {
 
         optionalTrigger = triggerRepository.findById(id);
         Assertions.assertTrue(optionalTrigger.isPresent());
-        Assertions.assertEquals(TriggerStatus.FAILED, optionalTrigger.get().getLastStatus());
+        Assertions.assertEquals(TriggerStatus.ERROR, optionalTrigger.get().getLastStatus());
 
         //check trigger to ok
         event = new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond(), 1.0);

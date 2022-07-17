@@ -8,9 +8,7 @@ import org.json.JSONObject;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
-import java.io.InputStream;
 import java.util.List;
-import java.util.Properties;
 
 @Data
 @NoArgsConstructor

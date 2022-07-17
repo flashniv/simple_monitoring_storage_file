@@ -8,7 +8,6 @@ import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.rest.exceptions.InternalServerError;
 import ua.com.serverhelp.simplemetricstoragefile.rest.exceptions.NotFoundError;
-import ua.com.serverhelp.simplemetricstoragefile.storage.MetricRepository;
 import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepository;
 
 import java.io.IOException;
@@ -28,16 +27,16 @@ public class ParameterGroupRest {
     public ResponseEntity<List<DataElement>> getEventsByParameterGroup(
             @PathVariable Long id
     ) throws NotFoundError, InternalServerError {
-        Optional<ParameterGroup> optionalParameterGroup=parameterGroupRepository.findById(id);
-        if (optionalParameterGroup.isPresent()){
-            ParameterGroup parameterGroup=optionalParameterGroup.get();
-            try{
-                List<DataElement> dataElements = fileDriver.readMetric(parameterGroup.getMetric().getPath()+parameterGroup.getJson());
+        Optional<ParameterGroup> optionalParameterGroup = parameterGroupRepository.findById(id);
+        if (optionalParameterGroup.isPresent()) {
+            ParameterGroup parameterGroup = optionalParameterGroup.get();
+            try {
+                List<DataElement> dataElements = fileDriver.readMetric(parameterGroup.getMetric().getPath() + parameterGroup.getJson());
                 return ResponseEntity.ok(dataElements);
-            }catch (IOException e){
-                throw new NotFoundError("File read error"+e.getMessage());
-            }catch (ClassNotFoundException e){
-                throw new InternalServerError("Class not found in FileDriver"+e.getMessage());
+            } catch (IOException e) {
+                throw new NotFoundError("File read error" + e.getMessage());
+            } catch (ClassNotFoundException e) {
+                throw new InternalServerError("Class not found in FileDriver" + e.getMessage());
             }
         }
         throw new NotFoundError("Parameter group not found");
