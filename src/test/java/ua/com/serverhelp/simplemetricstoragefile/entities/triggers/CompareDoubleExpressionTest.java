@@ -36,6 +36,10 @@ class CompareDoubleExpressionTest extends AbstractTest {
         compareDoubleExpression.setArg1(arg1);
         compareDoubleExpression.setArg2(arg2);
         Assertions.assertTrue(compareDoubleExpression.getValue());
+
+        compareDoubleExpression.setArg1(new ConstantDoubleExpression(0.5));
+        compareDoubleExpression.setArg2(new ConstantDoubleExpression(0.1));
+        Assertions.assertFalse(compareDoubleExpression.getValue());
     }
 
     @Test

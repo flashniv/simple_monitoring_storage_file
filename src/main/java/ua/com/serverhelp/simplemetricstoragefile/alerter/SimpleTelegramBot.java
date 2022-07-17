@@ -14,7 +14,7 @@ import java.io.IOException;
  * Class for send messages into TG
  */
 @Component
-public class SimpleTelegramBot implements AlertSender {
+public class SimpleTelegramBot implements AlertSender { //TODO add tests
     /**
      * Driver for use curl options
      */

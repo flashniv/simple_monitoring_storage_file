@@ -96,10 +96,10 @@ public class Cron {
                 Alert alert = new Alert();
                 alert.setTrigger(trigger);
 
-                try{
+                try {
                     alertSender.sendMessage(alert);
-                }catch (IOException e){
-                    log.error("Alert send error",e);
+                } catch (IOException e) {
+                    log.error("Alert send error", e);
                 }
 
                 alertRepository.save(alert);

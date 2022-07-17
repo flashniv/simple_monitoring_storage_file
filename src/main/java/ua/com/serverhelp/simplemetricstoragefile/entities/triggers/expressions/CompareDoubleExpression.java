@@ -3,6 +3,7 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class CompareDoubleExpression implements Expression<Boolean> {
     private Expression<Double> arg1;
     private Expression<Double> arg2;
@@ -35,22 +37,35 @@ public class CompareDoubleExpression implements Expression<Boolean> {
     @Override
     public Boolean getValue() throws ExpressionException {
         if (operation == null) throw new ExpressionException("Operation is null", new Exception());
+        Boolean res = null;
+        Double arg1val = arg1.getValue();
+        Double arg2val = arg2.getValue();
+
         switch (operation) {
             case "<":
-                return arg1.getValue() < arg2.getValue();
+                res = arg1val < arg2val;
+                break;
             case ">":
-                return arg1.getValue() > arg2.getValue();
+                res = arg1val > arg2val;
+                break;
             case "<=":
-                return arg1.getValue() <= arg2.getValue();
+                res = arg1val <= arg2val;
+                break;
             case ">=":
-                return arg1.getValue() >= arg2.getValue();
+                res = arg1val >= arg2val;
+                break;
             case "==":
-                return Objects.equals(arg1.getValue(), arg2.getValue());
+                res = Objects.equals(arg1val, arg2val);
+                break;
             case "!=":
-                return !Objects.equals(arg1.getValue(), arg2.getValue());
+                res = !Objects.equals(arg1val, arg2val);
+                break;
             default:
                 throw new ExpressionException("Operation is invalid", new Exception());
         }
+        log.debug("CompareDoubleExpression getValue arg1=" + arg1val + " arg2=" + arg2val + " operation=" + operation + " res=" + res);
+
+        return res;
     }
 
     @Override
