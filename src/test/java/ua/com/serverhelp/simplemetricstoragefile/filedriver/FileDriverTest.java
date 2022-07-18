@@ -17,7 +17,7 @@ class FileDriverTest extends AbstractTest {
     void writeMetric() {
         List<DataElement> dataElements = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            DataElement dataElement = new DataElement(new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond(), Math.random()));
+            DataElement dataElement = new DataElement(new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond()+i, Math.random()));
             dataElements.add(dataElement);
         }
         Assertions.assertDoesNotThrow(() -> fileDriver.writeMetric(metric, dataElements));

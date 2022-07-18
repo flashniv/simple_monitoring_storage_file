@@ -8,9 +8,15 @@ import org.springframework.util.DigestUtils;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -47,25 +53,29 @@ public class FileDriver {
 
     public List<DataElement> readMetric(String metricName) throws IOException, ClassNotFoundException {
         String metricMD5 = DigestUtils.md5DigestAsHex(metricName.getBytes());
-        String fileName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4) + "/" + metricMD5 + "_" + getPeriod();
+        String currentDirName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4);
         List<DataElement> dataElements = new ArrayList<>();
 
-        File file = new File(fileName);
-        FileInputStream fis = new FileInputStream(file);
-        DataInputStream dis = new DataInputStream(fis);
+        List<Path> files=Files.list(Paths.get(currentDirName))
+                .filter(file -> Files.isRegularFile(file) && file.toString().contains(metricMD5))
+                .collect(Collectors.toList());
 
-        int i = 0;
-        while (dis.available() > 0) {
-            DataElement dataElement = new DataElement();
-            i++;
+        for (Path file:files){
+            DataInputStream dis = new DataInputStream(Files.newInputStream(file));
 
-            dataElement.setTimestamp(dis.readLong());
-            dataElement.setValue(dis.readDouble());
+            while (dis.available() > 0) {
+                DataElement dataElement = new DataElement();
 
-            dataElements.add(dataElement);
+                dataElement.setTimestamp(dis.readLong());
+                dataElement.setValue(dis.readDouble());
+
+                dataElements.add(dataElement);
+            }
+            dis.close();
         }
-        log.debug("FileDriver::readMetric Metric " + metricName + " was read. " + i + " values");
-        dis.close();
-        return dataElements;
+
+        log.debug("FileDriver::readMetric Metric " + metricName + " was read.");
+        return dataElements.stream().sorted(Comparator.comparingLong(DataElement::getTimestamp)).collect(Collectors.toList());
     }
+
 }
