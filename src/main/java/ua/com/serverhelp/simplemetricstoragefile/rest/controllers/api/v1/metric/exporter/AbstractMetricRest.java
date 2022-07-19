@@ -76,6 +76,7 @@ public abstract class AbstractMetricRest {
             trigger.setConf(triggerJson);
 
             triggerRepository.save(trigger);
+            log.debug("Trigger was created "+triggerName+" path "+path+" params "+params+" prio "+triggerPriority.name()+" JSON "+triggerJson);
         }
 
     }
