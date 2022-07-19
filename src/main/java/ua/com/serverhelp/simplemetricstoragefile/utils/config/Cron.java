@@ -60,9 +60,11 @@ public class Cron {
         for (Trigger trigger : triggers) {
             if (!trigger.getEnabled()) continue;
             boolean modified = false;
+            boolean checkFailed = true;
 
             try {
                 Boolean status = trigger.checkTrigger();
+                checkFailed = false;
                 switch (trigger.getLastStatus()) {
                     case UNCHECKED:
                     case FAILED:
@@ -93,16 +95,18 @@ public class Cron {
                 trigger.setLastStatusUpdate(Instant.now());
                 triggerRepository.save(trigger); //TODO change to save all
 
-                Alert alert = new Alert();
-                alert.setTrigger(trigger);
+                if(!checkFailed) {
+                    Alert alert = new Alert();
+                    alert.setTrigger(trigger);
 
-                try {
-                    alertSender.sendMessage(alert);
-                } catch (IOException e) {
-                    log.error("Alert send error", e);
+                    try {
+                        alertSender.sendMessage(alert);
+                    } catch (IOException e) {
+                        log.error("Alert send error", e);
+                    }
+
+                    alertRepository.save(alert);
                 }
-
-                alertRepository.save(alert);
             }
         }
         log.info("Triggers checked");
