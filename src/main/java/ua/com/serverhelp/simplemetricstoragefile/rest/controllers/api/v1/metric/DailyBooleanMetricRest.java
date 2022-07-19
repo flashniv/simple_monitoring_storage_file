@@ -44,6 +44,7 @@ public class DailyBooleanMetricRest {
             Trigger trigger = new Trigger();
 
             trigger.setId(id);
+            trigger.setTriggerId(path);
             trigger.setName("Boolean trigger " + path + params + " receive false");
             trigger.setDescription("Check last value to true or false");
             trigger.setPriority(TriggerPriority.HIGH);
@@ -57,6 +58,7 @@ public class DailyBooleanMetricRest {
             Trigger trigger = new Trigger();
 
             trigger.setId(idDaily);
+            trigger.setTriggerId(path+params+".daily");
             trigger.setName("Data not receive 24h on " + path + params);
             trigger.setDescription("Check last value timestamp for 24h age");
             trigger.setPriority(TriggerPriority.HIGH);

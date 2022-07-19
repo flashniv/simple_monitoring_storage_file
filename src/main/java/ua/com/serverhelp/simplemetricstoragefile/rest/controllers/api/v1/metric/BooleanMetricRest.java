@@ -43,6 +43,7 @@ public class BooleanMetricRest {
             Trigger trigger = new Trigger();
 
             trigger.setId(id);
+            trigger.setTriggerId(path);
             trigger.setName("Boolean trigger " + path + " receive false");
             trigger.setDescription("Check last value to true or false");
             trigger.setPriority(TriggerPriority.HIGH);

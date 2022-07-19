@@ -19,6 +19,7 @@ class CronTest extends AbstractTest {
         Trigger trigger = new Trigger();
 
         trigger.setId(id);
+        trigger.setTriggerId("test.stage.db.booleanitem1{}");
         trigger.setName("Test trigger");
         trigger.setConf("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.booleanitem1\",\"parameterGroup\":\"{}\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}");
 

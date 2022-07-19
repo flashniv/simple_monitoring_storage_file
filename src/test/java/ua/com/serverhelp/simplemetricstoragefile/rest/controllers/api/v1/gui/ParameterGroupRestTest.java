@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.gui;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,11 +12,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
+import ua.com.serverhelp.simplemetricstoragefile.entities.metric.Metric;
+import ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup.ParameterGroup;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"GUI"})
@@ -34,7 +38,12 @@ class ParameterGroupRestTest extends AbstractTest {
             fileDriver.writeMetric(entry.getKey(), entry.getValue());
         }
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/parameterGroup/1/events")
+        Optional<Metric> optionalMetric=metricRepository.findById("exporter.testproj.debian.node.filesystem_avail_bytes");
+        Assertions.assertTrue(optionalMetric.isPresent());
+        Optional<ParameterGroup> optionalParameterGroup=parameterGroupRepository.findByMetricAndJson(optionalMetric.get(), "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}");
+        Assertions.assertTrue(optionalParameterGroup.isPresent());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/parameterGroup/"+optionalParameterGroup.get().getId()+"/events")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())

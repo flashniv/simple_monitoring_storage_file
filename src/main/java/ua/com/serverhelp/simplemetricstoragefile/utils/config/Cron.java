@@ -4,7 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertSender;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertChannels;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.sender.AlertSender;
 import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
@@ -37,7 +38,7 @@ public class Cron {
     @Autowired
     private AlertRepository alertRepository;
     @Autowired
-    private AlertSender alertSender;
+    private AlertChannels alertChannels;
 
     @Scheduled(initialDelay = 60000, fixedDelay = 60000)
     public void storeMetrics() {
@@ -109,8 +110,8 @@ public class Cron {
                     alert.setTrigger(trigger);
 
                     try {
-                        alertSender.sendMessage(alert);
-                    } catch (IOException e) {
+                        alertChannels.sendAlert(alert);
+                    } catch (Exception e) {
                         log.error("Alert send error", e);
                     }
 

@@ -6,6 +6,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertChannel;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertChannels;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertFilter;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.storage.*;
@@ -33,6 +36,12 @@ public abstract class AbstractTest {
     @Autowired
     protected AlertRepository alertRepository;
     @Autowired
+    protected AlertChannels alertChannels;
+    @Autowired
+    protected AlertChannelRepository alertChannelRepository;
+    @Autowired
+    protected AlertFilterRepository alertFilterRepository;
+    @Autowired
     protected FileDriver fileDriver;
     @Value("${metric-storage.metrics-directory}")
     protected String dirName;
@@ -55,6 +64,17 @@ public abstract class AbstractTest {
         metricRepository.deleteAll();
         alertRepository.deleteAll();
         triggerRepository.deleteAll();
+        alertFilterRepository.deleteAll();
+        alertChannelRepository.deleteAll();
+
+        AlertChannel alertChannel=new AlertChannel();
+        alertChannel.setAlerterClass("ua.com.serverhelp.simplemetricstoragefile.alerter.sender.DummyAlertSender");
+        alertChannelRepository.save(alertChannel);
+
+        AlertFilter alertFilter=new AlertFilter();
+        alertFilter.setAlertChannel(alertChannel);
+        alertFilter.setRegexp(".*");
+        alertFilterRepository.save(alertFilter);
     }
 
     @AfterEach
@@ -65,6 +85,8 @@ public abstract class AbstractTest {
         metricRepository.deleteAll();
         alertRepository.deleteAll();
         triggerRepository.deleteAll();
+        alertFilterRepository.deleteAll();
+        alertChannelRepository.deleteAll();
     }
 
 }

@@ -1,7 +1,7 @@
-package ua.com.serverhelp.simplemetricstoragefile.alerter;
+package ua.com.serverhelp.simplemetricstoragefile.alerter.sender;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.json.JSONException;
+import org.json.JSONObject;
 import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.utils.httpdriver.HttpDriver;
@@ -13,7 +13,6 @@ import java.io.IOException;
 /**
  * Class for send messages into TG
  */
-@Component
 public class SimpleTelegramBot implements AlertSender { //TODO add tests
     /**
      * Driver for use curl options
@@ -22,22 +21,26 @@ public class SimpleTelegramBot implements AlertSender { //TODO add tests
     /**
      * Token for TG flashnivbot
      */
-    @Value("${tg.chat.token}")
     private String token;
     /**
      * work chat
      */
-    @Value("${tg.chat.alert_chat_id}")
     private int chatId;
+
+    @Override
+    public void initialize(String jsonParams) throws JSONException {
+        JSONObject params=new JSONObject(jsonParams);
+        token=params.getString("token");
+        chatId= params.getInt("chatId");
+    }
 
     /**
      * Function for send message to any chat
      *
      * @param alert for send
-     * @return true if message was sent
      */
     @Override
-    public boolean sendMessage(Alert alert) throws IOException {
+    public void sendMessage(Alert alert) throws IOException {
         HttpResponse httpResponse;
         httpDriver.setURL("https://api.telegram.org");
         httpDriver.setAdditionalURL("/bot" + token + "/sendMessage");
@@ -49,7 +52,6 @@ public class SimpleTelegramBot implements AlertSender { //TODO add tests
             throw new IOException("Telegram return " + httpResponse.getCode() + " body" + httpResponse.getBody());
         }
 
-        return true;
     }
 
     private String getText(Alert alert) {

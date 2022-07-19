@@ -16,6 +16,7 @@ class TriggerTest extends AbstractTest {
     void setUp2() {
         trigger = new Trigger();
         trigger.setId(DigestUtils.md5DigestAsHex("test.stage.db.booleanitem1{}".getBytes()));
+        trigger.setTriggerId("test.stage.db.booleanitem1{}");
         trigger.setName("Test trigger");
         trigger.setConf("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.6}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}");
     }

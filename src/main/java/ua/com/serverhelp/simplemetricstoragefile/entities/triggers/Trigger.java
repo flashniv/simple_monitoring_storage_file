@@ -17,6 +17,9 @@ public class Trigger {
     private String id;
 
     @Column(nullable = false)
+    private String triggerId;
+
+    @Column(nullable = false)
     private String name;
 
     @Type(type = "text")

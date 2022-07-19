@@ -70,6 +70,7 @@ public abstract class AbstractMetricRest {
             Trigger trigger = new Trigger();
 
             trigger.setId(id);
+            trigger.setTriggerId(path+params);
             trigger.setName(triggerName);
             trigger.setDescription(triggerDescription);
             trigger.setPriority(triggerPriority);
