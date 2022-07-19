@@ -46,7 +46,7 @@ public class BlackBoxMetricRest extends AbstractMetricRest {
             processTrigger(
                     path,
                     params,
-                    "Web check error " + path,
+                    "Web check " + path,
                     "Blackbox webcheck",
                     TriggerPriority.HIGH,
                     String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"%s\",\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", dirName, path, params)

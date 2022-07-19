@@ -11,6 +11,7 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
+import ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter.BlackBoxMetricRest;
 import ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter.NodeMetricRest;
 import ua.com.serverhelp.simplemetricstoragefile.storage.AlertRepository;
 import ua.com.serverhelp.simplemetricstoragefile.storage.TriggerRepository;
@@ -29,6 +30,8 @@ public class Cron {
     private FileDriver fileDriver;
     @Autowired
     private NodeMetricRest nodeMetricRest;
+    @Autowired
+    private BlackBoxMetricRest blackBoxMetricRest;
     @Autowired
     private TriggerRepository triggerRepository;
     @Autowired
@@ -52,6 +55,12 @@ public class Cron {
     @Scheduled(fixedDelay = 10000)
     public void processNodeMetrics() {
         nodeMetricRest.processItems();
+        log.debug("Node metrics processed");
+    }
+    @Scheduled(fixedDelay = 10000)
+    public void processBlackBoxMetrics() {
+        blackBoxMetricRest.processItems();
+        log.debug("Blackbox metrics processed");
     }
 
     @Scheduled(initialDelay = 120000, fixedDelay = 60000)
