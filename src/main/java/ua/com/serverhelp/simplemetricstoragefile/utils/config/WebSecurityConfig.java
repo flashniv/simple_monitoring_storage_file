@@ -36,6 +36,7 @@ public class WebSecurityConfig {
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/apiv1/metric/collectd/").hasAuthority("Metrics");
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/apiv1/metric/exporter/**").hasAuthority("Metrics");
         http.authorizeRequests().antMatchers(HttpMethod.GET,
+                "/api/v1/",
                 "/api/v1/metric/**",
                 "/api/v1/parameterGroup/**",
                 "/api/v1/event/**"
