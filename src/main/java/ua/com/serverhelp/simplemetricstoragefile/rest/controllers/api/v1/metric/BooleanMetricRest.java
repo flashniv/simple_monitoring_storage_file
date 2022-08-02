@@ -30,14 +30,14 @@ public class BooleanMetricRest {
     @ResponseBody
     public ResponseEntity<String> getAddEvent(@RequestParam String path, @RequestParam(defaultValue = "true") Boolean value) {
         memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), (value ? 1.0 : 0.0)));
-        createTriggerIfNotExist(path, "{}");
+        createTriggerIfNotExist(path);
         log.debug("BooleanMetricRest::getAddEvent /api/v1/metric/boolean Event add:" + value);
 
         return ResponseEntity.ok().body("Success");
     }
 
-    private void createTriggerIfNotExist(String path, String params) {
-        String id = DigestUtils.md5DigestAsHex((path + params).getBytes());
+    private void createTriggerIfNotExist(String path) {
+        String id = DigestUtils.md5DigestAsHex((path + "{}").getBytes());
         Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
         if (optionalTrigger.isEmpty()) {
             Trigger trigger = new Trigger();
@@ -47,7 +47,7 @@ public class BooleanMetricRest {
             trigger.setName("Boolean trigger " + path + " receive false");
             trigger.setDescription("Check last value to true or false");
             trigger.setPriority(TriggerPriority.HIGH);
-            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"%s\",\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", dirName, path, params));
+            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"%s\",\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", dirName, path, "{}"));
 
             triggerRepository.save(trigger);
         }

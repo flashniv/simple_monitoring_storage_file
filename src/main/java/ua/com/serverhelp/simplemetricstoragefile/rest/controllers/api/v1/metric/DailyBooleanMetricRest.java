@@ -31,35 +31,35 @@ public class DailyBooleanMetricRest {
     @ResponseBody
     public ResponseEntity<String> getAddEvent(@RequestParam String path, @RequestParam(defaultValue = "true") Boolean value) {
         memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), (value ? 1.0 : 0.0)));
-        createTriggerIfNotExist(path, "{}");
+        createTriggerIfNotExist(path);
         log.debug("DailyBooleanMetricRest::getAddEvent /api/v1/metric/dailyboolean Event add:" + value);
 
         return ResponseEntity.ok().body("Success");
     }
 
-    private void createTriggerIfNotExist(String path, String params) {
-        String id = DigestUtils.md5DigestAsHex((path + params).getBytes());
+    private void createTriggerIfNotExist(String path) {
+        String id = DigestUtils.md5DigestAsHex((path + "{}").getBytes());
         Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
         if (optionalTrigger.isEmpty()) {
             Trigger trigger = new Trigger();
 
             trigger.setId(id);
             trigger.setTriggerId(path);
-            trigger.setName("Boolean trigger " + path + params + " receive false");
+            trigger.setName("Boolean trigger " + path + " receive false");
             trigger.setDescription("Check last value to true or false");
             trigger.setPriority(TriggerPriority.HIGH);
-            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"%s\",\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", dirName, path, params));
+            trigger.setConf(String.format("{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\"parameters\":{\"operation\":\"<\",\"arg2\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\"parameters\":{\"metricsDirectory\":\"%s\",\"metricName\":\"%s\",\"parameterGroup\":\"%s\"}},\"arg1\":{\"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\"parameters\":{\"value\":0.5}}}}", dirName, path, "{}"));
 
             triggerRepository.save(trigger);
         }
-        String idDaily = DigestUtils.md5DigestAsHex((path + params + "daily").getBytes());
+        String idDaily = DigestUtils.md5DigestAsHex((path + "{}" + "daily").getBytes());
         Optional<Trigger> optionalDailyTrigger = triggerRepository.findById(idDaily);
         if (optionalDailyTrigger.isEmpty()) {
             Trigger trigger = new Trigger();
 
             trigger.setId(idDaily);
-            trigger.setTriggerId(path+params+".daily");
-            trigger.setName("Data not receive 24h on " + path + params);
+            trigger.setTriggerId(path+ "{}" +".daily");
+            trigger.setName("Data not receive 24h on " + path);
             trigger.setDescription("Check last value timestamp for 24h age");
             trigger.setPriority(TriggerPriority.HIGH);
             trigger.setConf(String.format("{\n" +
@@ -89,7 +89,7 @@ public class DailyBooleanMetricRest {
                     "      \"parameters\":{\"value\":86400.0}\n" +
                     "    }\n" +
                     "  }\n" +
-                    "}\n", dirName, path, params));
+                    "}\n", dirName, path, "{}"));
 
             triggerRepository.save(trigger);
         }
