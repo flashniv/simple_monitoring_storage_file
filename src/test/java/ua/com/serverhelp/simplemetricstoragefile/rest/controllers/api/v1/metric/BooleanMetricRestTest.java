@@ -29,6 +29,7 @@ class BooleanMetricRestTest extends AbstractTest {
     void getAddEvent() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/apiv1/metric/boolean/")
                         .param("path", "test.stage.db.booleanitem1")
+                        .param("triggerName", "Boolean trigger %s receive false")
                         .param("value", "true")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
