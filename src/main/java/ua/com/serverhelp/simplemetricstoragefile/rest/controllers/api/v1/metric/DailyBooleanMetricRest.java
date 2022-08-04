@@ -35,13 +35,13 @@ public class DailyBooleanMetricRest {
             @RequestParam(defaultValue = "true") Boolean value
     ) {
         memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), (value ? 1.0 : 0.0)));
-        createTriggerIfNotExist(path,triggerName);
+        createTriggerIfNotExist(path, triggerName);
         log.debug("DailyBooleanMetricRest::getAddEvent /api/v1/metric/dailyboolean Event add:" + value);
 
         return ResponseEntity.ok().body("Success");
     }
 
-    private void createTriggerIfNotExist(String path,String triggerName) {
+    private void createTriggerIfNotExist(String path, String triggerName) {
         String id = DigestUtils.md5DigestAsHex((path + "{}").getBytes());
         Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
         if (optionalTrigger.isEmpty()) {
@@ -62,7 +62,7 @@ public class DailyBooleanMetricRest {
             Trigger trigger = new Trigger();
 
             trigger.setId(idDaily);
-            trigger.setTriggerId(path+ "{}" +".daily");
+            trigger.setTriggerId(path + "{}" + ".daily");
             trigger.setName("Data not receive 24h on " + path);
             trigger.setDescription("Check last value timestamp for 24h age");
             trigger.setPriority(TriggerPriority.HIGH);

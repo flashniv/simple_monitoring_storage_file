@@ -3,18 +3,21 @@ package ua.com.serverhelp.simplemetricstoragefile;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertChannel;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertChannels;
-import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertFilter;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.sender.AlertSender;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.storage.*;
 import ua.com.serverhelp.simplemetricstoragefile.utils.config.Cron;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,7 +38,7 @@ public abstract class AbstractTest {
     protected RoleRepository roleRepository;
     @Autowired
     protected AlertRepository alertRepository;
-    @Autowired
+    @SpyBean
     protected AlertChannels alertChannels;
     @Autowired
     protected AlertChannelRepository alertChannelRepository;
@@ -43,6 +46,8 @@ public abstract class AbstractTest {
     protected AlertFilterRepository alertFilterRepository;
     @Autowired
     protected FileDriver fileDriver;
+    @Mock
+    protected AlertSender alertSender;
     @Value("${metric-storage.metrics-directory}")
     protected String dirName;
 
@@ -57,24 +62,26 @@ public abstract class AbstractTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         File file = new File(dirName);
         deleteDirectory(file);
         parameterGroupRepository.deleteAll();
         metricRepository.deleteAll();
         alertRepository.deleteAll();
         triggerRepository.deleteAll();
-        alertFilterRepository.deleteAll();
-        alertChannelRepository.deleteAll();
+//      alertFilterRepository.deleteAll();
+//      alertChannelRepository.deleteAll();
 
-        AlertChannel alertChannel=new AlertChannel();
-        alertChannel.setAlerterClass("ua.com.serverhelp.simplemetricstoragefile.alerter.sender.DummyAlertSender");
-        alertChannelRepository.save(alertChannel);
+//        AlertChannel alertChannel=new AlertChannel();
+//        alertChannel.setAlerterClass("ua.com.serverhelp.simplemetricstoragefile.alerter.sender.DummyAlertSender");
+//        alertChannelRepository.save(alertChannel);
+//
+//        AlertFilter alertFilter=new AlertFilter();
+//        alertFilter.setAlertChannel(alertChannel);
+//        alertFilter.setRegexp(".*");
+//        alertFilterRepository.save(alertFilter);
 
-        AlertFilter alertFilter=new AlertFilter();
-        alertFilter.setAlertChannel(alertChannel);
-        alertFilter.setRegexp(".*");
-        alertFilterRepository.save(alertFilter);
+        Mockito.doReturn(alertSender).when(alertChannels).getAlertSender(Mockito.any());
     }
 
     @AfterEach
@@ -85,8 +92,8 @@ public abstract class AbstractTest {
         metricRepository.deleteAll();
         alertRepository.deleteAll();
         triggerRepository.deleteAll();
-        alertFilterRepository.deleteAll();
-        alertChannelRepository.deleteAll();
+        //alertFilterRepository.deleteAll();
+        //alertChannelRepository.deleteAll();
     }
 
 }

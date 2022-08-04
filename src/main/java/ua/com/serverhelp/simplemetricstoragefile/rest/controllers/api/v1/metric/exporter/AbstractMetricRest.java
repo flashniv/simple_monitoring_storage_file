@@ -70,14 +70,14 @@ public abstract class AbstractMetricRest {
             Trigger trigger = new Trigger();
 
             trigger.setId(id);
-            trigger.setTriggerId(path+params);
+            trigger.setTriggerId(path + params);
             trigger.setName(triggerName);
             trigger.setDescription(triggerDescription);
             trigger.setPriority(triggerPriority);
             trigger.setConf(triggerJson);
 
             triggerRepository.save(trigger);
-            log.debug("Trigger was created "+triggerName+" path "+path+" params "+params+" prio "+triggerPriority.name()+" JSON "+triggerJson);
+            log.debug("Trigger was created " + triggerName + " path " + path + " params " + params + " prio " + triggerPriority.name() + " JSON " + triggerJson);
         }
 
     }

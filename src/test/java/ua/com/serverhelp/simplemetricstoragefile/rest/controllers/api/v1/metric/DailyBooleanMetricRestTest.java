@@ -57,7 +57,7 @@ class DailyBooleanMetricRestTest extends AbstractTest {
         //Check failed Boolean metric
         mockMvc.perform(MockMvcRequestBuilders.get("/apiv1/metric/dailyboolean/")
                         .param("path", "test.stage.db.item1")
-                        .param("triggerName","Boolean trigger %s")
+                        .param("triggerName", "Boolean trigger %s")
                         .param("value", "false")
                         .contentType(MediaType.APPLICATION_JSON)
                 )

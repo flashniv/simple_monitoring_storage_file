@@ -38,12 +38,12 @@ class ParameterGroupRestTest extends AbstractTest {
             fileDriver.writeMetric(entry.getKey(), entry.getValue());
         }
 
-        Optional<Metric> optionalMetric=metricRepository.findById("exporter.testproj.debian.node.filesystem_avail_bytes");
+        Optional<Metric> optionalMetric = metricRepository.findById("exporter.testproj.debian.node.filesystem_avail_bytes");
         Assertions.assertTrue(optionalMetric.isPresent());
-        Optional<ParameterGroup> optionalParameterGroup=parameterGroupRepository.findByMetricAndJson(optionalMetric.get(), "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}");
+        Optional<ParameterGroup> optionalParameterGroup = parameterGroupRepository.findByMetricAndJson(optionalMetric.get(), "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}");
         Assertions.assertTrue(optionalParameterGroup.isPresent());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/parameterGroup/"+optionalParameterGroup.get().getId()+"/events")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/parameterGroup/" + optionalParameterGroup.get().getId() + "/events")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())

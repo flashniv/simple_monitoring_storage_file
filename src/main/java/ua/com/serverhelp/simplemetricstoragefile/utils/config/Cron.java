@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertChannels;
-import ua.com.serverhelp.simplemetricstoragefile.alerter.sender.AlertSender;
 import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
@@ -58,6 +57,7 @@ public class Cron {
         nodeMetricRest.processItems();
         log.debug("Node metrics processed");
     }
+
     @Scheduled(fixedDelay = 10000)
     public void processBlackBoxMetrics() {
         blackBoxMetricRest.processItems();
@@ -105,7 +105,7 @@ public class Cron {
                 trigger.setLastStatusUpdate(Instant.now());
                 triggerRepository.save(trigger); //TODO change to save all
 
-                if(!checkFailed) {
+                if (!checkFailed) {
                     Alert alert = new Alert();
                     alert.setTrigger(trigger);
 

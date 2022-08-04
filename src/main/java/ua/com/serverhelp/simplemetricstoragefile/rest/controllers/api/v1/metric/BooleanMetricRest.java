@@ -34,13 +34,13 @@ public class BooleanMetricRest {
             @RequestParam(defaultValue = "true") Boolean value
     ) {
         memoryMetricsQueue.putEvent(new Event(path, "{}", Instant.now().getEpochSecond(), (value ? 1.0 : 0.0)));
-        createTriggerIfNotExist(path,triggerName);
+        createTriggerIfNotExist(path, triggerName);
         log.debug("BooleanMetricRest::getAddEvent /api/v1/metric/boolean Event add:" + value);
 
         return ResponseEntity.ok().body("Success");
     }
 
-    private void createTriggerIfNotExist(String path,String triggerName) {
+    private void createTriggerIfNotExist(String path, String triggerName) {
         String id = DigestUtils.md5DigestAsHex((path + "{}").getBytes());
         Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
         if (optionalTrigger.isEmpty()) {

@@ -12,8 +12,8 @@ public class AlertChannel {
     @Id
     @GeneratedValue
     private Long id;
-    private String alerterClass="ua.com.serverhelp.simplemetricstoragefile.alerter.sender.SimpleTelegramBot";
-    private String alerterParameters="{}";
+    private String alerterClass = "ua.com.serverhelp.simplemetricstoragefile.alerter.sender.SimpleTelegramBot";
+    private String alerterParameters = "{}";
     @OneToMany(mappedBy = "alertChannel", fetch = FetchType.EAGER)
-    private List<AlertFilter> alertFilters=new ArrayList<>();
+    private List<AlertFilter> alertFilters = new ArrayList<>();
 }

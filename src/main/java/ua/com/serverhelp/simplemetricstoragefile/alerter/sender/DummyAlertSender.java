@@ -7,7 +7,7 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
 import java.io.IOException;
 
 @Slf4j
-public class DummyAlertSender implements AlertSender{
+public class DummyAlertSender implements AlertSender {
     @Override
     public void initialize(String jsonParams) throws JSONException {
 
@@ -15,6 +15,6 @@ public class DummyAlertSender implements AlertSender{
 
     @Override
     public void sendMessage(Alert alert) throws IOException {
-        log.error("Alert: "+alert.toString());
+        log.error("Alert: " + alert.toString());
     }
 }

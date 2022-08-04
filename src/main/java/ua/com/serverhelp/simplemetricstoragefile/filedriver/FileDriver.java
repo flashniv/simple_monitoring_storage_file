@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -56,11 +55,11 @@ public class FileDriver {
         String currentDirName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4);
         List<DataElement> dataElements = new ArrayList<>();
 
-        List<Path> files=Files.list(Paths.get(currentDirName))
+        List<Path> files = Files.list(Paths.get(currentDirName))
                 .filter(file -> Files.isRegularFile(file) && file.toString().contains(metricMD5))
                 .collect(Collectors.toList());
 
-        for (Path file:files){
+        for (Path file : files) {
             DataInputStream dis = new DataInputStream(Files.newInputStream(file));
 
             while (dis.available() > 0) {

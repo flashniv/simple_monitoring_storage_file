@@ -18,8 +18,6 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus
 
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"GUI"})
 class AlertRestTest extends AbstractTest {
@@ -27,8 +25,8 @@ class AlertRestTest extends AbstractTest {
     private MockMvc mockMvc;
 
     @Test
-    void getAlerts() throws Exception{
-        Trigger trigger=new Trigger();
+    void getAlerts() throws Exception {
+        Trigger trigger = new Trigger();
         trigger.setId(DigestUtils.md5DigestAsHex("Test trigger".getBytes()));
         trigger.setTriggerId("db.test.trigger");
         trigger.setName("Test trigger");
@@ -38,7 +36,7 @@ class AlertRestTest extends AbstractTest {
 
         triggerRepository.save(trigger);
 
-        Alert alert=new Alert();
+        Alert alert = new Alert();
         alert.setTrigger(trigger);
         alert.setOperationData("");
         alert.setAlertTimestamp(Instant.now());

@@ -1,7 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.gui;
 
 import org.junit.jupiter.api.Test;
-import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.pbkdf2.Digest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
@@ -16,17 +15,15 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriority;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"GUI"})
-class TriggerRestTest extends AbstractTest{
+class TriggerRestTest extends AbstractTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void getTriggers() throws Exception{
-        Trigger trigger=new Trigger();
+    void getTriggers() throws Exception {
+        Trigger trigger = new Trigger();
         trigger.setId(DigestUtils.md5DigestAsHex("Test trigger".getBytes()));
         trigger.setTriggerId("db.test.trigger");
         trigger.setName("Test trigger");

@@ -42,7 +42,7 @@ public class MemoryMetricsQueue {
             metric.setPath(event.getMetric());
 
             metricRepository.save(metric);
-            log.debug("Create metric "+event.getMetric());
+            log.debug("Create metric " + event.getMetric());
         }
         Optional<ParameterGroup> optionalParameterGroup = parameterGroupRepository.findByMetricAndJson(metric, event.getParameters());
         if (optionalParameterGroup.isEmpty()) {
@@ -51,7 +51,7 @@ public class MemoryMetricsQueue {
             parameterGroup.setJson(event.getParameters());
 
             parameterGroupRepository.save(parameterGroup);
-            log.debug("Create parameter group "+event.getMetric()+" pg "+event.getParameters());
+            log.debug("Create parameter group " + event.getMetric() + " pg " + event.getParameters());
         }
     }
 
