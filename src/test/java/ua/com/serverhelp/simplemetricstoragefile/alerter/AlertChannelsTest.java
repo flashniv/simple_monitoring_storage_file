@@ -1,7 +1,10 @@
 package ua.com.serverhelp.simplemetricstoragefile.alerter;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
+import ua.com.serverhelp.simplemetricstoragefile.alerter.sender.DummyAlertSender;
 import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriority;
@@ -27,6 +30,6 @@ class AlertChannelsTest extends AbstractTest {
         alert.setAlertTimestamp(Instant.now());
         alert.setTrigger(trigger);
 
-        alertChannels.sendAlert(alert);
+        Assertions.assertTrue(alertChannels.sendAlert(alert));
     }
 }

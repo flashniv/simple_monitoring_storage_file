@@ -35,3 +35,4 @@ build/
 .mvn
 mvnw*
 src/main/resources/application.properties
+src/test/resources/db/migration/**

@@ -19,7 +19,7 @@ public class AlertChannels {
     @Autowired
     private AlertFilterRepository alertFilterRepository;
 
-    public void sendAlert(Alert alert) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public boolean sendAlert(Alert alert) throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<AlertChannel> alertChannels=alertChannelRepository.findAll();
         for (AlertChannel alertChannel:alertChannels){
             boolean pass=true;
@@ -34,6 +34,7 @@ public class AlertChannels {
                 alertSender.sendMessage(alert);
             }
         }
+        return true;
     }
 
     private AlertSender getAlertSender(AlertChannel alertChannel) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
