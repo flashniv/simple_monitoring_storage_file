@@ -58,6 +58,7 @@ class TriggerRestTest extends AbstractTest {
 
         Alert alert=new Alert();
         alert.setTrigger(trigger);
+        alert.setTriggerStatus(TriggerStatus.OK);
         alertRepository.save(alert);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/trigger/"+id)

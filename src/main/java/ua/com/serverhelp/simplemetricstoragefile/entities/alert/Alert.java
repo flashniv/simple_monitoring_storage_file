@@ -3,11 +3,9 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.alert;
 import lombok.Data;
 import lombok.ToString;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
@@ -21,4 +19,6 @@ public class Alert {
     private Trigger trigger;
     private Instant alertTimestamp = Instant.now();
     private String operationData;
+    @Enumerated(EnumType.STRING)
+    private TriggerStatus triggerStatus;
 }

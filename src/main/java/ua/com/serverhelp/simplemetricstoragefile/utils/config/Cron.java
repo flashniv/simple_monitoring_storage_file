@@ -108,6 +108,7 @@ public class Cron {
                 if (!checkFailed) {
                     Alert alert = new Alert();
                     alert.setTrigger(trigger);
+                    alert.setTriggerStatus(trigger.getLastStatus());
 
                     try {
                         alertChannels.sendAlert(alert);

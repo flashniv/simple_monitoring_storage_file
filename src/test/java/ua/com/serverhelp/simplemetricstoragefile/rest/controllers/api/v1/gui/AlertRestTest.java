@@ -40,6 +40,7 @@ class AlertRestTest extends AbstractTest {
         alert.setTrigger(trigger);
         alert.setOperationData("");
         alert.setAlertTimestamp(Instant.now());
+        alert.setTriggerStatus(TriggerStatus.UNCHECKED);
 
         alertRepository.save(alert);
 

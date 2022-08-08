@@ -24,6 +24,7 @@ class AlertChannelsTest extends AbstractTest {
         Alert alert = new Alert();
         alert.setAlertTimestamp(Instant.now());
         alert.setTrigger(trigger);
+        alert.setTriggerStatus(trigger.getLastStatus());
         return alert;
     }
 
