@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.DigestUtils;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
+import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriority;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
@@ -39,6 +40,32 @@ class TriggerRestTest extends AbstractTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").value("de884fcf16b2f1f9b233307a7f6678f1"));
+
+    }
+
+    @Test
+    void getTriggerDetails() throws Exception{
+        String id=DigestUtils.md5DigestAsHex("Test trigger".getBytes());
+        Trigger trigger = new Trigger();
+        trigger.setId(id);
+        trigger.setTriggerId("db.test.trigger");
+        trigger.setName("Test trigger");
+        trigger.setPriority(TriggerPriority.AVERAGE);
+        trigger.setConf("");
+        trigger.setLastStatus(TriggerStatus.OK);
+
+        triggerRepository.save(trigger);
+
+        Alert alert=new Alert();
+        alert.setTrigger(trigger);
+        alertRepository.save(alert);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/trigger/"+id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.triggerId").value("db.test.trigger"));
 
     }
 }
