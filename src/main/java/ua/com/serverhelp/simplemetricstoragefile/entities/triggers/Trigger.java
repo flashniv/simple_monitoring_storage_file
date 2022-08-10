@@ -32,6 +32,9 @@ public class Trigger {
     private Instant lastStatusUpdate = Instant.now();
 
     private Boolean enabled = true;
+    private Boolean suppressed = false;
+    @Column(name = "suppressedupdate")
+    private Instant suppressedUpdate;
 
     @Column(nullable = false)
     @Type(type = "text")

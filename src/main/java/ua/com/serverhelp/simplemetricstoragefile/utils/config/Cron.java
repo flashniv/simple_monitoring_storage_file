@@ -64,6 +64,20 @@ public class Cron {
         log.debug("Blackbox metrics processed");
     }
 
+    @Scheduled(initialDelay = 60000, fixedDelay = 7200000)
+    public void suppressIgnoredTriggers() {
+        List<String> triggerIds = alertRepository.getIgnoredAlerts();
+        List<Trigger> triggers = triggerRepository.findAllById(triggerIds);
+        for (Trigger trigger : triggers) {
+            trigger.setSuppressed(true);
+            trigger.setSuppressedUpdate(Instant.now());
+
+            log.info("Trigger suppressed " + trigger.getName());
+        }
+        triggerRepository.saveAll(triggers);
+        log.info("Trigger suppressed done");
+    }
+
     @Scheduled(initialDelay = 120000, fixedDelay = 90000)
     public void checkTriggers() {
         List<Trigger> triggers = triggerRepository.findAll();
@@ -79,7 +93,7 @@ public class Cron {
                     case UNCHECKED:
                     case FAILED:
                         trigger.setLastStatus(status ? TriggerStatus.OK : TriggerStatus.ERROR);
-                        modified = true;
+                        if (!status) modified = true;
                         break;
                     case OK:
                         if (!status) {
@@ -111,7 +125,9 @@ public class Cron {
                     alert.setTriggerStatus(trigger.getLastStatus());
 
                     try {
-                        alertChannels.sendAlert(alert);
+                        if(!trigger.getSuppressed()){
+                            alertChannels.sendAlert(alert);
+                        }
                     } catch (Exception e) {
                         log.error("Alert send error", e);
                     }

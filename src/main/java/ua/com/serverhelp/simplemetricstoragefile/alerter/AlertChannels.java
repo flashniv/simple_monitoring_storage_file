@@ -26,7 +26,6 @@ public class AlertChannels {
             for (AlertFilter alertFilter : alertChannel.getAlertFilters().stream().sorted(Comparator.comparingInt(AlertFilter::getPriority)).collect(Collectors.toList())) {
                 if (alert.getTrigger().getTriggerId().matches(alertFilter.getRegexp())) {
                     if (alertFilter.getAllow()) {
-                        System.out.println(alert);
                         AlertSender alertSender = getAlertSender(alertChannel);
                         alertSender.sendMessage(alert);
                     }
