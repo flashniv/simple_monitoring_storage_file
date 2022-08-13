@@ -90,7 +90,7 @@ public class DailyBooleanMetricRest {
                     "    },\n" +
                     "    \"arg2\":{\n" +
                     "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
-                    "      \"parameters\":{\"value\":86400.0}\n" +
+                    "      \"parameters\":{\"value\":90000.0}\n" +
                     "    }\n" +
                     "  }\n" +
                     "}\n", dirName, path, "{}"));

@@ -1,63 +1,63 @@
 # HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
 # TYPE go_gc_duration_seconds summary
-go_gc_duration_seconds{quantile="0"} 1.167e-05
-go_gc_duration_seconds{quantile="0.25"} 2.0205e-05
-go_gc_duration_seconds{quantile="0.5"} 2.5202e-05
-go_gc_duration_seconds{quantile="0.75"} 3.3495e-05
-go_gc_duration_seconds{quantile="1"} 9.5811e-05
-go_gc_duration_seconds_sum 27.476273678
-go_gc_duration_seconds_count 617732
+go_gc_duration_seconds{quantile="0"} 1.4639e-05
+go_gc_duration_seconds{quantile="0.25"} 2.4935e-05
+go_gc_duration_seconds{quantile="0.5"} 2.8183e-05
+go_gc_duration_seconds{quantile="0.75"} 3.1199e-05
+go_gc_duration_seconds{quantile="1"} 5.6426e-05
+go_gc_duration_seconds_sum 0.001327309
+go_gc_duration_seconds_count 45
 # HELP go_goroutines Number of goroutines that currently exist.
 # TYPE go_goroutines gauge
-go_goroutines 9
+go_goroutines 11
 # HELP go_info Information about the Go environment.
 # TYPE go_info gauge
 go_info{version="go1.17.3"} 1
 # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
 # TYPE go_memstats_alloc_bytes gauge
-go_memstats_alloc_bytes 2.985288e+06
+go_memstats_alloc_bytes 1.783328e+06
 # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
 # TYPE go_memstats_alloc_bytes_total counter
-go_memstats_alloc_bytes_total 1.420802503064e+12
+go_memstats_alloc_bytes_total 1.3185228e+08
 # HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
 # TYPE go_memstats_buck_hash_sys_bytes gauge
-go_memstats_buck_hash_sys_bytes 1.772696e+06
+go_memstats_buck_hash_sys_bytes 1.478512e+06
 # HELP go_memstats_frees_total Total number of frees.
 # TYPE go_memstats_frees_total counter
-go_memstats_frees_total 1.8422467761e+10
+go_memstats_frees_total 1.647694e+06
 # HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.
 # TYPE go_memstats_gc_cpu_fraction gauge
-go_memstats_gc_cpu_fraction 4.076411324103143e-05
+go_memstats_gc_cpu_fraction 2.745982063933482e-05
 # HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
 # TYPE go_memstats_gc_sys_bytes gauge
-go_memstats_gc_sys_bytes 5.252344e+06
+go_memstats_gc_sys_bytes 5.09012e+06
 # HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
 # TYPE go_memstats_heap_alloc_bytes gauge
-go_memstats_heap_alloc_bytes 2.985288e+06
+go_memstats_heap_alloc_bytes 1.783328e+06
 # HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
 # TYPE go_memstats_heap_idle_bytes gauge
-go_memstats_heap_idle_bytes 1.5147008e+07
+go_memstats_heap_idle_bytes 1.2427264e+07
 # HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
 # TYPE go_memstats_heap_inuse_bytes gauge
-go_memstats_heap_inuse_bytes 4.644864e+06
+go_memstats_heap_inuse_bytes 3.432448e+06
 # HELP go_memstats_heap_objects Number of allocated objects.
 # TYPE go_memstats_heap_objects gauge
-go_memstats_heap_objects 6808
+go_memstats_heap_objects 5131
 # HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
 # TYPE go_memstats_heap_released_bytes gauge
-go_memstats_heap_released_bytes 1.3533184e+07
+go_memstats_heap_released_bytes 1.1534336e+07
 # HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
 # TYPE go_memstats_heap_sys_bytes gauge
-go_memstats_heap_sys_bytes 1.9791872e+07
+go_memstats_heap_sys_bytes 1.5859712e+07
 # HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
 # TYPE go_memstats_last_gc_time_seconds gauge
-go_memstats_last_gc_time_seconds 1.6603757055646496e+09
+go_memstats_last_gc_time_seconds 1.6603766806033754e+09
 # HELP go_memstats_lookups_total Total number of pointer lookups.
 # TYPE go_memstats_lookups_total counter
 go_memstats_lookups_total 0
 # HELP go_memstats_mallocs_total Total number of mallocs.
 # TYPE go_memstats_mallocs_total counter
-go_memstats_mallocs_total 1.8422474569e+10
+go_memstats_mallocs_total 1.652825e+06
 # HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
 # TYPE go_memstats_mcache_inuse_bytes gauge
 go_memstats_mcache_inuse_bytes 19200
@@ -66,144 +66,112 @@ go_memstats_mcache_inuse_bytes 19200
 go_memstats_mcache_sys_bytes 32768
 # HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
 # TYPE go_memstats_mspan_inuse_bytes gauge
-go_memstats_mspan_inuse_bytes 231064
+go_memstats_mspan_inuse_bytes 246704
 # HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
 # TYPE go_memstats_mspan_sys_bytes gauge
-go_memstats_mspan_sys_bytes 376832
+go_memstats_mspan_sys_bytes 278528
 # HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
 # TYPE go_memstats_next_gc_bytes gauge
-go_memstats_next_gc_bytes 5.7876e+06
+go_memstats_next_gc_bytes 4.194304e+06
 # HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
 # TYPE go_memstats_other_sys_bytes gauge
-go_memstats_other_sys_bytes 3.396216e+06
+go_memstats_other_sys_bytes 3.42664e+06
 # HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
 # TYPE go_memstats_stack_inuse_bytes gauge
-go_memstats_stack_inuse_bytes 1.179648e+06
+go_memstats_stack_inuse_bytes 917504
 # HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
 # TYPE go_memstats_stack_sys_bytes gauge
-go_memstats_stack_sys_bytes 1.179648e+06
+go_memstats_stack_sys_bytes 917504
 # HELP go_memstats_sys_bytes Number of bytes obtained from system.
 # TYPE go_memstats_sys_bytes gauge
-go_memstats_sys_bytes 3.1802376e+07
+go_memstats_sys_bytes 2.7083784e+07
 # HELP go_threads Number of OS threads created.
 # TYPE go_threads gauge
-go_threads 21
+go_threads 20
 # HELP namedprocess_namegroup_context_switches_total Context switches
 # TYPE namedprocess_namegroup_context_switches_total counter
-namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clckhouse-watch"} 2209
-namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv"} 2.686019382e+09
-namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="loaderd"} 354552
-namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="octologsd"} 1.37402253e+08
-namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="supervisorctl"} 10
-namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="tail"} 29
-namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="clckhouse-watch"} 548
-namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv"} 6.45636557346e+11
-namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="loaderd"} 3.750549e+07
-namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="octologsd"} 4.1841179373e+10
-namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="supervisorctl"} 20
-namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="tail"} 28510
+namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clckhouse-watch"} 0
+namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv"} 109375
+namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="loaderd"} 1
+namedprocess_namegroup_context_switches_total{ctxswitchtype="nonvoluntary",groupname="octologsd"} 19289
+namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="clckhouse-watch"} 0
+namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv"} 1.8742581e+07
+namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="loaderd"} 1692
+namedprocess_namegroup_context_switches_total{ctxswitchtype="voluntary",groupname="octologsd"} 404852
 # HELP namedprocess_namegroup_cpu_seconds_total Cpu user usage in seconds
 # TYPE namedprocess_namegroup_cpu_seconds_total counter
-namedprocess_namegroup_cpu_seconds_total{groupname="clckhouse-watch",mode="system"} 0.3200000000000001
-namedprocess_namegroup_cpu_seconds_total{groupname="clckhouse-watch",mode="user"} 0.4500000000000002
-namedprocess_namegroup_cpu_seconds_total{groupname="clickhouse-serv",mode="system"} 3.2241261399999987e+06
-namedprocess_namegroup_cpu_seconds_total{groupname="clickhouse-serv",mode="user"} 3.5862742799999863e+06
-namedprocess_namegroup_cpu_seconds_total{groupname="loaderd",mode="system"} 180.47999999998044
-namedprocess_namegroup_cpu_seconds_total{groupname="loaderd",mode="user"} 2543.3200000015513
-namedprocess_namegroup_cpu_seconds_total{groupname="octologsd",mode="system"} 150647.82000000175
-namedprocess_namegroup_cpu_seconds_total{groupname="octologsd",mode="user"} 1.2665345299999912e+06
-namedprocess_namegroup_cpu_seconds_total{groupname="supervisorctl",mode="system"} 0.01
-namedprocess_namegroup_cpu_seconds_total{groupname="supervisorctl",mode="user"} 0.12
-namedprocess_namegroup_cpu_seconds_total{groupname="tail",mode="system"} 0.27000000000000013
-namedprocess_namegroup_cpu_seconds_total{groupname="tail",mode="user"} 0.11
+namedprocess_namegroup_cpu_seconds_total{groupname="clckhouse-watch",mode="system"} 0
+namedprocess_namegroup_cpu_seconds_total{groupname="clckhouse-watch",mode="user"} 0
+namedprocess_namegroup_cpu_seconds_total{groupname="clickhouse-serv",mode="system"} 110.05
+namedprocess_namegroup_cpu_seconds_total{groupname="clickhouse-serv",mode="user"} 110.61
+namedprocess_namegroup_cpu_seconds_total{groupname="loaderd",mode="system"} 0
+namedprocess_namegroup_cpu_seconds_total{groupname="loaderd",mode="user"} 0.03999999999999204
+namedprocess_namegroup_cpu_seconds_total{groupname="octologsd",mode="system"} 7.040000000000873
+namedprocess_namegroup_cpu_seconds_total{groupname="octologsd",mode="user"} 190.70999999999185
 # HELP namedprocess_namegroup_major_page_faults_total Major page faults
 # TYPE namedprocess_namegroup_major_page_faults_total counter
-namedprocess_namegroup_major_page_faults_total{groupname="clckhouse-watch"} 70
-namedprocess_namegroup_major_page_faults_total{groupname="clickhouse-serv"} 5257
-namedprocess_namegroup_major_page_faults_total{groupname="loaderd"} 255
-namedprocess_namegroup_major_page_faults_total{groupname="octologsd"} 255
-namedprocess_namegroup_major_page_faults_total{groupname="supervisorctl"} 0
-namedprocess_namegroup_major_page_faults_total{groupname="tail"} 1
+namedprocess_namegroup_major_page_faults_total{groupname="clckhouse-watch"} 0
+namedprocess_namegroup_major_page_faults_total{groupname="clickhouse-serv"} 0
+namedprocess_namegroup_major_page_faults_total{groupname="loaderd"} 0
+namedprocess_namegroup_major_page_faults_total{groupname="octologsd"} 0
 # HELP namedprocess_namegroup_memory_bytes number of bytes of memory in use
 # TYPE namedprocess_namegroup_memory_bytes gauge
-namedprocess_namegroup_memory_bytes{groupname="clckhouse-watch",memtype="proportionalResident"} 3.4077696e+07
+namedprocess_namegroup_memory_bytes{groupname="clckhouse-watch",memtype="proportionalResident"} 3.4056192e+07
 namedprocess_namegroup_memory_bytes{groupname="clckhouse-watch",memtype="proportionalSwapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="clckhouse-watch",memtype="resident"} 6.434816e+07
+namedprocess_namegroup_memory_bytes{groupname="clckhouse-watch",memtype="resident"} 6.4339968e+07
 namedprocess_namegroup_memory_bytes{groupname="clckhouse-watch",memtype="swapped"} 0
 namedprocess_namegroup_memory_bytes{groupname="clckhouse-watch",memtype="virtual"} 4.07760896e+08
-namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="proportionalResident"} 1.129206784e+09
+namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="proportionalResident"} 1.731274752e+09
 namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="proportionalSwapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="resident"} 1.138323456e+09
+namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="resident"} 1.747460096e+09
 namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="swapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="virtual"} 3.44375296e+09
+namedprocess_namegroup_memory_bytes{groupname="clickhouse-serv",memtype="virtual"} 4.454662144e+09
 namedprocess_namegroup_memory_bytes{groupname="loaderd",memtype="proportionalResident"} 1.31325952e+08
 namedprocess_namegroup_memory_bytes{groupname="loaderd",memtype="proportionalSwapped"} 0
 namedprocess_namegroup_memory_bytes{groupname="loaderd",memtype="resident"} 1.29806336e+08
 namedprocess_namegroup_memory_bytes{groupname="loaderd",memtype="swapped"} 0
 namedprocess_namegroup_memory_bytes{groupname="loaderd",memtype="virtual"} 1.441050624e+09
-namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="proportionalResident"} 5.480640512e+09
+namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="proportionalResident"} 7.580680192e+09
 namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="proportionalSwapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="resident"} 5.479006208e+09
+namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="resident"} 7.577800704e+09
 namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="swapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="virtual"} 9.435611136e+09
-namedprocess_namegroup_memory_bytes{groupname="supervisorctl",memtype="proportionalResident"} 0
-namedprocess_namegroup_memory_bytes{groupname="supervisorctl",memtype="proportionalSwapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="supervisorctl",memtype="resident"} 0
-namedprocess_namegroup_memory_bytes{groupname="supervisorctl",memtype="swapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="supervisorctl",memtype="virtual"} 0
-namedprocess_namegroup_memory_bytes{groupname="tail",memtype="proportionalResident"} 0
-namedprocess_namegroup_memory_bytes{groupname="tail",memtype="proportionalSwapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="tail",memtype="resident"} 0
-namedprocess_namegroup_memory_bytes{groupname="tail",memtype="swapped"} 0
-namedprocess_namegroup_memory_bytes{groupname="tail",memtype="virtual"} 0
+namedprocess_namegroup_memory_bytes{groupname="octologsd",memtype="virtual"} 9.506983936e+09
 # HELP namedprocess_namegroup_minor_page_faults_total Minor page faults
 # TYPE namedprocess_namegroup_minor_page_faults_total counter
-namedprocess_namegroup_minor_page_faults_total{groupname="clckhouse-watch"} 460425
-namedprocess_namegroup_minor_page_faults_total{groupname="clickhouse-serv"} 3.2081763995e+10
-namedprocess_namegroup_minor_page_faults_total{groupname="loaderd"} 7.425744e+06
-namedprocess_namegroup_minor_page_faults_total{groupname="octologsd"} 6.76399251e+08
-namedprocess_namegroup_minor_page_faults_total{groupname="supervisorctl"} 7433
-namedprocess_namegroup_minor_page_faults_total{groupname="tail"} 1094
+namedprocess_namegroup_minor_page_faults_total{groupname="clckhouse-watch"} 0
+namedprocess_namegroup_minor_page_faults_total{groupname="clickhouse-serv"} 115881
+namedprocess_namegroup_minor_page_faults_total{groupname="loaderd"} 0
+namedprocess_namegroup_minor_page_faults_total{groupname="octologsd"} 348056
 # HELP namedprocess_namegroup_num_procs number of processes in this group
 # TYPE namedprocess_namegroup_num_procs gauge
 namedprocess_namegroup_num_procs{groupname="clckhouse-watch"} 1
 namedprocess_namegroup_num_procs{groupname="clickhouse-serv"} 1
 namedprocess_namegroup_num_procs{groupname="loaderd"} 1
 namedprocess_namegroup_num_procs{groupname="octologsd"} 1
-namedprocess_namegroup_num_procs{groupname="supervisorctl"} 0
-namedprocess_namegroup_num_procs{groupname="tail"} 0
 # HELP namedprocess_namegroup_num_threads Number of threads
 # TYPE namedprocess_namegroup_num_threads gauge
 namedprocess_namegroup_num_threads{groupname="clckhouse-watch"} 1
-namedprocess_namegroup_num_threads{groupname="clickhouse-serv"} 177
+namedprocess_namegroup_num_threads{groupname="clickhouse-serv"} 197
 namedprocess_namegroup_num_threads{groupname="loaderd"} 18
 namedprocess_namegroup_num_threads{groupname="octologsd"} 25
-namedprocess_namegroup_num_threads{groupname="supervisorctl"} 0
-namedprocess_namegroup_num_threads{groupname="tail"} 0
 # HELP namedprocess_namegroup_oldest_start_time_seconds start time in seconds since 1970/01/01 of oldest process in group
 # TYPE namedprocess_namegroup_oldest_start_time_seconds gauge
-namedprocess_namegroup_oldest_start_time_seconds{groupname="clckhouse-watch"} 1.660375658e+09
-namedprocess_namegroup_oldest_start_time_seconds{groupname="clickhouse-serv"} 1.660375658e+09
+namedprocess_namegroup_oldest_start_time_seconds{groupname="clckhouse-watch"} 1.660376455e+09
+namedprocess_namegroup_oldest_start_time_seconds{groupname="clickhouse-serv"} 1.660376455e+09
 namedprocess_namegroup_oldest_start_time_seconds{groupname="loaderd"} 1.660241785e+09
 namedprocess_namegroup_oldest_start_time_seconds{groupname="octologsd"} 1.660241772e+09
-namedprocess_namegroup_oldest_start_time_seconds{groupname="supervisorctl"} -6.21355968e+10
-namedprocess_namegroup_oldest_start_time_seconds{groupname="tail"} -6.21355968e+10
 # HELP namedprocess_namegroup_open_filedesc number of open file descriptors for this group
 # TYPE namedprocess_namegroup_open_filedesc gauge
 namedprocess_namegroup_open_filedesc{groupname="clckhouse-watch"} 7
-namedprocess_namegroup_open_filedesc{groupname="clickhouse-serv"} 151
+namedprocess_namegroup_open_filedesc{groupname="clickhouse-serv"} 154
 namedprocess_namegroup_open_filedesc{groupname="loaderd"} 13
-namedprocess_namegroup_open_filedesc{groupname="octologsd"} 13303
-namedprocess_namegroup_open_filedesc{groupname="supervisorctl"} 0
-namedprocess_namegroup_open_filedesc{groupname="tail"} 0
+namedprocess_namegroup_open_filedesc{groupname="octologsd"} 53599
 # HELP namedprocess_namegroup_read_bytes_total number of bytes read by this group
 # TYPE namedprocess_namegroup_read_bytes_total counter
-namedprocess_namegroup_read_bytes_total{groupname="clckhouse-watch"} 3.035136e+06
-namedprocess_namegroup_read_bytes_total{groupname="clickhouse-serv"} 1.0840176365568e+13
-namedprocess_namegroup_read_bytes_total{groupname="loaderd"} 2.4793088e+07
-namedprocess_namegroup_read_bytes_total{groupname="octologsd"} 1.2709888e+07
-namedprocess_namegroup_read_bytes_total{groupname="supervisorctl"} 0
-namedprocess_namegroup_read_bytes_total{groupname="tail"} 8192
+namedprocess_namegroup_read_bytes_total{groupname="clckhouse-watch"} 0
+namedprocess_namegroup_read_bytes_total{groupname="clickhouse-serv"} 2.85769728e+08
+namedprocess_namegroup_read_bytes_total{groupname="loaderd"} 0
+namedprocess_namegroup_read_bytes_total{groupname="octologsd"} 0
 # HELP namedprocess_namegroup_states Number of processes in states Running, Sleeping, Waiting, Zombie, or Other
 # TYPE namedprocess_namegroup_states gauge
 namedprocess_namegroup_states{groupname="clckhouse-watch",state="Other"} 0
@@ -213,8 +181,8 @@ namedprocess_namegroup_states{groupname="clckhouse-watch",state="Waiting"} 0
 namedprocess_namegroup_states{groupname="clckhouse-watch",state="Zombie"} 0
 namedprocess_namegroup_states{groupname="clickhouse-serv",state="Other"} 0
 namedprocess_namegroup_states{groupname="clickhouse-serv",state="Running"} 1
-namedprocess_namegroup_states{groupname="clickhouse-serv",state="Sleeping"} 176
-namedprocess_namegroup_states{groupname="clickhouse-serv",state="Waiting"} 1
+namedprocess_namegroup_states{groupname="clickhouse-serv",state="Sleeping"} 193
+namedprocess_namegroup_states{groupname="clickhouse-serv",state="Waiting"} 4
 namedprocess_namegroup_states{groupname="clickhouse-serv",state="Zombie"} 0
 namedprocess_namegroup_states{groupname="loaderd",state="Other"} 0
 namedprocess_namegroup_states{groupname="loaderd",state="Running"} 0
@@ -226,130 +194,115 @@ namedprocess_namegroup_states{groupname="octologsd",state="Running"} 0
 namedprocess_namegroup_states{groupname="octologsd",state="Sleeping"} 26
 namedprocess_namegroup_states{groupname="octologsd",state="Waiting"} 0
 namedprocess_namegroup_states{groupname="octologsd",state="Zombie"} 0
-namedprocess_namegroup_states{groupname="supervisorctl",state="Other"} 0
-namedprocess_namegroup_states{groupname="supervisorctl",state="Running"} 0
-namedprocess_namegroup_states{groupname="supervisorctl",state="Sleeping"} 0
-namedprocess_namegroup_states{groupname="supervisorctl",state="Waiting"} 0
-namedprocess_namegroup_states{groupname="supervisorctl",state="Zombie"} 0
-namedprocess_namegroup_states{groupname="tail",state="Other"} 0
-namedprocess_namegroup_states{groupname="tail",state="Running"} 0
-namedprocess_namegroup_states{groupname="tail",state="Sleeping"} 0
-namedprocess_namegroup_states{groupname="tail",state="Waiting"} 0
-namedprocess_namegroup_states{groupname="tail",state="Zombie"} 0
 # HELP namedprocess_namegroup_thread_context_switches_total Context switches for these threads
 # TYPE namedprocess_namegroup_thread_context_switches_total counter
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="BgSchPool"} 485827
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="BgSchPool/D"} 6.543165e+06
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="ExterLdrReload"} 5028
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="SystemLogFlush"} 116
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="clickhouse-serv"} 2.392757e+06
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="loaderd",threadname="loaderd"} 354518
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="octologsd",threadname="octologsd"} 1.37395613e+08
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="BgSchPool"} 1.144401481e+09
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="BgSchPool/D"} 4.52176059e+08
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="ExterLdrReload"} 564324
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="SystemLogFlush"} 9999
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="clickhouse-serv"} 4.74522389e+08
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="loaderd",threadname="loaderd"} 3.7502711e+07
-namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="octologsd",threadname="octologsd"} 4.1838513766e+10
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="BgSchPool"} 2308
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="BgSchPool/D"} 102412
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="ExterLdrReload"} 0
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="SystemLogFlush"} 0
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="clickhouse-serv",threadname="clickhouse-serv"} 4301
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="loaderd",threadname="loaderd"} 1
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="nonvoluntary",groupname="octologsd",threadname="octologsd"} 19289
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="BgSchPool"} 1.0997312e+07
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="BgSchPool/D"} 5.542801e+06
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="ExterLdrReload"} 44
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="SystemLogFlush"} 42
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="clickhouse-serv",threadname="clickhouse-serv"} 2.181195e+06
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="loaderd",threadname="loaderd"} 1692
+namedprocess_namegroup_thread_context_switches_total{ctxswitchtype="voluntary",groupname="octologsd",threadname="octologsd"} 404852
 # HELP namedprocess_namegroup_thread_count Number of threads in this group with same threadname
 # TYPE namedprocess_namegroup_thread_count gauge
-namedprocess_namegroup_thread_count{groupname="clickhouse-serv",threadname="BgSchPool"} 128
+namedprocess_namegroup_thread_count{groupname="clickhouse-serv",threadname="BgSchPool"} 141
 namedprocess_namegroup_thread_count{groupname="clickhouse-serv",threadname="BgSchPool/D"} 1
 namedprocess_namegroup_thread_count{groupname="clickhouse-serv",threadname="ExterLdrReload"} 2
 namedprocess_namegroup_thread_count{groupname="clickhouse-serv",threadname="SystemLogFlush"} 3
-namedprocess_namegroup_thread_count{groupname="clickhouse-serv",threadname="clickhouse-serv"} 43
+namedprocess_namegroup_thread_count{groupname="clickhouse-serv",threadname="clickhouse-serv"} 50
 namedprocess_namegroup_thread_count{groupname="loaderd",threadname="loaderd"} 18
 namedprocess_namegroup_thread_count{groupname="octologsd",threadname="octologsd"} 25
 # HELP namedprocess_namegroup_thread_cpu_seconds_total Cpu user/system usage in seconds
 # TYPE namedprocess_namegroup_thread_cpu_seconds_total counter
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="BgSchPool"} 6106.150000000003
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="BgSchPool/D"} 1620.15
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="ExterLdrReload"} 31.230000000000064
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="SystemLogFlush"} 0.07
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="clickhouse-serv"} 6182.539999999914
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="BgSchPool"} 6968.9999999999945
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="BgSchPool/D"} 713.7499999999993
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="ExterLdrReload"} 36.639999999999695
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="SystemLogFlush"} 0.21000000000000002
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="clickhouse-serv"} 6313.640000000006
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="loaderd",mode="system",threadname="loaderd"} 180.3799999999782
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="loaderd",mode="user",threadname="loaderd"} 2541.9500000015264
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="octologsd",mode="system",threadname="octologsd"} 155232.30999999738
-namedprocess_namegroup_thread_cpu_seconds_total{groupname="octologsd",mode="user",threadname="octologsd"} 1.2618707199999858e+06
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="BgSchPool"} 63.37000000000003
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="BgSchPool/D"} 18.66
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="ExterLdrReload"} 0
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="SystemLogFlush"} 0
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="system",threadname="clickhouse-serv"} 27.659999999999997
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="BgSchPool"} 74.03000000000002
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="BgSchPool/D"} 8.32
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="ExterLdrReload"} 0
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="SystemLogFlush"} 0
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="clickhouse-serv",mode="user",threadname="clickhouse-serv"} 28.130000000000003
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="loaderd",mode="system",threadname="loaderd"} 0.010000000000000231
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="loaderd",mode="user",threadname="loaderd"} 0.05999999999999872
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="octologsd",mode="system",threadname="octologsd"} 7.130000000000194
+namedprocess_namegroup_thread_cpu_seconds_total{groupname="octologsd",mode="user",threadname="octologsd"} 190.5199999999984
 # HELP namedprocess_namegroup_thread_io_bytes_total number of bytes read/written by these threads
 # TYPE namedprocess_namegroup_thread_io_bytes_total counter
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="BgSchPool"} 1.7976184832e+10
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="BgSchPool"} 6.0637184e+07
 namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="BgSchPool/D"} 0
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="ExterLdrReload"} 4.284416e+06
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="SystemLogFlush"} 122880
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="clickhouse-serv"} 1.78839740416e+11
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="BgSchPool"} 1.165819904e+09
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="ExterLdrReload"} 0
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="SystemLogFlush"} 0
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="read",threadname="clickhouse-serv"} 2.23154176e+08
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="BgSchPool"} 0
 namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="BgSchPool/D"} 0
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="ExterLdrReload"} 4.8570368e+07
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="SystemLogFlush"} 1.923072e+07
-namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="clickhouse-serv"} 2.931560448e+09
-namedprocess_namegroup_thread_io_bytes_total{groupname="loaderd",iomode="read",threadname="loaderd"} 2.3453696e+07
-namedprocess_namegroup_thread_io_bytes_total{groupname="loaderd",iomode="write",threadname="loaderd"} 5.934411776e+09
-namedprocess_namegroup_thread_io_bytes_total{groupname="octologsd",iomode="read",threadname="octologsd"} 8.45824e+06
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="ExterLdrReload"} 0
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="SystemLogFlush"} 0
+namedprocess_namegroup_thread_io_bytes_total{groupname="clickhouse-serv",iomode="write",threadname="clickhouse-serv"} 282624
+namedprocess_namegroup_thread_io_bytes_total{groupname="loaderd",iomode="read",threadname="loaderd"} 0
+namedprocess_namegroup_thread_io_bytes_total{groupname="loaderd",iomode="write",threadname="loaderd"} 0
+namedprocess_namegroup_thread_io_bytes_total{groupname="octologsd",iomode="read",threadname="octologsd"} 0
 namedprocess_namegroup_thread_io_bytes_total{groupname="octologsd",iomode="write",threadname="octologsd"} 0
 # HELP namedprocess_namegroup_thread_major_page_faults_total Major page faults for these threads
 # TYPE namedprocess_namegroup_thread_major_page_faults_total counter
-namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="BgSchPool"} 12
+namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="BgSchPool"} 0
 namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="BgSchPool/D"} 0
-namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="ExterLdrReload"} 56
+namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="ExterLdrReload"} 0
 namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="SystemLogFlush"} 0
-namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="clickhouse-serv"} 22
-namedprocess_namegroup_thread_major_page_faults_total{groupname="loaderd",threadname="loaderd"} 236
-namedprocess_namegroup_thread_major_page_faults_total{groupname="octologsd",threadname="octologsd"} 185
+namedprocess_namegroup_thread_major_page_faults_total{groupname="clickhouse-serv",threadname="clickhouse-serv"} 0
+namedprocess_namegroup_thread_major_page_faults_total{groupname="loaderd",threadname="loaderd"} 0
+namedprocess_namegroup_thread_major_page_faults_total{groupname="octologsd",threadname="octologsd"} 0
 # HELP namedprocess_namegroup_thread_minor_page_faults_total Minor page faults for these threads
 # TYPE namedprocess_namegroup_thread_minor_page_faults_total counter
-namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="BgSchPool"} 4.4906e+06
-namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="BgSchPool/D"} 61446
-namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="ExterLdrReload"} 29333
-namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="SystemLogFlush"} 1249
-namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="clickhouse-serv"} 3.0322823e+07
-namedprocess_namegroup_thread_minor_page_faults_total{groupname="loaderd",threadname="loaderd"} 7.404776e+06
-namedprocess_namegroup_thread_minor_page_faults_total{groupname="octologsd",threadname="octologsd"} 6.75944161e+08
+namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="BgSchPool"} 33059
+namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="BgSchPool/D"} 1082
+namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="ExterLdrReload"} 0
+namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="SystemLogFlush"} 0
+namedprocess_namegroup_thread_minor_page_faults_total{groupname="clickhouse-serv",threadname="clickhouse-serv"} 80970
+namedprocess_namegroup_thread_minor_page_faults_total{groupname="loaderd",threadname="loaderd"} 0
+namedprocess_namegroup_thread_minor_page_faults_total{groupname="octologsd",threadname="octologsd"} 348053
 # HELP namedprocess_namegroup_threads_wchan Number of threads in this group waiting on each wchan
 # TYPE namedprocess_namegroup_threads_wchan gauge
 namedprocess_namegroup_threads_wchan{groupname="clckhouse-watch",wchan="do_wait"} 1
-namedprocess_namegroup_threads_wchan{groupname="clickhouse-serv",wchan="futex_wait_queue_me"} 174
-namedprocess_namegroup_threads_wchan{groupname="clickhouse-serv",wchan="generic_file_read_iter"} 1
+namedprocess_namegroup_threads_wchan{groupname="clickhouse-serv",wchan="futex_wait_queue_me"} 192
+namedprocess_namegroup_threads_wchan{groupname="clickhouse-serv",wchan="generic_file_read_iter"} 4
 namedprocess_namegroup_threads_wchan{groupname="clickhouse-serv",wchan="pipe_wait"} 1
 namedprocess_namegroup_threads_wchan{groupname="loaderd",wchan="ep_poll"} 1
 namedprocess_namegroup_threads_wchan{groupname="loaderd",wchan="futex_wait_queue_me"} 18
 namedprocess_namegroup_threads_wchan{groupname="octologsd",wchan="ep_poll"} 1
 namedprocess_namegroup_threads_wchan{groupname="octologsd",wchan="futex_wait_queue_me"} 24
-namedprocess_namegroup_threads_wchan{groupname="octologsd",wchan="hrtimer_nanosleep"} 1
 # HELP namedprocess_namegroup_worst_fd_ratio the worst (closest to 1) ratio between open fds and max fds among all procs in this group
 # TYPE namedprocess_namegroup_worst_fd_ratio gauge
 namedprocess_namegroup_worst_fd_ratio{groupname="clckhouse-watch"} 1.4e-05
-namedprocess_namegroup_worst_fd_ratio{groupname="clickhouse-serv"} 0.000302
+namedprocess_namegroup_worst_fd_ratio{groupname="clickhouse-serv"} 0.000308
 namedprocess_namegroup_worst_fd_ratio{groupname="loaderd"} 0.0001983642578125
-namedprocess_namegroup_worst_fd_ratio{groupname="octologsd"} 0.2029876708984375
-namedprocess_namegroup_worst_fd_ratio{groupname="supervisorctl"} 0
-namedprocess_namegroup_worst_fd_ratio{groupname="tail"} 0
+namedprocess_namegroup_worst_fd_ratio{groupname="octologsd"} 0.8178558349609375
 # HELP namedprocess_namegroup_write_bytes_total number of bytes written by this group
 # TYPE namedprocess_namegroup_write_bytes_total counter
-namedprocess_namegroup_write_bytes_total{groupname="clckhouse-watch"} 1.96608e+06
-namedprocess_namegroup_write_bytes_total{groupname="clickhouse-serv"} 9.878046060544e+12
-namedprocess_namegroup_write_bytes_total{groupname="loaderd"} 5.934411776e+09
-namedprocess_namegroup_write_bytes_total{groupname="octologsd"} 32768
-namedprocess_namegroup_write_bytes_total{groupname="supervisorctl"} 0
-namedprocess_namegroup_write_bytes_total{groupname="tail"} 0
+namedprocess_namegroup_write_bytes_total{groupname="clckhouse-watch"} 0
+namedprocess_namegroup_write_bytes_total{groupname="clickhouse-serv"} 282624
+namedprocess_namegroup_write_bytes_total{groupname="loaderd"} 0
+namedprocess_namegroup_write_bytes_total{groupname="octologsd"} 0
 # HELP namedprocess_scrape_errors general scrape errors: no proc metrics collected during a cycle
 # TYPE namedprocess_scrape_errors counter
 namedprocess_scrape_errors 0
 # HELP namedprocess_scrape_partial_errors incremented each time a tracked proc's metrics collection fails partially, e.g. unreadable I/O stats
 # TYPE namedprocess_scrape_partial_errors counter
-namedprocess_scrape_partial_errors 2
+namedprocess_scrape_partial_errors 0
 # HELP namedprocess_scrape_procread_errors incremented each time a proc's metrics collection fails
 # TYPE namedprocess_scrape_procread_errors counter
 namedprocess_scrape_procread_errors 0
 # HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
 # TYPE process_cpu_seconds_total counter
-process_cpu_seconds_total 19464.38
+process_cpu_seconds_total 1.59
 # HELP process_exporter_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which process_exporter was built.
 # TYPE process_exporter_build_info gauge
 process_exporter_build_info{branch="",goversion="go1.17.3",revision="935906b20e56b70afc22443137fa0337f7fa5d05",version="0.7.10"} 1
@@ -361,13 +314,13 @@ process_max_fds 1024
 process_open_fds 10
 # HELP process_resident_memory_bytes Resident memory size in bytes.
 # TYPE process_resident_memory_bytes gauge
-process_resident_memory_bytes 1.7670144e+07
+process_resident_memory_bytes 1.7334272e+07
 # HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
 # TYPE process_start_time_seconds gauge
-process_start_time_seconds 1.65902280091e+09
+process_start_time_seconds 1.66037658421e+09
 # HELP process_virtual_memory_bytes Virtual memory size in bytes.
 # TYPE process_virtual_memory_bytes gauge
-process_virtual_memory_bytes 2.185183232e+09
+process_virtual_memory_bytes 2.109157376e+09
 # HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
 # TYPE process_virtual_memory_max_bytes gauge
 process_virtual_memory_max_bytes 1.8446744073709552e+19
@@ -376,6 +329,6 @@ process_virtual_memory_max_bytes 1.8446744073709552e+19
 promhttp_metric_handler_requests_in_flight 1
 # HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
 # TYPE promhttp_metric_handler_requests_total counter
-promhttp_metric_handler_requests_total{code="200"} 90196
+promhttp_metric_handler_requests_total{code="200"} 8
 promhttp_metric_handler_requests_total{code="500"} 0
 promhttp_metric_handler_requests_total{code="503"} 0

@@ -55,10 +55,11 @@ public abstract class AbstractMetricRest {
             input = input.replace(" ", ";;");
         }
         String[] parts = input.split(";");
+        String parameterGroup = parseParameterGroup(parts[2]);
         //create response container
-        Event event = new Event(parts[1], parseParameterGroup(parts[2]), Instant.parse(parts[0]).getEpochSecond(), Double.parseDouble(parts[3]));
+        Event event = new Event(parts[1], parameterGroup, Instant.parse(parts[0]).getEpochSecond(), Double.parseDouble(parts[3]));
         memoryMetricsQueue.putEvent(event);
-        createTriggerIfNotExist(parts[1], parseParameterGroup(parts[2]));
+        createTriggerIfNotExist(parts[1], parameterGroup);
     }
 
     protected abstract void createTriggerIfNotExist(String path, String params);
