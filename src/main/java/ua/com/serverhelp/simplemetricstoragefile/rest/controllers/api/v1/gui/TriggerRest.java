@@ -1,6 +1,5 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.gui;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,16 +27,24 @@ public class TriggerRest {
     public ResponseEntity<List<Trigger>> getTriggers() throws NotFoundError, InternalServerError {
         return ResponseEntity.ok(triggerRepository.findAll());
     }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getTriggerDetails(@PathVariable String id) throws NotFoundError, InternalServerError {
-        Optional<Trigger> optionalTrigger=triggerRepository.findById(id);
-        if(optionalTrigger.isPresent()){
-            Trigger trigger=optionalTrigger.get();
-            JSONObject res=new JSONObject(trigger);
-            List<Alert> alerts=alertRepository.findAllByTrigger(trigger);
+        Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
+        if (optionalTrigger.isPresent()) {
+            Trigger trigger = optionalTrigger.get();
+            JSONObject res = new JSONObject(trigger);
+            List<Alert> alerts = alertRepository.findAllByTrigger(trigger);
             res.put("alerts", alerts);
             return ResponseEntity.ok(res.toString());
         }
         throw new NotFoundError("Trigger not found");
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public ResponseEntity<Trigger> updateTrigger(
+            @RequestBody Trigger trigger
+    ) throws NotFoundError, InternalServerError {
+        return ResponseEntity.ok(triggerRepository.save(trigger));
     }
 }

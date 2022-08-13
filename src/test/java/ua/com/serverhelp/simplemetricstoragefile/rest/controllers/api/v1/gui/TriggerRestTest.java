@@ -44,8 +44,8 @@ class TriggerRestTest extends AbstractTest {
     }
 
     @Test
-    void getTriggerDetails() throws Exception{
-        String id=DigestUtils.md5DigestAsHex("Test trigger".getBytes());
+    void getTriggerDetails() throws Exception {
+        String id = DigestUtils.md5DigestAsHex("Test trigger".getBytes());
         Trigger trigger = new Trigger();
         trigger.setId(id);
         trigger.setTriggerId("db.test.trigger");
@@ -56,12 +56,12 @@ class TriggerRestTest extends AbstractTest {
 
         triggerRepository.save(trigger);
 
-        Alert alert=new Alert();
+        Alert alert = new Alert();
         alert.setTrigger(trigger);
         alert.setTriggerStatus(TriggerStatus.OK);
         alertRepository.save(alert);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/trigger/"+id)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/trigger/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())

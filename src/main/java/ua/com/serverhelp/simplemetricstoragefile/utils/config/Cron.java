@@ -125,7 +125,7 @@ public class Cron {
                     alert.setTriggerStatus(trigger.getLastStatus());
 
                     try {
-                        if(!trigger.getSuppressed()){
+                        if (!trigger.getSuppressed()) {
                             alertChannels.sendAlert(alert);
                         }
                     } catch (Exception e) {

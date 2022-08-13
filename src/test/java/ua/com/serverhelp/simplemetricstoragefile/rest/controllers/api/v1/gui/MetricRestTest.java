@@ -11,11 +11,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
-import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
 
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"GUI"})

@@ -11,8 +11,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"GUI"})
 class UserRestTest extends AbstractTest {
@@ -20,7 +18,7 @@ class UserRestTest extends AbstractTest {
     private MockMvc mockMvc;
 
     @Test
-    void login() throws Exception{
+    void login() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/user/login")
                         .contentType(MediaType.APPLICATION_JSON)
                 )

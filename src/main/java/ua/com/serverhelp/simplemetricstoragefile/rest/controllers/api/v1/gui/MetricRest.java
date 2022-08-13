@@ -1,20 +1,15 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.gui;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.serverhelp.simplemetricstoragefile.entities.metric.Metric;
 import ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup.ParameterGroup;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
-import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
-import ua.com.serverhelp.simplemetricstoragefile.rest.exceptions.InternalServerError;
 import ua.com.serverhelp.simplemetricstoragefile.rest.exceptions.NotFoundError;
 import ua.com.serverhelp.simplemetricstoragefile.storage.MetricRepository;
 import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepository;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
