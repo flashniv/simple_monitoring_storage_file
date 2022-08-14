@@ -14,7 +14,7 @@ public class AlertFilter {
     private String regexp;
     private Boolean allow = true;
     @Type(type = "short")
-    private Integer priority = 100;
+    private short priority = 100;
     @ManyToOne(optional = false)
     @JoinColumn(name = "alert_channel_id")
     private AlertChannel alertChannel;

@@ -63,7 +63,7 @@ public class ProcessMetricRest extends AbstractMetricRest {
                     "    }\n" +
                     "  }\n" +
                     "}\n", dirName, path, params.replace("\"", "\\\""));
-            processTrigger(path, params, "Process was done on " + path, "Number of process less than 1", TriggerPriority.HIGH, triggerJson);
+            processTrigger(path, params, "Process was done on " + path + params, "Number of process less than 1", TriggerPriority.HIGH, triggerJson);
             String triggerJson2 = String.format("{\n" +
                     "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
                     "  \"parameters\":{\n" +
@@ -92,7 +92,7 @@ public class ProcessMetricRest extends AbstractMetricRest {
                     "    }\n" +
                     "  }\n" +
                     "}\n", dirName, path, params.replace("\"", "\\\""));
-            processTrigger(path + "15min", params, "Not receive data 15 min on " + path, "Data of process not received 15 min", TriggerPriority.HIGH, triggerJson2);
+            processTrigger(path + "15min", params, "Not receive data 15 min on " + path + params, "Data of process not received 15 min", TriggerPriority.HIGH, triggerJson2);
         }
 
     }

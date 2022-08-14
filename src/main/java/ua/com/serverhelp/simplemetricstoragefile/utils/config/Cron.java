@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.utils.config;
 
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -50,6 +51,7 @@ public class Cron {
                 fileDriver.writeMetric(entry.getKey(), entry.getValue());
             } catch (IOException e) {
                 log.error("Cron::storeMetrics " + entry.getKey() + " Error " + e.getMessage(), e);
+                Sentry.captureException(e);
             }
         }
         log.info("Metrics was store");
@@ -102,7 +104,7 @@ public class Cron {
                     case UNCHECKED:
                     case FAILED:
                         trigger.setLastStatus(status ? TriggerStatus.OK : TriggerStatus.ERROR);
-                        if (!status) modified = true;
+                        modified = true;
                         break;
                     case OK:
                         if (!status) {
@@ -119,6 +121,9 @@ public class Cron {
                 }
             } catch (Exception e) {
                 log.error("Trigger check error", e);
+
+                Sentry.captureException(e);
+
                 if (trigger.getLastStatus() != TriggerStatus.FAILED) {
                     trigger.setLastStatus(TriggerStatus.FAILED);
                     modified = true;
@@ -139,6 +144,8 @@ public class Cron {
                         }
                     } catch (Exception e) {
                         log.error("Alert send error", e);
+
+                        Sentry.captureException(e);
                     }
 
                     alertRepository.save(alert);
