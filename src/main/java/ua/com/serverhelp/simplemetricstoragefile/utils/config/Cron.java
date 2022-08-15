@@ -93,6 +93,8 @@ public class Cron {
     public void checkTriggers() {
         List<Trigger> triggers = triggerRepository.findAll();
         for (Trigger trigger : triggers) {
+            log.debug("Check trigger "+trigger.getName());
+
             if (!trigger.getEnabled()) continue;
             boolean modified = false;
             boolean checkFailed = true;
@@ -129,6 +131,9 @@ public class Cron {
                     modified = true;
                 }
             }
+
+            log.debug("Check trigger result modified="+modified+" status="+trigger.getLastStatus()+" failed status="+checkFailed+" trigger="+trigger.getName());
+
             if (modified) {
                 trigger.setLastStatusUpdate(Instant.now());
                 triggerRepository.save(trigger); //TODO change to save all
@@ -144,7 +149,6 @@ public class Cron {
                         }
                     } catch (Exception e) {
                         log.error("Alert send error", e);
-
                         Sentry.captureException(e);
                     }
 

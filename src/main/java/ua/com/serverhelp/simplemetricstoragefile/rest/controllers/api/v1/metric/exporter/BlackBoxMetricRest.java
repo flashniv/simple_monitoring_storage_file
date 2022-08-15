@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter;
 
+import io.sentry.Sentry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,10 @@ public class BlackBoxMetricRest extends AbstractMetricRest {
             try {
                 getInputQueue().add(timestamp + ";exporter." + proj + ".blackbox." + siteId + "." + input);
             } catch (NumberFormatException e) {
+                Sentry.captureException(e);
                 throw new InternalServerError("Number format error" + input);
             } catch (IllegalStateException | IndexOutOfBoundsException e) {
+                Sentry.captureException(e);
                 throw new InternalServerError("regexp match error " + input);
             }
         }

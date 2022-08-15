@@ -1,5 +1,6 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter;
 
+import io.sentry.Sentry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,10 @@ public class ProcessMetricRest extends AbstractMetricRest {
             try {
                 getInputQueue().add(timestamp + ";exporter." + proj + ".process." + hostname + "." + input);
             } catch (NumberFormatException e) {
+                Sentry.captureException(e);
                 throw new InternalServerError("Number format error" + input);
             } catch (IllegalStateException | IndexOutOfBoundsException e) {
+                Sentry.captureException(e);
                 throw new InternalServerError("regexp match error " + input);
             }
         }
