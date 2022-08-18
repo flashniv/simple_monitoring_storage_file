@@ -44,6 +44,15 @@ public class WebSecurityConfig {
                 "/api/v1/alert/**",
                 "/api/v1/user/**"
         ).hasAuthority("GUI");
+        http.authorizeRequests().antMatchers(HttpMethod.POST,
+                "/api/v1/",
+                "/api/v1/metric/**",
+                "/api/v1/parameterGroup/**",
+                "/api/v1/event/**",
+                "/api/v1/trigger/**",
+                "/api/v1/alert/**",
+                "/api/v1/user/**"
+        ).hasAuthority("GUI");
         http.authorizeRequests().antMatchers("/error").permitAll();
         http.authorizeRequests().anyRequest().hasAuthority("Administrator");
 
