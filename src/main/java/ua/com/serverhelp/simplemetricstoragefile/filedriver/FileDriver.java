@@ -67,7 +67,7 @@ public class FileDriver {
                 long timestamp = dis.readLong();
                 double value = dis.readDouble();
                 //check time range
-                if (timestamp > end.getEpochSecond() && timestamp <= begin.getEpochSecond()) {
+                if (timestamp > begin.getEpochSecond() && timestamp <= end.getEpochSecond()) {
                     DataElement dataElement = new DataElement();
 
                     dataElement.setTimestamp(timestamp);
@@ -82,10 +82,5 @@ public class FileDriver {
         log.debug("FileDriver::readMetric Metric " + metricName + " was read.");
         return dataElements.stream().sorted(Comparator.comparingLong(DataElement::getTimestamp)).collect(Collectors.toList());
     }
-
-    public List<DataElement> readMetric(String metricName) throws IOException, ClassNotFoundException {
-        return readMetric(metricName, Instant.ofEpochSecond(1), Instant.now());
-    }
-
 
 }

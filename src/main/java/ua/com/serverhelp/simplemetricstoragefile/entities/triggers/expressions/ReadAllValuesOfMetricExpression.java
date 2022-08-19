@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Data
@@ -39,7 +41,7 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            return fileDriver.readMetric(metricName + parameterGroup);
+            return fileDriver.readMetric(metricName + parameterGroup, Instant.now().minus(30, ChronoUnit.HOURS),Instant.now());
         } catch (Exception e) {
             throw new ExpressionException("Load metric " + metricName + parameterGroup + " error", e);
         }

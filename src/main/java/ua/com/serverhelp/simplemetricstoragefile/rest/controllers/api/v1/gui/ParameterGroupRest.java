@@ -1,6 +1,7 @@
 package ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.gui;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup.ParameterGroup;
@@ -11,6 +12,7 @@ import ua.com.serverhelp.simplemetricstoragefile.rest.exceptions.NotFoundError;
 import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepository;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +27,15 @@ public class ParameterGroupRest {
 
     @RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
     public ResponseEntity<List<DataElement>> getEventsByParameterGroup(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant begin,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant end,
             @PathVariable Long id
     ) throws NotFoundError, InternalServerError {
         Optional<ParameterGroup> optionalParameterGroup = parameterGroupRepository.findById(id);
         if (optionalParameterGroup.isPresent()) {
             ParameterGroup parameterGroup = optionalParameterGroup.get();
             try {
-                List<DataElement> dataElements = fileDriver.readMetric(parameterGroup.getMetric().getPath() + parameterGroup.getJson());
+                List<DataElement> dataElements = fileDriver.readMetric(parameterGroup.getMetric().getPath() + parameterGroup.getJson(),begin,end);
                 return ResponseEntity.ok(dataElements);
             } catch (IOException e) {
                 throw new NotFoundError("File read error" + e.getMessage());

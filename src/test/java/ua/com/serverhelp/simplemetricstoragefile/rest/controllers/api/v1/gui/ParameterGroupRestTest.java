@@ -17,6 +17,7 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup.Paramet
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,6 +45,8 @@ class ParameterGroupRestTest extends AbstractTest {
         Assertions.assertTrue(optionalParameterGroup.isPresent());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/parameterGroup/" + optionalParameterGroup.get().getId() + "/events")
+                        .param("begin", Instant.now().minus(10, ChronoUnit.HOURS).toString())
+                        .param("end", Instant.now().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())

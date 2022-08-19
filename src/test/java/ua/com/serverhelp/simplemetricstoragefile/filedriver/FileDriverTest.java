@@ -28,7 +28,7 @@ class FileDriverTest extends AbstractTest {
         List<DataElement> dataElements1 = new ArrayList<>();
 
         Assertions.assertDoesNotThrow(() -> {
-            dataElements1.addAll(fileDriver.readMetric(metric));
+            dataElements1.addAll(fileDriver.readMetric(metric,Instant.ofEpochSecond(1),Instant.now()));
         });
         Assertions.assertEquals(dataElements.stream().sorted(Comparator.comparingLong(DataElement::getTimestamp)).collect(Collectors.toList()), dataElements1);
     }
@@ -45,8 +45,8 @@ class FileDriverTest extends AbstractTest {
         List<DataElement> dataElements1 = new ArrayList<>();
 
         Assertions.assertDoesNotThrow(() -> {
-            Instant begin=Instant.now().minus(5, ChronoUnit.MINUTES);
-            Instant end=Instant.now().minus(10, ChronoUnit.MINUTES);
+            Instant begin=Instant.now().minus(10, ChronoUnit.MINUTES);
+            Instant end=Instant.now().minus(5, ChronoUnit.MINUTES);
             dataElements1.addAll(fileDriver.readMetric(metric,begin,end));
         });
         Assertions.assertEquals(30, dataElements1.size());

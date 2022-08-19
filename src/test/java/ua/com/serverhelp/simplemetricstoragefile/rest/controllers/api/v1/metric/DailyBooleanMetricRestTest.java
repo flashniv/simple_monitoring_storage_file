@@ -78,7 +78,7 @@ class DailyBooleanMetricRestTest extends AbstractTest {
         File file = new File(dirName);
         Assertions.assertTrue(deleteDirectory(file));
         DataElement dataElement1 = new DataElement();
-        dataElement1.setTimestamp(Instant.now().minus(2, ChronoUnit.DAYS).getEpochSecond());
+        dataElement1.setTimestamp(Instant.now().minus(25, ChronoUnit.HOURS).getEpochSecond());
         dataElement1.setValue(1.0);
         fileDriver.writeMetric("test.stage.db.item1{}", List.of(dataElement1));
 

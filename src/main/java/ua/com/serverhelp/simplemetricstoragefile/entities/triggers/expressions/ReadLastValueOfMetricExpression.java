@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Data
@@ -39,7 +41,7 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup);
+            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup, Instant.now().minus(30, ChronoUnit.HOURS),Instant.now());
             if (!dataElements.isEmpty()) {
                 DataElement dataElement = dataElements.get(dataElements.size() - 1);
                 return dataElement.getValue();
