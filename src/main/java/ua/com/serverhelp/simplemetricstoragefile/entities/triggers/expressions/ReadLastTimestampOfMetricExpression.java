@@ -41,7 +41,7 @@ public class ReadLastTimestampOfMetricExpression implements Expression<Double> {
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup, Instant.now().minus(30, ChronoUnit.HOURS),Instant.now());
+            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup, Instant.ofEpochSecond(1),Instant.now());
             if (!dataElements.isEmpty()) {
                 DataElement dataElement = dataElements.get(dataElements.size() - 1);
                 return (double) dataElement.getTimestamp();

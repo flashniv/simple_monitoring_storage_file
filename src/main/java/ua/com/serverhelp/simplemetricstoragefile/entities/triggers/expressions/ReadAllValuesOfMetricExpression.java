@@ -41,7 +41,7 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            return fileDriver.readMetric(metricName + parameterGroup, Instant.now().minus(30, ChronoUnit.HOURS),Instant.now());
+            return fileDriver.readMetric(metricName + parameterGroup, Instant.ofEpochSecond(1),Instant.now());
         } catch (Exception e) {
             throw new ExpressionException("Load metric " + metricName + parameterGroup + " error", e);
         }
