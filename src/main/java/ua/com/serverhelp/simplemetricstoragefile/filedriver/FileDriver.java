@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -50,7 +51,7 @@ public class FileDriver {
         log.debug("FileDriver::writeMetric Metric " + metricName + " was write. Events=" + dataElements.size());
     }
 
-    public List<DataElement> readMetric(String metricName) throws IOException, ClassNotFoundException {
+    public List<DataElement> readMetric(String metricName, Instant begin, Instant end) throws IOException, ClassNotFoundException {
         String metricMD5 = DigestUtils.md5DigestAsHex(metricName.getBytes());
         String currentDirName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4);
         List<DataElement> dataElements = new ArrayList<>();
@@ -63,12 +64,17 @@ public class FileDriver {
             DataInputStream dis = new DataInputStream(Files.newInputStream(file));
 
             while (dis.available() > 0) {
-                DataElement dataElement = new DataElement();
+                long timestamp = dis.readLong();
+                double value = dis.readDouble();
+                //check time range
+                if (timestamp > end.getEpochSecond() && timestamp <= begin.getEpochSecond()) {
+                    DataElement dataElement = new DataElement();
 
-                dataElement.setTimestamp(dis.readLong());
-                dataElement.setValue(dis.readDouble());
+                    dataElement.setTimestamp(timestamp);
+                    dataElement.setValue(value);
 
-                dataElements.add(dataElement);
+                    dataElements.add(dataElement);
+                }
             }
             dis.close();
         }
@@ -76,5 +82,10 @@ public class FileDriver {
         log.debug("FileDriver::readMetric Metric " + metricName + " was read.");
         return dataElements.stream().sorted(Comparator.comparingLong(DataElement::getTimestamp)).collect(Collectors.toList());
     }
+
+    public List<DataElement> readMetric(String metricName) throws IOException, ClassNotFoundException {
+        return readMetric(metricName, Instant.ofEpochSecond(1), Instant.now());
+    }
+
 
 }
