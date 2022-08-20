@@ -31,7 +31,7 @@ public class EventRest {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant end
     ) throws NotFoundError, InternalServerError {
         try {
-            List<DataElement> dataElements = fileDriver.readMetric(metric + parameterGroupJson,begin,end);
+            List<DataElement> dataElements = fileDriver.readMetric(metric + parameterGroupJson, begin, end);
             return ResponseEntity.ok(dataElements);
         } catch (IOException e) {
             throw new NotFoundError("File read error" + e.getMessage());

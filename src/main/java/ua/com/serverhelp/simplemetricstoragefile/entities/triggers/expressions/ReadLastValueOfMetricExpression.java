@@ -3,15 +3,13 @@ package ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
+@Slf4j
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,12 +39,8 @@ public class ReadLastValueOfMetricExpression implements Expression<Double> {
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup, Instant.ofEpochSecond(1),Instant.now());
-            if (!dataElements.isEmpty()) {
-                DataElement dataElement = dataElements.get(dataElements.size() - 1);
-                return dataElement.getValue();
-            }
-            throw new ExpressionException("Metric not have any values", new Exception());
+            DataElement dataElement = fileDriver.readLastEventOfMetric(metricName + parameterGroup);
+            return dataElement.getValue();
         } catch (Exception e) {
             throw new ExpressionException("Load metric " + metricName + parameterGroup + " error", e);
         }

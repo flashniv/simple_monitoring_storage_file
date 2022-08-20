@@ -35,7 +35,7 @@ public class ParameterGroupRest {
         if (optionalParameterGroup.isPresent()) {
             ParameterGroup parameterGroup = optionalParameterGroup.get();
             try {
-                List<DataElement> dataElements = fileDriver.readMetric(parameterGroup.getMetric().getPath() + parameterGroup.getJson(),begin,end);
+                List<DataElement> dataElements = fileDriver.readMetric(parameterGroup.getMetric().getPath() + parameterGroup.getJson(), begin, end);
                 return ResponseEntity.ok(dataElements);
             } catch (IOException e) {
                 throw new NotFoundError("File read error" + e.getMessage());

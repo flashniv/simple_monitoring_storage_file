@@ -18,7 +18,7 @@ class ReadLastTimestampOfMetricExpressionTest extends AbstractTest {
     @BeforeEach
     void setUp2() throws Exception {
         for (int i = 0; i < 20; i++) {
-            memoryMetricsQueue.putEvent(new Event("test.stage.db.item1", "{}", Instant.now().getEpochSecond()-i*10, Math.random()));
+            memoryMetricsQueue.putEvent(new Event("test.stage.db.item1", "{}", Instant.now().getEpochSecond() - i * 10, Math.random()));
         }
         Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
         for (Map.Entry<String, List<DataElement>> entry : map.entrySet()) {

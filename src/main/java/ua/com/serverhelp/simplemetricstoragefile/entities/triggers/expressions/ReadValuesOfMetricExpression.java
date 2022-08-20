@@ -15,10 +15,12 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadAllValuesOfMetricExpression implements Expression<List<DataElement>> {
+public class ReadValuesOfMetricExpression implements Expression<List<DataElement>> {
     private String metricName;
     private String parameterGroup;
     private String metricsDirectory;
+    private long beginDiff;
+    private long endDiff;
 
     @Override
     public JSONObject getJSON() {
@@ -28,6 +30,8 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
         params.put("metricName", metricName);
         params.put("parameterGroup", parameterGroup);
         params.put("metricsDirectory", metricsDirectory);
+        params.put("beginDiff", beginDiff);
+        params.put("endDiff", endDiff);
 
         res.put("class", this.getClass().getName());
         res.put("parameters", params);
@@ -41,7 +45,7 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            return fileDriver.readMetric(metricName + parameterGroup, Instant.ofEpochSecond(1),Instant.now());
+            return fileDriver.readMetric(metricName + parameterGroup, Instant.now().minus(beginDiff, ChronoUnit.SECONDS), Instant.now().minus(endDiff, ChronoUnit.SECONDS));
         } catch (Exception e) {
             throw new ExpressionException("Load metric " + metricName + parameterGroup + " error", e);
         }
@@ -54,6 +58,8 @@ public class ReadAllValuesOfMetricExpression implements Expression<List<DataElem
             metricName = parameters.getString("metricName");
             parameterGroup = parameters.getString("parameterGroup");
             metricsDirectory = parameters.getString("metricsDirectory");
+            beginDiff = parameters.getLong("beginDiff");
+            endDiff = parameters.getLong("endDiff");
         } catch (JSONException e) {
             throw new ExpressionException("JSON decode error", e);
         }

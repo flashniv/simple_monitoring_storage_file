@@ -35,7 +35,7 @@ class CronTest extends AbstractTest {
         Assertions.assertEquals(TriggerStatus.FAILED, optionalTrigger.get().getLastStatus());
 
         //check trigger to error
-        Event event = new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond(), 0.0);
+        Event event = new Event("test.stage.db.booleanitem1", "{}", Instant.now().getEpochSecond() - 60, 0.0);
         memoryMetricsQueue.putEvent(event);
         cron.storeMetrics();
         cron.checkTriggers();

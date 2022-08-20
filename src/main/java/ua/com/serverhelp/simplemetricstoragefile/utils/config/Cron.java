@@ -93,7 +93,7 @@ public class Cron {
     public void checkTriggers() {
         List<Trigger> triggers = triggerRepository.findAll();
         for (Trigger trigger : triggers) {
-            log.debug("Check trigger "+trigger.getName());
+            log.debug("Check trigger " + trigger.getName());
 
             if (!trigger.getEnabled()) continue;
             boolean modified = false;
@@ -132,7 +132,7 @@ public class Cron {
                 }
             }
 
-            log.debug("Check trigger result modified="+modified+" status="+trigger.getLastStatus()+" failed status="+checkFailed+" trigger="+trigger.getName());
+            log.debug("Check trigger result modified=" + modified + " status=" + trigger.getLastStatus() + " failed status=" + checkFailed + " trigger=" + trigger.getName());
 
             if (modified) {
                 trigger.setLastStatusUpdate(Instant.now());

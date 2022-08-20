@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import ua.com.serverhelp.simplemetricstoragefile.AbstractTest;
 import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ExpressionException;
-import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadAllValuesOfMetricExpression;
+import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadValuesOfMetricExpression;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-class ReadAllValuesOfMetricExpressionTest extends AbstractTest {
+class ReadValuesOfMetricExpressionTest extends AbstractTest {
     @BeforeEach
     void setUp2() throws Exception {
         for (int i = 0; i < 20; i++) {
@@ -32,15 +32,15 @@ class ReadAllValuesOfMetricExpressionTest extends AbstractTest {
 
     @Test
     void getJSON() {
-        ReadAllValuesOfMetricExpression readAllValuesOfMetricExpression = new ReadAllValuesOfMetricExpression("test.stage.db.item1", "{}", dirName);
-        System.out.println(readAllValuesOfMetricExpression.getJSON());
+        ReadValuesOfMetricExpression readValuesOfMetricExpression = new ReadValuesOfMetricExpression("test.stage.db.item1", "{}", dirName, 300, 0);
+        System.out.println(readValuesOfMetricExpression.getJSON());
     }
 
     @Test
     void getValue() throws Exception {
-        ReadAllValuesOfMetricExpression readAllValueOfMetricExpression = new ReadAllValuesOfMetricExpression();
-        readAllValueOfMetricExpression.initialize("{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
-        List<DataElement> dataElements = readAllValueOfMetricExpression.getValue();
+        ReadValuesOfMetricExpression readValueOfMetricExpression = new ReadValuesOfMetricExpression();
+        readValueOfMetricExpression.initialize("{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.item1\",\"beginDiff\":300,\"endDiff\":0,\"parameterGroup\":\"{}\"}");
+        List<DataElement> dataElements = readValueOfMetricExpression.getValue();
 
         Assertions.assertNotNull(dataElements);
         Assertions.assertFalse(dataElements.isEmpty());
@@ -48,9 +48,9 @@ class ReadAllValuesOfMetricExpressionTest extends AbstractTest {
 
     @Test
     void initialize() throws Exception {
-        ReadAllValuesOfMetricExpression readAllValueOfMetricExpression = new ReadAllValuesOfMetricExpression();
-        readAllValueOfMetricExpression.initialize("{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.item1\",\"parameterGroup\":\"{}\"}");
-        Assertions.assertNotNull(readAllValueOfMetricExpression.getMetricName());
-        Assertions.assertNotNull(readAllValueOfMetricExpression.getParameterGroup());
+        ReadValuesOfMetricExpression readValueOfMetricExpression = new ReadValuesOfMetricExpression();
+        readValueOfMetricExpression.initialize("{\"metricsDirectory\":\"" + dirName + "\",\"metricName\":\"test.stage.db.item1\",\"beginDiff\":300,\"endDiff\":0,\"parameterGroup\":\"{}\"}");
+        Assertions.assertNotNull(readValueOfMetricExpression.getMetricName());
+        Assertions.assertNotNull(readValueOfMetricExpression.getParameterGroup());
     }
 }

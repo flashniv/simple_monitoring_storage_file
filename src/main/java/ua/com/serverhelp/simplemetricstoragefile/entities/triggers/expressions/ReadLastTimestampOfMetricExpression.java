@@ -8,10 +8,6 @@ import org.json.JSONObject;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,12 +37,8 @@ public class ReadLastTimestampOfMetricExpression implements Expression<Double> {
             FileDriver fileDriver = new FileDriver();
             fileDriver.setDirName(metricsDirectory);
 
-            List<DataElement> dataElements = fileDriver.readMetric(metricName + parameterGroup, Instant.ofEpochSecond(1),Instant.now());
-            if (!dataElements.isEmpty()) {
-                DataElement dataElement = dataElements.get(dataElements.size() - 1);
-                return (double) dataElement.getTimestamp();
-            }
-            throw new ExpressionException("Metric not have any values", new Exception());
+            DataElement dataElement = fileDriver.readLastEventOfMetric(metricName + parameterGroup);
+            return (double) dataElement.getTimestamp();
         } catch (Exception e) {
             throw new ExpressionException("Load metric " + metricName + parameterGroup + " error", e);
         }

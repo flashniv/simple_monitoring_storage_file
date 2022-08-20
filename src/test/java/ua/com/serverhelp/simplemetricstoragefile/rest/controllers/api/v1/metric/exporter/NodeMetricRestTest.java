@@ -71,7 +71,7 @@ class NodeMetricRestTest extends AbstractTest {
         Trigger laTrigger = optionalLATrigger.get();
         Assertions.assertTrue(laTrigger.checkTrigger());
         //else
-        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}", List.of(new DataElement(Instant.now().getEpochSecond(), 10.0)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.load15{}", List.of(new DataElement(Instant.now().getEpochSecond() + 100, 10.0)));
         Assertions.assertFalse(laTrigger.checkTrigger());
     }
 
@@ -95,8 +95,8 @@ class NodeMetricRestTest extends AbstractTest {
         Trigger dfTrigger = optionalDFTrigger.get();
         Assertions.assertThrows(Exception.class, () -> dfTrigger.checkTrigger());
         //else
-        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E8)));
-        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.32963328E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond() - 100, 5.36576E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond() - 100, 5.32963328E8)));
         Assertions.assertTrue(dfTrigger.checkTrigger());
         fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_size_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E8)));
         fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E7)));
