@@ -44,7 +44,9 @@ public class MetricRest {
 
     /*@RequestMapping(value = "/{id}/events", method = RequestMethod.GET)
     public ResponseEntity<String> getEventsByMetric(
-            @PathVariable String id
+            @PathVariable String id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant begin,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant end
     ) throws NotFoundError {
         Optional<Metric> optionalMetric = metricRepository.findById(id);
         if (optionalMetric.isPresent()) {
@@ -52,7 +54,7 @@ public class MetricRest {
             List<ParameterGroup> parameterGroupList = parameterGroupRepository.findByMetric(optionalMetric.get());
             for (ParameterGroup parameterGroup : parameterGroupList) {
                 try {
-                    List<DataElement> dataElements = fileDriver.readMetric(optionalMetric.get().getPath() + parameterGroup.getJson());
+                    List<DataElement> dataElements = fileDriver.readMetric(optionalMetric.get().getPath() + parameterGroup.getJson(),begin,end);
                     for (DataElement dataElement:dataElements){
                         JSONObject item=new JSONObject();
                         item.put("parameterGroup", parameterGroup.getJson());

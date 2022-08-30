@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.com.serverhelp.simplemetricstoragefile.entities.parametergroup.ParameterGroup;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 import ua.com.serverhelp.simplemetricstoragefile.rest.exceptions.InternalServerError;
@@ -13,6 +14,7 @@ import ua.com.serverhelp.simplemetricstoragefile.storage.ParameterGroupRepositor
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -33,6 +35,27 @@ public class EventRest {
         try {
             List<DataElement> dataElements = fileDriver.readMetric(metric + parameterGroupJson, begin, end);
             return ResponseEntity.ok(dataElements);
+        } catch (IOException e) {
+            throw new NotFoundError("File read error" + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new InternalServerError("Class not found in FileDriver" + e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/{parameterGroupId}", method = RequestMethod.GET)
+    public ResponseEntity<List<DataElement>> getEventsByParameterGroupId(
+            @PathVariable Long parameterGroupId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant begin,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant end
+    ) throws NotFoundError, InternalServerError {
+        try {
+            Optional<ParameterGroup> optionalParameterGroup = parameterGroupRepository.findById(parameterGroupId);
+            if (optionalParameterGroup.isPresent()) {
+                ParameterGroup parameterGroup = optionalParameterGroup.get();
+                List<DataElement> dataElements = fileDriver.readMetric(parameterGroup.getMetric().getPath() + parameterGroup.getJson(), begin, end);
+                return ResponseEntity.ok(dataElements);
+            }
+            throw new NotFoundError("Parameter group not found");
         } catch (IOException e) {
             throw new NotFoundError("File read error" + e.getMessage());
         } catch (ClassNotFoundException e) {
