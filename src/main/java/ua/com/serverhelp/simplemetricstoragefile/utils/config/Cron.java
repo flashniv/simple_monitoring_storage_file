@@ -17,6 +17,7 @@ import ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.
 import ua.com.serverhelp.simplemetricstoragefile.rest.controllers.api.v1.metric.exporter.ProcessMetricRest;
 import ua.com.serverhelp.simplemetricstoragefile.storage.AlertRepository;
 import ua.com.serverhelp.simplemetricstoragefile.storage.TriggerRepository;
+import ua.com.serverhelp.simplemetricstoragefile.utils.maintenance.ClearFileStorageDB;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -42,6 +43,8 @@ public class Cron {
     private AlertRepository alertRepository;
     @Autowired
     private AlertChannels alertChannels;
+    @Autowired
+    private ClearFileStorageDB clearFileStorageDB;
 
     @Scheduled(initialDelay = 60000, fixedDelay = 30000)
     public void storeMetrics() {
@@ -157,5 +160,10 @@ public class Cron {
             }
         }
         log.info("Triggers checked");
+    }
+
+    @Scheduled(fixedDelay = 86400000L,initialDelay = 300000)
+    public void clearFileStorageDBRun(){
+        clearFileStorageDB.clearFiles();
     }
 }

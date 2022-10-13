@@ -8,6 +8,7 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.E
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -88,5 +89,42 @@ class FileDriverTest extends AbstractTest {
         DataElement dataElement = fileDriver.readLastEventOfMetric(metric);
         Assertions.assertEquals(lastTimestamp, dataElement.getTimestamp());
         Assertions.assertEquals(lastValue, dataElement.getValue());
+    }
+
+    @Test
+    void getAllFiles() throws IOException {
+        List<DataElement> dataElements = new ArrayList<>();
+        long lastTimestamp;
+        double lastValue;
+
+        for (int i = 0; i < 10; i++) {
+            lastTimestamp = Instant.now().getEpochSecond() - (10 - i) * 10;
+            lastValue = Math.random();
+            DataElement dataElement = new DataElement(new Event("test.stage.db.booleanitem1", "{}", lastTimestamp, lastValue));
+            dataElements.add(dataElement);
+        }
+        Assertions.assertDoesNotThrow(() -> fileDriver.writeMetric(metric, dataElements));
+        List<Path> paths = fileDriver.getAllFiles();
+        Assertions.assertEquals(1, paths.size());
+    }
+
+    @Test
+    void removeFile() throws IOException {
+        List<DataElement> dataElements = new ArrayList<>();
+        long lastTimestamp;
+        double lastValue;
+
+        for (int i = 0; i < 10; i++) {
+            lastTimestamp = Instant.now().getEpochSecond() - (10 - i) * 10;
+            lastValue = Math.random();
+            DataElement dataElement = new DataElement(new Event("test.stage.db.booleanitem1", "{}", lastTimestamp, lastValue));
+            dataElements.add(dataElement);
+        }
+        Assertions.assertDoesNotThrow(() -> fileDriver.writeMetric(metric, dataElements));
+        List<Path> paths = fileDriver.getAllFiles();
+        Assertions.assertEquals(1, paths.size());
+        Assertions.assertDoesNotThrow(() -> fileDriver.removeFile(paths.get(0)));
+        List<Path> paths1 = fileDriver.getAllFiles();
+        Assertions.assertEquals(0, paths1.size());
     }
 }

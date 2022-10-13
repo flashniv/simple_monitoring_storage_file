@@ -13,6 +13,7 @@ import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.storage.*;
 import ua.com.serverhelp.simplemetricstoragefile.utils.config.Cron;
+import ua.com.serverhelp.simplemetricstoragefile.utils.maintenance.ClearFileStorageDB;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -45,6 +46,8 @@ public abstract class AbstractTest {
     protected AlertFilterRepository alertFilterRepository;
     @Autowired
     protected FileDriver fileDriver;
+    @Autowired
+    protected ClearFileStorageDB clearFileStorageDB;
     @Mock
     protected AlertSender alertSender;
     @Value("${metric-storage.metrics-directory}")

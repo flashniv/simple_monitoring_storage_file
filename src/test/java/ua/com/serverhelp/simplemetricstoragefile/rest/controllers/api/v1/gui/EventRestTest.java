@@ -22,11 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @AutoConfigureMockMvc
 @WithMockUser(username = "specuser", authorities = {"GUI"})
-class EventRestTest  extends AbstractTest {
+class EventRestTest extends AbstractTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -36,7 +34,7 @@ class EventRestTest  extends AbstractTest {
     }
 
     @Test
-    void getEventsByParameterGroupId() throws Exception{
+    void getEventsByParameterGroupId() throws Exception {
         for (int i = 0; i < 20; i++) {
             memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond() - i * 10, Math.random()));
         }

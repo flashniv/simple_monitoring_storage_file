@@ -38,6 +38,7 @@ public class FileDriver {
         String fileName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4) + "/" + metricMD5 + "_" + getPeriod();
 
         File file = new File(fileName);
+        //noinspection ResultOfMethodCallIgnored
         file.getParentFile().mkdirs();
         if (file.createNewFile()) {
             log.info("FileDriver::writeMetric file " + fileName + " created for metric " + metricName);
@@ -85,6 +86,7 @@ public class FileDriver {
         String metricMD5 = DigestUtils.md5DigestAsHex(metricName.getBytes());
         String currentDirName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4);
 
+        //noinspection resource
         List<Path> files = Files.list(Paths.get(currentDirName))
                 .filter(file -> Files.isRegularFile(file) && file.toString().contains(metricMD5))
                 .collect(Collectors.toList());
@@ -108,4 +110,15 @@ public class FileDriver {
         log.debug("FileDriver::readMetric Metric " + metricName + " was read.");
     }
 
+    public List<Path> getAllFiles() throws IOException {
+        //noinspection resource
+        return Files.walk(Paths.get(dirName))
+                .filter(Files::isRegularFile)
+                .filter(path -> path.getFileName().toString().matches(".*_[0-9]+_[0-9]+_[0-9]+"))
+                .collect(Collectors.toList());
+    }
+
+    public void removeFile(Path path) throws IOException {
+        Files.delete(path);
+    }
 }
