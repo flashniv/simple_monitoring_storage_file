@@ -1,6 +1,6 @@
 CREATE TABLE parameter_group_permission (
     id bigint PRIMARY KEY NOT NULL,
-    user_id character varying(255) NOT NULL,
+    user_id bigint NOT NULL,
     expression text
 );
 
