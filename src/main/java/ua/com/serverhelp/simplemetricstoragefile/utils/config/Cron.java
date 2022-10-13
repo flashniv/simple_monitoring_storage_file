@@ -162,8 +162,8 @@ public class Cron {
         log.info("Triggers checked");
     }
 
-    @Scheduled(fixedDelay = 86400000L,initialDelay = 300000)
-    public void clearFileStorageDBRun(){
+    @Scheduled(fixedDelay = 86400000L, initialDelay = 300000)
+    public void clearFileStorageDBRun() {
         clearFileStorageDB.clearFiles();
     }
 }

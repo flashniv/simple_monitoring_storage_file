@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import ua.com.serverhelp.simplemetricstoragefile.alerter.AlertChannels;
 import ua.com.serverhelp.simplemetricstoragefile.alerter.sender.AlertSender;
+import ua.com.serverhelp.simplemetricstoragefile.entities.account.ParameterGroupPermissions;
 import ua.com.serverhelp.simplemetricstoragefile.filedriver.FileDriver;
 import ua.com.serverhelp.simplemetricstoragefile.queue.MemoryMetricsQueue;
 import ua.com.serverhelp.simplemetricstoragefile.storage.*;
@@ -46,6 +47,8 @@ public abstract class AbstractTest {
     protected AlertFilterRepository alertFilterRepository;
     @Autowired
     protected FileDriver fileDriver;
+    @Autowired
+    protected ParameterGroupPermissions parameterGroupPermissions;
     @Autowired
     protected ClearFileStorageDB clearFileStorageDB;
     @Mock

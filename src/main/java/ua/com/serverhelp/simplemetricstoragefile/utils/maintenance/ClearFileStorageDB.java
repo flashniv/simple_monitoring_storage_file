@@ -23,10 +23,10 @@ public class ClearFileStorageDB {
     @Autowired
     private FileDriver fileDriver;
     @Value("${metric-storage.history-depth}")
-    private long historyDepth=0;
+    private long historyDepth = 0;
 
     public void clearFiles() {
-        if(historyDepth==0) return;
+        if (historyDepth == 0) return;
         try {
             log.info("Start housekeeping!");
             List<Path> paths = fileDriver.getAllFiles();
@@ -55,7 +55,7 @@ public class ClearFileStorageDB {
             });
             for (Path path : toDelete) {
                 fileDriver.removeFile(path);
-                log.info("Clear storage. File "+path.toString()+" was deleted!");
+                log.info("Clear storage. File " + path.toString() + " was deleted!");
             }
             log.info("Stop housekeeping!");
         } catch (IOException e) {
