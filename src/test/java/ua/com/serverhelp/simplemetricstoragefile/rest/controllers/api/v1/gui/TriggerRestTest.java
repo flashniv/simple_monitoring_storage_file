@@ -17,12 +17,12 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerPriori
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
 
 @AutoConfigureMockMvc
-@WithMockUser(username = "specuser", authorities = {"GUI"})
 class TriggerRestTest extends AbstractTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(username = "specuser", authorities = {"GUI"})
     void getTriggers() throws Exception {
         Trigger trigger = new Trigger();
         trigger.setId(DigestUtils.md5DigestAsHex("Test trigger".getBytes()));
@@ -44,6 +44,37 @@ class TriggerRestTest extends AbstractTest {
     }
 
     @Test
+    @WithMockUser(username = "org1user", authorities = {"GUI"})
+    void getTriggersCheckPermissions() throws Exception {
+        Trigger trigger = new Trigger();
+        trigger.setId(DigestUtils.md5DigestAsHex("Test trigger org1".getBytes()));
+        trigger.setTriggerId("db.organization1.trigger");
+        trigger.setName("Test trigger");
+        trigger.setPriority(TriggerPriority.AVERAGE);
+        trigger.setConf("");
+        trigger.setLastStatus(TriggerStatus.OK);
+        triggerRepository.save(trigger);
+
+        Trigger trigger1 = new Trigger();
+        trigger1.setId(DigestUtils.md5DigestAsHex("Test trigger".getBytes()));
+        trigger1.setTriggerId("db.test.trigger");
+        trigger1.setName("Test trigger");
+        trigger1.setPriority(TriggerPriority.AVERAGE);
+        trigger1.setConf("");
+        trigger1.setLastStatus(TriggerStatus.OK);
+        triggerRepository.save(trigger1);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/trigger/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").value("ed3244db21d85d2f4da34bd575d1b742"));
+
+    }
+
+    @Test
+    @WithMockUser(username = "specuser", authorities = {"GUI"})
     void getTriggerDetails() throws Exception {
         String id = DigestUtils.md5DigestAsHex("Test trigger".getBytes());
         Trigger trigger = new Trigger();

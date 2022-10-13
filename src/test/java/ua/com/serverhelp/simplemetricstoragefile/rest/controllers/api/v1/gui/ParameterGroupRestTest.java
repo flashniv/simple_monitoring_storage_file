@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.Optional;
 
 @AutoConfigureMockMvc
-@WithMockUser(username = "specuser", authorities = {"GUI"})
 class ParameterGroupRestTest extends AbstractTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(username = "specuser", authorities = {"GUI"})
     void getEventsByParameterGroup() throws Exception {
         for (int i = 0; i < 20; i++) {
             memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond() - i * 10, Math.random()));
@@ -52,6 +52,52 @@ class ParameterGroupRestTest extends AbstractTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.[0].timestamp").isNumber());
+
+    }
+
+    @Test
+    @WithMockUser(username = "org1user", authorities = {"GUI"})
+    void getEventsByParameterGroupCheckPermissions() throws Exception {
+        for (int i = 0; i < 20; i++) {
+            memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond() - i * 10, Math.random()));
+        }
+        memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
+        for (int i = 0; i < 20; i++) {
+            memoryMetricsQueue.putEvent(new Event("exporter.organization1.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond() - i * 10, Math.random()));
+        }
+        memoryMetricsQueue.putEvent(new Event("exporter.organization1.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
+        Map<String, List<DataElement>> map = memoryMetricsQueue.getFormattedEvents();
+        for (Map.Entry<String, List<DataElement>> entry : map.entrySet()) {
+            fileDriver.writeMetric(entry.getKey(), entry.getValue());
+        }
+
+        Optional<Metric> optionalMetric = metricRepository.findById("exporter.organization1.debian.node.filesystem_avail_bytes");
+        Assertions.assertTrue(optionalMetric.isPresent());
+        Optional<ParameterGroup> optionalParameterGroup = parameterGroupRepository.findByMetricAndJson(optionalMetric.get(), "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}");
+        Assertions.assertTrue(optionalParameterGroup.isPresent());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/parameterGroup/" + optionalParameterGroup.get().getId() + "/events")
+                        .param("begin", Instant.now().minus(10, ChronoUnit.HOURS).toString())
+                        .param("end", Instant.now().toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].timestamp").isNumber());
+
+        Optional<Metric> optionalMetric1 = metricRepository.findById("exporter.testproj.debian.node.filesystem_avail_bytes");
+        Assertions.assertTrue(optionalMetric1.isPresent());
+        Optional<ParameterGroup> optionalParameterGroup1 = parameterGroupRepository.findByMetricAndJson(optionalMetric1.get(), "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}");
+        Assertions.assertTrue(optionalParameterGroup1.isPresent());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/parameterGroup/" + optionalParameterGroup1.get().getId() + "/events")
+                        .param("begin", Instant.now().minus(10, ChronoUnit.HOURS).toString())
+                        .param("end", Instant.now().toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(403))
+                .andExpect(MockMvcResultMatchers.content().string("Access denied"));
 
     }
 }

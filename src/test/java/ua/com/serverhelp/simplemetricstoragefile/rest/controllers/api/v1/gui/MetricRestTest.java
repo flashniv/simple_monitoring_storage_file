@@ -15,12 +15,12 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 import java.time.Instant;
 
 @AutoConfigureMockMvc
-@WithMockUser(username = "specuser", authorities = {"GUI"})
 class MetricRestTest extends AbstractTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(username = "specuser", authorities = {"GUI"})
     void getAllMetrics() throws Exception {
         memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
         memoryMetricsQueue.getFormattedEvents();
@@ -34,12 +34,53 @@ class MetricRestTest extends AbstractTest {
     }
 
     @Test
+    @WithMockUser(username = "org1user", authorities = {"GUI"})
+    void getAllMetricsCheckPermissions() throws Exception {
+        memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.putEvent(new Event("exporter.organization1.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.putEvent(new Event("exporter.organization1.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.getFormattedEvents();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/metric/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.content().string("[{\"path\":\"exporter.organization1.debian.node.filesystem_avail_bytes\"}]"));
+    }
+
+    @Test
+    @WithMockUser(username = "specuser", authorities = {"GUI"})
     void getParameterGroupsByMetric() throws Exception {
         memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
         memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
         memoryMetricsQueue.getFormattedEvents();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/metric/exporter.testproj.debian.node.filesystem_avail_bytes/parameterGroups")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[0].id").isNumber());
+    }
+
+    @Test
+    @WithMockUser(username = "org1user", authorities = {"GUI"})
+    void getParameterGroupsByMetricCheckPermissions() throws Exception {
+        memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.putEvent(new Event("exporter.testproj.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.putEvent(new Event("exporter.organization1.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.putEvent(new Event("exporter.organization1.debian.node.filesystem_avail_bytes", "{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/\"}", Instant.now().getEpochSecond(), 0.0));
+        memoryMetricsQueue.getFormattedEvents();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/metric/exporter.testproj.debian.node.filesystem_avail_bytes/parameterGroups")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().is(403))
+                .andExpect(MockMvcResultMatchers.content().string("Access denied"));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/metric/exporter.organization1.debian.node.filesystem_avail_bytes/parameterGroups")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
