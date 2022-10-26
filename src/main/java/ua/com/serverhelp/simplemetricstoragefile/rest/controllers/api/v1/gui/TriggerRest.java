@@ -89,7 +89,11 @@ public class TriggerRest {
                     throw new AccessDeniedError("Access denied");
                 }
             }
-            triggerRepository.deleteAll(triggerList);
+            for (Trigger trigger : triggerList) {
+                List<Alert> alertList=alertRepository.findAllByTrigger(trigger);
+                alertRepository.deleteAll(alertList);
+                triggerRepository.delete(trigger);
+            }
             return ResponseEntity.ok("Success");
         }
         throw new NotFoundError("Not found");
