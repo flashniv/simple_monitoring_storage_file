@@ -51,25 +51,87 @@ public class TriggerRest {
             @PathVariable String id,
             Authentication authentication
     ) throws NotFoundError, InternalServerError {
-        if (parameterGroupPermissions.checkParameterGroupPermission(authentication.getName(), id)) {
 
-            Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
-            if (optionalTrigger.isPresent()) {
-                Trigger trigger = optionalTrigger.get();
+        Optional<Trigger> optionalTrigger = triggerRepository.findById(id);
+        if (optionalTrigger.isPresent()) {
+            Trigger trigger = optionalTrigger.get();
+            if (parameterGroupPermissions.checkParameterGroupPermission(authentication.getName(), trigger.getTriggerId())) {
                 JSONObject res = new JSONObject(trigger);
                 List<Alert> alerts = alertRepository.findAllByTrigger(trigger);
                 res.put("alerts", alerts);
                 return ResponseEntity.ok(res.toString());
             }
-            throw new NotFoundError("Trigger not found");
+            throw new AccessDeniedError("Access denied");
         }
-        throw new AccessDeniedError("Access denied");
+        throw new NotFoundError("Trigger not found");
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Trigger> updateTrigger(
-            @RequestBody Trigger trigger
+            @RequestBody Trigger trigger,
+            Authentication authentication
     ) throws NotFoundError, InternalServerError {
-        return ResponseEntity.ok(triggerRepository.save(trigger));
+        if (parameterGroupPermissions.checkParameterGroupPermission(authentication.getName(), trigger.getTriggerId())) {
+            return ResponseEntity.ok(triggerRepository.save(trigger));
+        }
+        throw new AccessDeniedError("Access denied");
+    }
+
+    @RequestMapping(value = "/deleteAll", method = RequestMethod.POST)
+    public ResponseEntity<String> deleteAll(
+            @RequestBody String[] ids,
+            Authentication authentication
+    ) throws NotFoundError, InternalServerError {
+        List<Trigger> triggerList = triggerRepository.findAllById(List.of(ids));
+        if (triggerList.size() == ids.length) {
+            for (Trigger trigger : triggerList) {
+                if (!parameterGroupPermissions.checkParameterGroupPermission(authentication.getName(), trigger.getTriggerId())) {
+                    throw new AccessDeniedError("Access denied");
+                }
+            }
+            triggerRepository.deleteAll(triggerList);
+            return ResponseEntity.ok("Success");
+        }
+        throw new NotFoundError("Not found");
+    }
+
+    @RequestMapping(value = "/suppressAll", method = RequestMethod.POST)
+    public ResponseEntity<String> suppressAll(
+            @RequestParam boolean suppress,
+            @RequestBody String[] ids,
+            Authentication authentication
+    ) throws NotFoundError, InternalServerError {
+        List<Trigger> triggerList = triggerRepository.findAllById(List.of(ids));
+        if (triggerList.size() == ids.length) {
+            for (Trigger trigger : triggerList) {
+                if (!parameterGroupPermissions.checkParameterGroupPermission(authentication.getName(), trigger.getTriggerId())) {
+                    throw new AccessDeniedError("Access denied");
+                }
+                trigger.setSuppressed(suppress);
+            }
+            triggerRepository.saveAll(triggerList);
+            return ResponseEntity.ok("Success");
+        }
+        throw new NotFoundError("Not found");
+    }
+
+    @RequestMapping(value = "/enableAll", method = RequestMethod.POST)
+    public ResponseEntity<String> enableAll(
+            @RequestParam boolean enable,
+            @RequestBody String[] ids,
+            Authentication authentication
+    ) throws NotFoundError, InternalServerError {
+        List<Trigger> triggerList = triggerRepository.findAllById(List.of(ids));
+        if (triggerList.size() == ids.length) {
+            for (Trigger trigger : triggerList) {
+                if (!parameterGroupPermissions.checkParameterGroupPermission(authentication.getName(), trigger.getTriggerId())) {
+                    throw new AccessDeniedError("Access denied");
+                }
+                trigger.setEnabled(enable);
+            }
+            triggerRepository.saveAll(triggerList);
+            return ResponseEntity.ok("Success");
+        }
+        throw new NotFoundError("Not found");
     }
 }
