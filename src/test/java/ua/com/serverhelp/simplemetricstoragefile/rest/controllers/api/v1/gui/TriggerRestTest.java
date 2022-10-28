@@ -127,7 +127,7 @@ class TriggerRestTest extends AbstractTest {
         triggerRepository.save(trigger1);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/trigger/deleteAll")
-                        .content(new JSONArray(List.of(trigger.getId(),trigger1.getId())).toString())
+                        .content(new JSONArray(List.of(trigger.getId(), trigger1.getId())).toString())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -139,7 +139,7 @@ class TriggerRestTest extends AbstractTest {
 
     @Test
     @WithMockUser(username = "specuser", authorities = {"GUI"})
-    void suppressAll() throws Exception{
+    void suppressAll() throws Exception {
         Trigger trigger = new Trigger();
         trigger.setId(DigestUtils.md5DigestAsHex("Test trigger org1".getBytes()));
         trigger.setTriggerId("db.organization1.trigger");
@@ -160,7 +160,7 @@ class TriggerRestTest extends AbstractTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/trigger/suppressAll")
                         .param("suppress", "true")
-                        .content(new JSONArray(List.of(trigger.getId(),trigger1.getId())).toString())
+                        .content(new JSONArray(List.of(trigger.getId(), trigger1.getId())).toString())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -174,7 +174,7 @@ class TriggerRestTest extends AbstractTest {
 
     @Test
     @WithMockUser(username = "specuser", authorities = {"GUI"})
-    void enableAll() throws Exception{
+    void enableAll() throws Exception {
         Trigger trigger = new Trigger();
         trigger.setId(DigestUtils.md5DigestAsHex("Test trigger org1".getBytes()));
         trigger.setTriggerId("db.organization1.trigger");
@@ -195,7 +195,7 @@ class TriggerRestTest extends AbstractTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/trigger/enableAll")
                         .param("enable", "false")
-                        .content(new JSONArray(List.of(trigger.getId(),trigger1.getId())).toString())
+                        .content(new JSONArray(List.of(trigger.getId(), trigger1.getId())).toString())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())

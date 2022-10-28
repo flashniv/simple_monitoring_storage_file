@@ -37,7 +37,6 @@ public class TriggerRest {
         List<Trigger> resTriggers = new ArrayList<>();
 
         for (Trigger trigger : triggers) {
-            System.out.println(trigger.getTriggerId());
             if (parameterGroupPermissions.checkParameterGroupPermission(authentication.getName(), trigger.getTriggerId())) {
                 resTriggers.add(trigger);
             }
@@ -90,7 +89,7 @@ public class TriggerRest {
                 }
             }
             for (Trigger trigger : triggerList) {
-                List<Alert> alertList=alertRepository.findAllByTrigger(trigger);
+                List<Alert> alertList = alertRepository.findAllByTrigger(trigger);
                 alertRepository.deleteAll(alertList);
                 triggerRepository.delete(trigger);
             }
