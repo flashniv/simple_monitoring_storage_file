@@ -102,4 +102,18 @@ class NodeMetricRestTest extends AbstractTest {
         fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_avail_bytes{\"device\":\"/dev/vda1\",\"fstype\":\"vfat\",\"mountpoint\":\"/boot/efi\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E7)));
         Assertions.assertFalse(dfTrigger.checkTrigger());
     }
+    @Test
+    void checkDFInodesTrigger() throws Exception {
+        Optional<Trigger> optionalDFInodesTrigger = triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.debian.node.filesystem_files{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}".getBytes()));
+        Assertions.assertTrue(optionalDFInodesTrigger.isPresent());
+        Trigger dfInodesTrigger = optionalDFInodesTrigger.get();
+        Assertions.assertThrows(Exception.class, () -> dfInodesTrigger.checkTrigger());
+        //else
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_files{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", List.of(new DataElement(Instant.now().getEpochSecond() - 100, 5.36576E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_files_free{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", List.of(new DataElement(Instant.now().getEpochSecond() - 100, 5.32963328E8)));
+        Assertions.assertTrue(dfInodesTrigger.checkTrigger());
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_files{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E8)));
+        fileDriver.writeMetric("exporter.testproj.debian.node.filesystem_files_free{\"device\":\"/dev/vda2\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", List.of(new DataElement(Instant.now().getEpochSecond(), 5.36576E7)));
+        Assertions.assertFalse(dfInodesTrigger.checkTrigger());
+    }
 }
