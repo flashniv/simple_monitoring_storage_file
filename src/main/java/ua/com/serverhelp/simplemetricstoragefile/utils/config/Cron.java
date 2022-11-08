@@ -127,7 +127,7 @@ public class Cron {
             } catch (Exception e) {
                 log.error("Trigger check error", e);
 
-                Sentry.captureException(e);
+                //Sentry.captureException(e);
 
                 if (trigger.getLastStatus() != TriggerStatus.FAILED) {
                     trigger.setLastStatus(TriggerStatus.FAILED);
