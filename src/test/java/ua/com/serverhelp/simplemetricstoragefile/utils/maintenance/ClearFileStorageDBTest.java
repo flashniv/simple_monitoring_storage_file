@@ -37,6 +37,6 @@ class ClearFileStorageDBTest extends AbstractTest {
         file.createNewFile();
 
         clearFileStorageDB.clearFiles();
-        Assertions.assertEquals(72, fileDriver.getAllFiles().size());
+        Assertions.assertEquals(71, fileDriver.getAllFiles().size());
     }
 }

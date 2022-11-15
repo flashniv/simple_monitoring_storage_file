@@ -133,6 +133,47 @@ public class NodeMetricRest extends AbstractMetricRest {
                     "}\n", dirName, path.replace("filesystem_size_bytes", "filesystem_avail_bytes"), params.replace("\"", "\\\""), dirName, path, params.replace("\"", "\\\""));
             processTrigger(path, params, "Free disk space less than 15% on " + path.replace(".filesystem_size_bytes", "") + params, "Free disk space too low", TriggerPriority.HIGH, triggerJson);
         }
+        if (path.matches("exporter.*.node.filesystem_size")) {
+            String triggerJson = String.format("{\n" +
+                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
+                    "  \"parameters\":{\n" +
+                    "    \"operation\":\">\",\n" +
+                    "    \"arg1\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.MathDoubleExpression\",\n" +
+                    "      \"parameters\":{\n" +
+                    "        \"arg1\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
+                    "          \"parameters\":{\n" +
+                    "            \"metricsDirectory\":\"%s\"," +
+                    "            \"metricName\":\"%s\",\n" +
+                    "            \"parameterGroup\":\"%s\"\n" +
+                    "          }\n" +
+                    "        },\n" +
+                    "        \"arg2\":{\n" +
+                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
+                    "          \"parameters\":{\n" +
+                    "            \"metricsDirectory\":\"%s\"," +
+                    "            \"metricName\":\"%s\",\n" +
+                    "            \"parameterGroup\":\"%s\"\n" +
+                    "          }\n" +
+                    "        },\n" +
+                    "        \"operation\":\"/\"\n" +
+                    "      }\n" +
+                    "    },\n" +
+                    "    \"arg2\":{\n" +
+                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
+                    "      \"parameters\":{\"value\":0.15}\n" +
+                    "    }\n" +
+                    "  }\n" +
+                    "}\n",
+                    dirName,
+                    path.replace("filesystem_size", "filesystem_avail"),
+                    params.replace("\"", "\\\""),
+                    dirName,
+                    path,
+                    params.replace("\"", "\\\""));
+            processTrigger(path, params, "Free disk space less than 15% on " + path.replace(".filesystem_size", "") + params, "Free disk space too low", TriggerPriority.HIGH, triggerJson);
+        }
         if (path.matches("exporter.*.node.filesystem_files")) {
             String triggerJson = String.format("{\n" +
                             "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
@@ -178,16 +219,15 @@ public class NodeMetricRest extends AbstractMetricRest {
                 ".*node_load1.*",
                 ".*node_load5.*",
                 ".*node_load15.*",
-                ".*node_memory_MemAvailable_bytes.*",
-                ".*node_memory_MemTotal_bytes.*",
+                ".*node_memory_Mem.*",
                 ".*node_cpu_seconds_total.*",
-                ".*node_filesystem_avail_bytes.*",
-                ".*node_filesystem_size_bytes.*",
-                ".*node_filesystem_files.*",
+                ".*node_filesystem_avail.*",
+                ".*node_filesystem_size.*",
+                ".*node_filesystem_files.*ext[3|4].*",
                 ".*node_vmstat_pswp.*",
                 ".*node_memory_Swap.*",
-                ".*node_network_transmit_bytes_total.*",
-                ".*node_network_receive_bytes_total.*"
+                ".*node_network_transmit_bytes.*",
+                ".*node_network_receive_bytes.*"
         };
     }
 
