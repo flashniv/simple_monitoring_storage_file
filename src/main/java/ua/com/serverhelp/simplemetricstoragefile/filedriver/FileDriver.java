@@ -9,17 +9,16 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.E
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -86,13 +85,20 @@ public class FileDriver {
         String metricMD5 = DigestUtils.md5DigestAsHex(metricName.getBytes());
         String currentDirName = dirName + "/" + metricMD5.substring(0, 2) + "/" + metricMD5.substring(2, 4);
 
-        //noinspection resource
-        List<Path> files = Files.list(Paths.get(currentDirName))
-                .filter(file -> Files.isRegularFile(file) && file.toString().contains(metricMD5))
+//        Path dir=Paths.get(currentDirName);
+//        //noinspection resource
+//        List<Path> files = Files.list(dir)
+//                .filter(file -> Files.isRegularFile(file) && file.toString().contains(metricMD5))
+//                .collect(Collectors.toList());
+//
+//        dir.dir
+
+        List<File> files = Stream.of(Objects.requireNonNull(new File(currentDirName).listFiles()))
+                .filter(file -> !file.isDirectory() && file.getName().contains(metricMD5))
                 .collect(Collectors.toList());
 
-        for (Path file : files) {
-            DataInputStream dis = new DataInputStream(Files.newInputStream(file));
+        for (File file : files) {
+            DataInputStream dis = new DataInputStream(new FileInputStream(file));
 
             while (dis.available() > 0) {
                 long timestamp = dis.readLong();
@@ -110,15 +116,33 @@ public class FileDriver {
         log.debug("FileDriver::readMetric Metric " + metricName + " was read.");
     }
 
-    public List<Path> getAllFiles() throws IOException {
+    public List<File> getAllFiles() throws IOException {
         //noinspection resource
-        return Files.walk(Paths.get(dirName))
-                .filter(Files::isRegularFile)
-                .filter(path -> path.getFileName().toString().matches(".*_[0-9]+_[0-9]+_[0-9]+"))
-                .collect(Collectors.toList());
+//        Files.walk(Paths.get(dirName))
+//                .filter(Files::isRegularFile)
+//                .filter(path -> path.getFileName().toString().matches(".*_[0-9]+_[0-9]+_[0-9]+"))
+//                .collect(Collectors.toList());
+//        return
+
+        return getFilesRecursive(new File(dirName));
+
     }
 
-    public void removeFile(Path path) throws IOException {
-        Files.delete(path);
+    private List<File> getFilesRecursive(File file) {
+        List<File> res = new ArrayList<>();
+        if (file.isDirectory()) {
+            for (File file1 : Objects.requireNonNull(file.listFiles())) {
+                res.addAll(getFilesRecursive(file1));
+            }
+        } else {
+            res.add(file);
+        }
+        return res;
+    }
+
+    public void removeFile(File path) throws IOException {
+        if (!path.delete()) {
+            throw new IOException("File for remove not found");
+        }
     }
 }

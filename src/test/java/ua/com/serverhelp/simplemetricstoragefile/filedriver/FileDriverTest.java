@@ -7,8 +7,8 @@ import ua.com.serverhelp.simplemetricstoragefile.entities.event.Event;
 import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ExpressionException;
 import ua.com.serverhelp.simplemetricstoragefile.queue.DataElement;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -104,7 +104,7 @@ class FileDriverTest extends AbstractTest {
             dataElements.add(dataElement);
         }
         Assertions.assertDoesNotThrow(() -> fileDriver.writeMetric(metric, dataElements));
-        List<Path> paths = fileDriver.getAllFiles();
+        List<File> paths = fileDriver.getAllFiles();
         Assertions.assertEquals(1, paths.size());
     }
 
@@ -121,10 +121,10 @@ class FileDriverTest extends AbstractTest {
             dataElements.add(dataElement);
         }
         Assertions.assertDoesNotThrow(() -> fileDriver.writeMetric(metric, dataElements));
-        List<Path> paths = fileDriver.getAllFiles();
+        List<File> paths = fileDriver.getAllFiles();
         Assertions.assertEquals(1, paths.size());
         Assertions.assertDoesNotThrow(() -> fileDriver.removeFile(paths.get(0)));
-        List<Path> paths1 = fileDriver.getAllFiles();
+        List<File> paths1 = fileDriver.getAllFiles();
         Assertions.assertEquals(0, paths1.size());
     }
 }

@@ -135,37 +135,37 @@ public class NodeMetricRest extends AbstractMetricRest {
         }
         if (path.matches("exporter.*.node.filesystem_size")) {
             String triggerJson = String.format("{\n" +
-                    "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
-                    "  \"parameters\":{\n" +
-                    "    \"operation\":\">\",\n" +
-                    "    \"arg1\":{\n" +
-                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.MathDoubleExpression\",\n" +
-                    "      \"parameters\":{\n" +
-                    "        \"arg1\":{\n" +
-                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
-                    "          \"parameters\":{\n" +
-                    "            \"metricsDirectory\":\"%s\"," +
-                    "            \"metricName\":\"%s\",\n" +
-                    "            \"parameterGroup\":\"%s\"\n" +
-                    "          }\n" +
-                    "        },\n" +
-                    "        \"arg2\":{\n" +
-                    "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
-                    "          \"parameters\":{\n" +
-                    "            \"metricsDirectory\":\"%s\"," +
-                    "            \"metricName\":\"%s\",\n" +
-                    "            \"parameterGroup\":\"%s\"\n" +
-                    "          }\n" +
-                    "        },\n" +
-                    "        \"operation\":\"/\"\n" +
-                    "      }\n" +
-                    "    },\n" +
-                    "    \"arg2\":{\n" +
-                    "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
-                    "      \"parameters\":{\"value\":0.15}\n" +
-                    "    }\n" +
-                    "  }\n" +
-                    "}\n",
+                            "  \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.CompareDoubleExpression\",\n" +
+                            "  \"parameters\":{\n" +
+                            "    \"operation\":\">\",\n" +
+                            "    \"arg1\":{\n" +
+                            "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.MathDoubleExpression\",\n" +
+                            "      \"parameters\":{\n" +
+                            "        \"arg1\":{\n" +
+                            "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
+                            "          \"parameters\":{\n" +
+                            "            \"metricsDirectory\":\"%s\"," +
+                            "            \"metricName\":\"%s\",\n" +
+                            "            \"parameterGroup\":\"%s\"\n" +
+                            "          }\n" +
+                            "        },\n" +
+                            "        \"arg2\":{\n" +
+                            "          \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ReadLastValueOfMetricExpression\",\n" +
+                            "          \"parameters\":{\n" +
+                            "            \"metricsDirectory\":\"%s\"," +
+                            "            \"metricName\":\"%s\",\n" +
+                            "            \"parameterGroup\":\"%s\"\n" +
+                            "          }\n" +
+                            "        },\n" +
+                            "        \"operation\":\"/\"\n" +
+                            "      }\n" +
+                            "    },\n" +
+                            "    \"arg2\":{\n" +
+                            "      \"class\":\"ua.com.serverhelp.simplemetricstoragefile.entities.triggers.expressions.ConstantDoubleExpression\",\n" +
+                            "      \"parameters\":{\"value\":0.15}\n" +
+                            "    }\n" +
+                            "  }\n" +
+                            "}\n",
                     dirName,
                     path.replace("filesystem_size", "filesystem_avail"),
                     params.replace("\"", "\\\""),

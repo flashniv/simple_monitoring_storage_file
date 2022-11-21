@@ -127,7 +127,7 @@ class NodeMetricRestTest extends AbstractTest {
         //Check click DF trigger
         Optional<Trigger> optionalClickDFTrigger = triggerRepository.findById(DigestUtils.md5DigestAsHex("exporter.testproj.click.node.filesystem_size{\"device\":\"/dev/md3\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}".getBytes()));
         Assertions.assertTrue(optionalClickDFTrigger.isPresent());
-        Trigger clickDFTrigger=optionalClickDFTrigger.get();
+        Trigger clickDFTrigger = optionalClickDFTrigger.get();
         Assertions.assertThrows(Exception.class, clickDFTrigger::checkTrigger);
         fileDriver.writeMetric("exporter.testproj.click.node.filesystem_size{\"device\":\"/dev/md3\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", List.of(new DataElement(Instant.now().getEpochSecond() - 100, 5.36576E8)));
         fileDriver.writeMetric("exporter.testproj.click.node.filesystem_avail{\"device\":\"/dev/md3\",\"fstype\":\"ext4\",\"mountpoint\":\"/\"}", List.of(new DataElement(Instant.now().getEpochSecond() - 100, 5.32963328E8)));
