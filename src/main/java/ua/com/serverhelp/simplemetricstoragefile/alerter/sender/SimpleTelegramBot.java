@@ -9,6 +9,8 @@ import ua.com.serverhelp.simplemetricstoragefile.utils.httpdriver.HttpResponse;
 import ua.com.serverhelp.simplemetricstoragefile.utils.httpdriver.SimpleHttpDriver;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Class for send messages into TG
@@ -56,14 +58,16 @@ public class SimpleTelegramBot implements AlertSender { //TODO add tests
 
     private String getText(Alert alert) {
         Trigger trigger = alert.getTrigger();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z").withZone(ZoneId.systemDefault());
+
         switch (trigger.getLastStatus()) {
             case FAILED:
             case UNCHECKED:
-                return "<b>FAIL check trigger failed " + trigger.getName() + "</b>\non event time " + trigger.getLastStatusUpdate();
+                return "<b>FAIL check trigger failed " + trigger.getName() + "</b>\non event time " + formatter.format(trigger.getLastStatusUpdate());
             case OK:
-                return "<b>OK " + trigger.getName() + "</b>\non event time " + trigger.getLastStatusUpdate();
+                return "<b>OK " + trigger.getName() + "</b>\non event time " + formatter.format(trigger.getLastStatusUpdate());
             case ERROR:
-                return "<b>ERR " + trigger.getName() + "</b>\non event time " + trigger.getLastStatusUpdate();
+                return "<b>ERR " + trigger.getName() + "</b>\non event time " + formatter.format(trigger.getLastStatusUpdate());
         }
         return "";
     }
