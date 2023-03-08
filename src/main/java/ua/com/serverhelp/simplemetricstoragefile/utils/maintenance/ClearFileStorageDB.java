@@ -42,17 +42,23 @@ public class ClearFileStorageDB {
             });
             hashMap.forEach((key, paths1) -> {
                 for (int i = 0; i < paths1.size(); i++) {
+                    //skip last file
                     if (i == paths1.size() - 1) continue;
+
+                    //get duration from filename
                     File path = paths1.get(i);
                     String fileName = path.getName();
                     String[] parts = fileName.split("_");
                     LocalDate localDate = LocalDate.of(Integer.parseInt(parts[1]), Integer.parseInt(parts[2]), Integer.parseInt(parts[3]));
                     Duration duration = Duration.between(localDate.atTime(0, 0).atZone(ZoneId.systemDefault()).toInstant(), Instant.now());
+
+                    //check duration and add to delete list
                     if (duration.getSeconds() > historyDepth) {
                         toDelete.add(path);
                     }
                 }
             });
+            //delete selected files
             for (File path : toDelete) {
                 fileDriver.removeFile(path);
                 log.info("Clear storage. File " + path.getName() + " was deleted!");
