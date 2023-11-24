@@ -27,7 +27,7 @@ public class SimpleTelegramBot implements AlertSender { //TODO add tests
     /**
      * work chat
      */
-    private int chatId;
+    private long chatId;
 
     @Override
     public void initialize(String jsonParams) throws JSONException {
