@@ -13,13 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableScheduling
 @EnableCaching
 public class SimpleMetricStorageFileApplication implements CommandLineRunner {
+    public static void main(String[] args) {
+        SpringApplication.run(SimpleMetricStorageFileApplication.class, args);
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(4);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(SimpleMetricStorageFileApplication.class, args);
     }
 
     @Override

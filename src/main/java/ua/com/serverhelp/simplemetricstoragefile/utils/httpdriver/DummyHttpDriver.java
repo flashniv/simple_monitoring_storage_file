@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 public class DummyHttpDriver implements HttpDriver {
     private final HttpResponse httpResponse;
+    private final HashMap<String, Object> params = new HashMap<>();
     private String url = "";
     private String additionalURL = "";
-    private final HashMap<String, Object> params = new HashMap<>();
 
     public DummyHttpDriver() {
         httpResponse = new SimpleHttpResponse(200, "OK");

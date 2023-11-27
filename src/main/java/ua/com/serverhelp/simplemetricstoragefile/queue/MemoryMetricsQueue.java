@@ -15,12 +15,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Slf4j
 @Service
 public class MemoryMetricsQueue {
+    private final ConcurrentLinkedQueue<Event> linkedQueue = new ConcurrentLinkedQueue<>();
     @Autowired
     private MetricRepository metricRepository;
     @Autowired
     private ParameterGroupRepository parameterGroupRepository;
-
-    private final ConcurrentLinkedQueue<Event> linkedQueue = new ConcurrentLinkedQueue<>();
 
     public Map<String, List<DataElement>> getFormattedEvents() {
         Map<String, List<DataElement>> events = new HashMap<>();

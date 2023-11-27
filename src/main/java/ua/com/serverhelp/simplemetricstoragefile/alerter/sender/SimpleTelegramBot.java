@@ -33,7 +33,7 @@ public class SimpleTelegramBot implements AlertSender { //TODO add tests
     public void initialize(String jsonParams) throws JSONException {
         JSONObject params = new JSONObject(jsonParams);
         token = params.getString("token");
-        chatId = params.getInt("chatId");
+        chatId = params.getLong("chatId");
     }
 
     /**

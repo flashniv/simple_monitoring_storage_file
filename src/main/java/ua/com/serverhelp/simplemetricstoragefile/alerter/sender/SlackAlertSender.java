@@ -45,8 +45,8 @@ public class SlackAlertSender implements AlertSender {
         // use the client to send the request
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if(response.statusCode()!=200){
-                throw new Exception("Slack response error "+response.statusCode()+" "+response.body());
+            if (response.statusCode() != 200) {
+                throw new Exception("Slack response error " + response.statusCode() + " " + response.body());
             }
         } catch (Exception e) {
             throw new IOException(e);

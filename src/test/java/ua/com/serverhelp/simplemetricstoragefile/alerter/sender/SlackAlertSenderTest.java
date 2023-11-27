@@ -3,11 +3,6 @@ package ua.com.serverhelp.simplemetricstoragefile.alerter.sender;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ua.com.serverhelp.simplemetricstoragefile.entities.alert.Alert;
-import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.Trigger;
-import ua.com.serverhelp.simplemetricstoragefile.entities.triggers.TriggerStatus;
-
-import java.time.Instant;
 
 class SlackAlertSenderTest {
     private AlertSender alertSender;

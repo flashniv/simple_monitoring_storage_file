@@ -19,14 +19,14 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public abstract class AbstractMetricRest {
-    @Autowired
-    private MemoryMetricsQueue memoryMetricsQueue;
-    @Autowired
-    protected TriggerRepository triggerRepository;
     @Getter
     private final ConcurrentLinkedQueue<String> inputQueue = new ConcurrentLinkedQueue<>();
     private final Pattern replaceE = Pattern.compile("(.*[0-9]e) ([0-9]+)$");
     private final Pattern parametersSplitToGroup = Pattern.compile("(.*)=\"(.*)\"");
+    @Autowired
+    protected TriggerRepository triggerRepository;
+    @Autowired
+    private MemoryMetricsQueue memoryMetricsQueue;
 
     private String parseParameterGroup(String part) throws IllegalStateException, IndexOutOfBoundsException {
         JSONObject json = new JSONObject();
